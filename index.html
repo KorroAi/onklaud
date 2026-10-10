@@ -1,0 +1,622 @@
+<!doctype html>
+<!--
+  Onklaud : page d'accueil.
+  Pour changer l'email, WhatsApp, SIRET, mentions légales ou les vidéos de démo :
+  modifiez uniquement le fichier reglages.js (à côté de ce fichier).
+  Photos, téléphone, prénom, agenda, mention TVA, réalisations : aussi dans reglages.js.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onklaud : automatisation, site et outils pour les commerces</title>
+<meta name="description" content="Onklaud automatise une corvée précise, refait le site qui ne prend plus de rendez-vous, ou construit l’écran qui manque. Pour les commerces et les petites équipes. Diagnostic gratuit de 20 minutes.">
+<link rel="canonical" href="https://onklaud.com/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Onklaud">
+<meta property="og:url" content="https://onklaud.com/">
+<meta property="og:title" content="Vos relances, votre site, vos outils. Ils tournent sans vous.">
+<meta property="og:description" content="Automatisation, refonte de site, outil simple. Pour un commerce, pas pour un grand groupe. Diagnostic gratuit de 20 minutes.">
+<meta property="og:image" content="https://onklaud.com/assets/partage.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Onklaud : vos relances, votre site, vos outils. Ils tournent sans vous. Un cahier où les corvées sont rayées au stylo bleu.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f5f5f0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/polices/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/polices/caveat-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.add("js")</script>
+<!-- Données structurées : complétées depuis reglages.js (téléphone, adresse, zone) par site.js -->
+<script type="application/ld+json" id="donnees-structurees">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Onklaud",
+  "url": "https://onklaud.com/",
+  "email": "contact@onklaud.com",
+  "image": "https://onklaud.com/assets/partage.jpg",
+  "description": "Automatisation, refonte de site et outils sur mesure pour les commerces et les petites équipes (1 à 15 personnes). Diagnostic gratuit de 20 minutes.",
+  "priceRange": "490 € – 1 490 €",
+  "currenciesAccepted": "EUR",
+  "makesOffer": [
+    { "@type": "Offer", "name": "Automatisation", "priceSpecification": { "@type": "PriceSpecification", "minPrice": 490, "priceCurrency": "EUR" } },
+    { "@type": "Offer", "name": "Site et refonte", "priceSpecification": { "@type": "PriceSpecification", "minPrice": 890, "priceCurrency": "EUR" } },
+    { "@type": "Offer", "name": "Outil et appli", "priceSpecification": { "@type": "PriceSpecification", "minPrice": 1490, "priceCurrency": "EUR" } },
+    { "@type": "Offer", "name": "Diagnostic de 20 minutes", "price": 0, "priceCurrency": "EUR" }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="evitement" href="#contenu">Aller au contenu</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="fleche" viewBox="0 0 20 20"><path d="M3 10h13M11 4.5 16.5 10 11 15.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="stylo" viewBox="0 0 220 24">
+      <path d="M0 12 15 8.6v6.8z" fill="#8f94a3"/>
+      <circle cx="1.4" cy="12" r="1.4" fill="#2337a8"/>
+      <path d="M15 7.6h12l3-1.6v12l-3-1.6H15z" fill="#e9ebf0" stroke="#b9bdc8" stroke-width=".8"/>
+      <rect x="30" y="5" width="158" height="14" rx="2" fill="#f4f6fb" stroke="#b9bdc8" stroke-width=".8"/>
+      <path d="M30 8.6h158M30 15.4h158" stroke="#d6dae3" stroke-width=".8"/>
+      <rect x="30" y="10.6" width="150" height="2.8" fill="#2337a8" opacity=".9"/>
+      <path d="M188 6h24a4 4 0 0 1 4 4v4a4 4 0 0 1-4 4h-24z" fill="#2337a8"/>
+      <rect x="192" y="2.6" width="22" height="3.2" rx="1.6" fill="#1a2a85"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Barre du haut -->
+<header class="barre" id="barre">
+  <div class="cadre">
+    <a class="logo" href="#haut" aria-label="Onklaud, retour en haut"><span aria-hidden="true">onklaud</span><svg class="coche" viewBox="0 0 30 24" aria-hidden="true"><path pathLength="1" d="M3 13.5c2.6 1.8 4.4 4.3 6 7.5C13 12 19.5 5.5 27.5 2.5" fill="none" stroke="#2337a8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <nav class="nav" id="nav" aria-label="Navigation principale">
+      <ul>
+        <li><a href="#fonctionnement">Comment ça marche</a></li>
+        <li><a href="#offres">Offres</a></li>
+        <li><a href="#demos">Démos</a></li>
+        <li><a href="outils/">Outils gratuits</a></li>
+        <li><a href="#methode">Méthode</a></li>
+        <li><a href="#questions">Questions</a></li>
+      </ul>
+    </nav>
+    <a class="bouton bouton-plein" href="#diagnostic">Diagnostic <span class="long">gratuit</span></a>
+    <button class="bouton-menu" id="bouton-menu" type="button" aria-expanded="false" aria-controls="nav"><span></span>Menu</button>
+  </div>
+</header>
+
+<main id="contenu">
+
+  <!-- Héros -->
+  <section class="heros" id="haut" aria-labelledby="titre">
+    <div class="cadre">
+      <div>
+        <h1 class="titre-1 entree" id="titre" style="--i:0">Vos relances, votre site, vos outils. Ils tournent sans vous.</h1>
+        <p class="chapeau entree" style="--i:1">Onklaud automatise une corvée précise, refait le site qui ne prend plus de rendez-vous, ou construit l’écran qui manque. Pour un commerce, pas pour un grand groupe.</p>
+        <div class="actions entree" style="--i:2">
+          <a class="bouton bouton-plein" href="#diagnostic">Demander mon diagnostic gratuit <svg class="fleche" aria-hidden="true"><use href="#fleche"/></svg></a>
+          <a class="bouton" href="#demos">Voir les démos</a>
+        </div>
+        <p class="promesse entree" style="--i:3"><strong>20 minutes, gratuit.</strong> On regarde un seul processus. On dit non si ça ne paie pas.<span data-zone hidden></span></p>
+      </div>
+
+      <div class="scene-bloc entree" style="--i:3">
+        <div class="scene" id="scene" role="img" aria-label="Exemple animé : un devis sans réponse depuis 5 jours. La relance est prête, le gérant valide, le client répond oui, le rendez-vous s’inscrit dans l’agenda et le stylo raye la ligne du cahier.">
+          <div class="cahier" id="cahier-scene" aria-hidden="true">
+            <div class="feuille">
+              <p class="jour">Mardi</p>
+              <ul>
+                <li><span class="rature" id="rature-scene">Relancer Mme Bertin, devis SdB</span></li>
+                <li>Commande farine + sucre</li>
+                <li>Demander un avis à M. Roux</li>
+                <li>Rappeler le comptable</li>
+              </ul>
+            </div>
+            <svg class="stylo" id="stylo-scene"><use href="#stylo"/></svg>
+          </div>
+          <div class="tel" aria-hidden="true">
+            <div class="tel-tete"><svg class="mini-coche" viewBox="0 0 30 24"><path d="M3 13.5c2.6 1.8 4.4 4.3 6 7.5C13 12 19.5 5.5 27.5 2.5" fill="none" stroke="#2337a8" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Relances<span class="heure">9:12</span></div>
+            <div class="fil">
+              <div class="ev" data-etape="1">
+                <div class="carte">
+                  <div class="t">Devis 112, salle de bain</div>
+                  <div class="montant">2 340 €</div>
+                  <div class="pastille">Sans réponse depuis 5 jours</div>
+                </div>
+              </div>
+              <div class="ev" data-etape="2">
+                <div class="carte brouillon">
+                  <div class="t">Relance prête</div>
+                  <p>Bonjour Madame Bertin, je reviens vers vous pour la salle de bain. Je peux passer en parler mardi à 14 h, ça vous irait&nbsp;?</p>
+                  <div class="valider" id="valider"><span class="a-faire">Valider l’envoi</span><span class="ok">Envoyée</span><span class="doigt" id="doigt"></span></div>
+                </div>
+              </div>
+              <div class="ev" data-etape="4">
+                <div class="bulle bulle-client"><span class="qui">Mme Bertin</span>Oui, mardi 14 h c’est parfait.</div>
+              </div>
+              <div class="ev" data-etape="5">
+                <div class="carte agenda">
+                  <div class="date">14:00<small>mar.</small></div>
+                  <div class="t">Mme Bertin, salle de bain</div>
+                  <div class="m">Confirmé, ajouté à l’agenda</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="legende">
+          <p>Exemple, données fictives. La relance attend votre validation avant de partir.</p>
+          <button class="pause" id="pause" type="button" aria-pressed="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path id="pause-icone" d="M2 1h3v10H2zM7 1h3v10H7z" fill="currentColor"/></svg><span>Pause</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Engagements -->
+  <div class="engagements">
+    <div class="cadre">
+      <ul>
+        <li><b>Trois offres, prix affichés.</b>Automatisation, site, outil. Vous savez où vous mettez les pieds.</li>
+        <li><b>Un seul flux pour commencer.</b>Une chose réglée et qui tourne, avant de parler de la suite.</li>
+        <li><b>Vos outils restent en place.</b>On se branche sur ce que vous utilisez déjà.</li>
+        <li><b>Rien ne part sans vous.</b>Aucun message n’arrive chez un client sans votre validation.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Le constat -->
+  <section class="section" id="constat" aria-labelledby="titre-constat">
+    <div class="cadre">
+      <div class="section-tete">
+        <h2 class="titre-2" id="titre-constat">Ce qui traîne sur la liste.</h2>
+        <p>Vous les connaissez. Elles reviennent chaque semaine, et passent toujours après le client qui est devant vous.</p>
+      </div>
+      <div class="page-cahier" id="page-cahier">
+        <p class="date-cahier" aria-hidden="true">Lundi, à faire</p>
+        <ol>
+          <li><span class="rature">Relancer les devis, quand il restera une minute</span></li>
+          <li><span class="rature">Le site, illisible au téléphone&nbsp;: les gens appellent, ou partent</span></li>
+          <li><span class="rature">Recopier Excel, WhatsApp et le cahier, qui ne se parlent pas</span></li>
+          <li><span class="rature">Il manque un écran. Pas une usine à gaz</span></li>
+        </ol>
+        <p class="annotation" aria-hidden="true">c’est réglé</p>
+        <svg class="stylo" id="stylo-cahier" aria-hidden="true"><use href="#stylo"/></svg>
+      </div>
+      <div class="reponse">
+        <h3 class="titre-2">On les raye, une par une.</h3>
+        <p>En commençant par celle qui vous coûte le plus. Une ligne réglée, qui tourne seule, avant de passer à la suivante.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comment ça marche -->
+  <section class="section section-flux" id="fonctionnement" aria-labelledby="titre-flux">
+    <div class="cadre">
+      <div class="section-tete">
+        <h2 class="titre-2" id="titre-flux">Comment ça marche, concrètement.</h2>
+        <p>Choisissez une offre&nbsp;: voici ce qui se passe, étape par étape, et qui fait quoi.</p>
+      </div>
+      <div class="flux-barre">
+        <div class="onglets" role="tablist" aria-label="Choisir une offre">
+          <button type="button" role="tab" id="onglet-relances" aria-controls="flux-relances" aria-selected="true">Les relances</button>
+          <button type="button" role="tab" id="onglet-site" aria-controls="flux-site" aria-selected="false" tabindex="-1">Le site</button>
+          <button type="button" role="tab" id="onglet-outil" aria-controls="flux-outil" aria-selected="false" tabindex="-1">L’outil</button>
+        </div>
+        <ul class="legende-flux" aria-label="Légende">
+          <li><span class="role role-auto">Automatique</span>tourne seul</li>
+          <li><span class="role role-vous">Vous</span>un geste, au bon moment</li>
+          <li><span class="role role-client">Votre client</span>ce qu’il voit</li>
+        </ul>
+      </div>
+
+      <div class="flux-panneau" role="tabpanel" id="flux-relances" aria-labelledby="onglet-relances" tabindex="0">
+        <ol class="flux">
+          <li><span class="role role-vous">Vous</span><b>Vous envoyez le devis</b><p>Comme aujourd’hui, depuis votre outil habituel.</p></li>
+          <li><span class="role role-auto">Automatique</span><b>5 jours sans réponse</b><p>Le devis est repéré tout seul. Personne n’a à s’en souvenir.</p></li>
+          <li><span class="role role-auto">Automatique</span><b>La relance s’écrit</b><p>Un message court, à votre façon, avec le bon nom et le bon montant.</p></li>
+          <li><span class="role role-vous">Vous</span><b>Vous validez d’un geste</b><p>Sur votre téléphone. Rien ne part sans vous, au moins au début.</p></li>
+          <li><span class="role role-client">Votre client</span><b>Il répond, le créneau est pris</b><p>Sa réponse arrive chez vous, le rendez-vous va dans l’agenda.</p></li>
+        </ol>
+      </div>
+      <div class="flux-panneau" role="tabpanel" id="flux-site" aria-labelledby="onglet-site" tabindex="0" hidden>
+        <ol class="flux">
+          <li><span class="role role-client">Votre client</span><b>Il vous cherche sur son téléphone</b><p>Depuis Google, Instagram ou une carte de visite.</p></li>
+          <li><span class="role role-client">Votre client</span><b>Il comprend en cinq secondes</b><p>Ce que vous faites, pour qui, et comment réserver.</p></li>
+          <li><span class="role role-client">Votre client</span><b>Il choisit un créneau</b><p>En quelques taps, sans formulaire à rallonge.</p></li>
+          <li><span class="role role-auto">Automatique</span><b>Le rendez-vous s’inscrit</b><p>Dans votre agenda, avec le nom, l’heure et la prestation.</p></li>
+          <li><span class="role role-vous">Vous</span><b>Vous êtes prévenu</b><p>Une notification. Personne n’a eu à décrocher.</p></li>
+        </ol>
+      </div>
+      <div class="flux-panneau" role="tabpanel" id="flux-outil" aria-labelledby="onglet-outil" tabindex="0" hidden>
+        <ol class="flux">
+          <li><span class="role role-client">Votre client</span><b>La commande arrive</b><p>Par téléphone, WhatsApp ou au comptoir. Comme aujourd’hui.</p></li>
+          <li><span class="role role-vous">Vous</span><b>Vous la notez une seule fois</b><p>Sur un écran simple, pensé pour votre métier.</p></li>
+          <li><span class="role role-auto">Automatique</span><b>Chacun voit quoi faire</b><p>Statut, qui s’en occupe, pour quand. Plus besoin de demander.</p></li>
+          <li><span class="role role-auto">Automatique</span><b>Le message client se prépare</b><p>«&nbsp;Votre commande est prête&nbsp;», envoyé après votre validation.</p></li>
+          <li><span class="role role-vous">Vous</span><b>Vos données restent à vous</b><p>Un export quand vous voulez, dans un format courant.</p></li>
+        </ol>
+      </div>
+
+      <div class="branche">
+        <p class="branche-titre">Ça se branche sur ce que vous avez déjà&nbsp;:</p>
+        <ul class="pastilles">
+          <li>votre messagerie (Gmail, Outlook…)</li>
+          <li>votre agenda</li>
+          <li>votre tableur (Excel, Google Sheets)</li>
+          <li>WhatsApp et SMS</li>
+          <li>votre logiciel métier, quand il le permet</li>
+        </ul>
+        <p class="branche-note">On vérifie au diagnostic ce qui est possible chez vous.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Offres : le devis -->
+  <section class="section" id="offres" aria-labelledby="titre-offres">
+    <div class="cadre">
+      <div class="section-tete">
+        <h2 class="titre-2" id="titre-offres">Trois offres. Le prix de départ est écrit.</h2>
+        <p>Présentées comme on vous les présenterait&nbsp;: un devis clair, sans ligne cachée. Le prix final est fixé au diagnostic, avant tout engagement.</p>
+      </div>
+
+      <div class="devis">
+        <div class="devis-tete">
+          <div>
+            <p class="logo" aria-hidden="true">onklaud<svg class="coche" viewBox="0 0 30 24"><path pathLength="1" d="M3 13.5c2.6 1.8 4.4 4.3 6 7.5C13 12 19.5 5.5 27.5 2.5" fill="none" stroke="#2337a8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
+            <p class="coord">Micro-entreprise<br><span data-email>contact@onklaud.com</span><br>onklaud.com</p>
+          </div>
+          <div class="devis-ref">
+            <p class="titre-3">Devis indicatif</p>
+            <p>Pour&nbsp;: votre commerce</p>
+          </div>
+        </div>
+        <div class="devis-cols" aria-hidden="true"><span>Désignation</span><span>Ce qui est compris</span><span>Prix net</span></div>
+
+        <article class="ligne" aria-labelledby="offre-1">
+          <div>
+            <p class="ligne-ref">A</p>
+            <h3 class="titre-3" id="offre-1">Automatisation</h3>
+            <p class="ligne-pour">Une corvée précise, faite à votre place.</p>
+          </div>
+          <ul class="coches">
+            <li>Relance des devis restés sans réponse</li>
+            <li>Demande d’avis après le passage du client</li>
+            <li>Reporting de la semaine, sans copier-coller</li>
+            <li>Livré sur vos outils actuels</li>
+          </ul>
+          <div class="ligne-prix">
+            <p class="montant"><small>à partir de</small>490&nbsp;€</p>
+            <a class="bouton" href="#diagnostic" data-sujet="relances">Parler de mes relances</a>
+          </div>
+        </article>
+
+        <article class="ligne" aria-labelledby="offre-2">
+          <div>
+            <p class="ligne-ref">B</p>
+            <h3 class="titre-3" id="offre-2">Site et refonte</h3>
+            <p class="ligne-pour">Le site qui prend des rendez-vous au lieu de les perdre.</p>
+          </div>
+          <ul class="coches">
+            <li>Un message clair en cinq secondes</li>
+            <li>Pensé pour le téléphone d’abord</li>
+            <li>Prise de créneau intégrée</li>
+            <li>Textes écrits pour vendre</li>
+          </ul>
+          <div class="ligne-prix">
+            <p class="montant"><small>à partir de</small>890&nbsp;€</p>
+            <a class="bouton" href="#diagnostic" data-sujet="site">Parler de mon site</a>
+          </div>
+        </article>
+
+        <article class="ligne" aria-labelledby="offre-3">
+          <div>
+            <p class="ligne-ref">C</p>
+            <h3 class="titre-3" id="offre-3">Outil et appli</h3>
+            <p class="ligne-pour">L’écran qui manque à votre journée.</p>
+          </div>
+          <ul class="coches">
+            <li>Un métier, un flux</li>
+            <li>Utilisable le jour de la mise en main</li>
+            <li>Vos données restent exportables</li>
+          </ul>
+          <div class="ligne-prix">
+            <p class="montant"><small>à partir de</small>1&nbsp;490&nbsp;€</p>
+            <a class="bouton" href="#diagnostic" data-sujet="outil">Parler de mon outil</a>
+          </div>
+        </article>
+
+        <div class="ligne-offerte">
+          <p class="d">Diagnostic de 20 minutes<span>Un processus, un avis franc, sans engagement.</span></p>
+          <p class="p">0,00&nbsp;€</p>
+          <p class="note a-reveler" aria-hidden="true">offert, évidemment<svg viewBox="0 0 42 22"><path pathLength="1" d="M2 9c11 7 24 8 36 1M31.5 4.5l7 5.2-6.6 5.6"/></svg></p>
+        </div>
+        <div class="devis-pied">
+          <p data-tva>TVA non applicable, art. 293&nbsp;B du CGI.</p>
+          <p>Pas d’abonnement imposé. Frais éventuels chez un fournisseur (SMS, hébergement)&nbsp;: écrits sur le devis.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Démos -->
+  <section class="section section-demos" id="demos" aria-labelledby="titre-demos">
+    <div class="cadre">
+      <div class="section-tete">
+        <h2 class="titre-2" id="titre-demos">Regardez avant de nous croire.</h2>
+        <p>Une minute maximum par démo. Une corvée au début, plus rien à faire à la fin.</p>
+      </div>
+      <div class="theatre">
+        <div>
+          <div class="lecteur" id="lecteur" aria-live="polite">
+            <div class="affiche"><p class="discret">Les démos s’affichent avec JavaScript activé.</p></div>
+          </div>
+          <div class="notes" id="notes" hidden></div>
+        </div>
+        <div class="choix-demos">
+          <p class="note a-reveler" aria-hidden="true">commencez par celle-ci<svg viewBox="0 0 30 34"><path pathLength="1" d="M5 2c-3 11 1 21 13 29M10.5 30.5l7.8.9-.4-7.9"/></svg></p>
+          <ul class="liste-demos" id="liste-demos" aria-label="Choisir une démo"></ul>
+          <p class="demos-gratuit">Deux de ces outils sont gratuits, sans compte&nbsp;: <a class="lien" href="outils/">les essayer ou les télécharger</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pour qui -->
+  <section class="section" id="pour-qui" aria-labelledby="titre-qui">
+    <div class="cadre">
+      <div class="section-tete">
+        <h2 class="titre-2" id="titre-qui">Pour un commerce ou une petite équipe.</h2>
+        <p>De 1 à 15 personnes. Pas de service informatique, pas de temps à perdre.</p>
+      </div>
+      <div class="publics">
+        <div>
+          <figure class="photo" id="photo-commerce" data-photo="commerce"></figure>
+          <div class="mini mini-tel" aria-hidden="true">
+            <p class="mini-legende">Exemple</p>
+            <div class="notif"><span class="notif-app">Réservations</span><b>Table de 4, ce soir 20 h</b>Prise sur votre site, pendant le service.</div>
+            <div class="notif"><span class="notif-app">Relances</span><b>3 devis relancés</b>Après votre validation de ce matin.</div>
+            <div class="notif"><span class="notif-app">Avis</span><b>Demande d’avis envoyée</b>Au client de 15 h, comme prévu.</div>
+          </div>
+          <div class="public">
+            <h3 class="titre-3">Commerce de proximité</h3>
+            <p>Vous êtes au comptoir, en cuisine ou chez un client. Le téléphone sonne pendant que vous servez. Il vous faut des relances qui partent, des avis qui arrivent et un site qui prend le rendez-vous à votre place.</p>
+            <p class="exemples">restaurant, salon de coiffure, boutique, artisan, institut…</p>
+          </div>
+        </div>
+        <div>
+          <figure class="photo" id="photo-service" data-photo="service"></figure>
+          <div class="mini mini-tableau" aria-hidden="true">
+            <p class="mini-legende">Exemple</p>
+            <div class="colonne"><p>À faire</p><span>Dossier Martin</span><span>Devis Leroy</span></div>
+            <div class="colonne"><p>En cours</p><span>Compte rendu Petit<i>Julie</i></span></div>
+            <div class="colonne"><p>Fait</p><span class="fait">Facture Durand</span><span class="fait">Relance Blanc</span></div>
+          </div>
+          <div class="public">
+            <h3 class="titre-3">Petite structure de service</h3>
+            <p>Les infos circulent par mail, tableur et messagerie. Il vous faut un écran clair pour suivre les dossiers, des comptes rendus qui se font seuls, et moins de copier-coller.</p>
+            <p class="exemples">cabinet, agence, bureau d’études, équipe indépendante…</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Réalisations : remplies depuis REALISATIONS (reglages.js), masquées tant qu'il n'y en a pas -->
+  <section class="section" id="realisations" aria-labelledby="titre-realisations" hidden>
+    <div class="cadre">
+      <div class="section-tete">
+        <h2 class="titre-2" id="titre-realisations">Ce qui tourne déjà, chez de vrais clients.</h2>
+        <p>Avec leur accord, et leurs mots.</p>
+      </div>
+      <ul class="realisations" id="liste-realisations"></ul>
+    </div>
+  </section>
+
+  <!-- Méthode -->
+  <section class="section" id="methode" aria-labelledby="titre-methode">
+    <div class="cadre">
+      <div class="section-tete">
+        <h2 class="titre-2" id="titre-methode">Trois temps. Rien de plus.</h2>
+        <p>Pas de chantier de six mois. Une chose qui marche, puis vous décidez.</p>
+      </div>
+      <ol class="etapes" id="etapes">
+        <li class="etape">
+          <span class="noeud" aria-hidden="true">1</span>
+          <h3 class="titre-3">Diagnostic, 20 minutes <span class="etiquette-gratuit">gratuit</span></h3>
+          <p>On regarde un seul processus avec vous. Vous repartez avec un avis net&nbsp;: ça vaut le coup, ou non.</p>
+          <dl class="qui-fait">
+            <div><dt>Vous</dt><dd>montrez la corvée, telle qu’elle est.</dd></div>
+            <div><dt>Nous</dt><dd>chiffrons, et disons franchement si ça paie.</dd></div>
+          </dl>
+        </li>
+        <li class="etape">
+          <span class="noeud" aria-hidden="true">2</span>
+          <h3 class="titre-3">Un premier flux qui tourne</h3>
+          <p>On construit une seule chose, sur vos outils. On la teste avec vous sur de vrais cas, avec validation avant chaque envoi.</p>
+          <dl class="qui-fait">
+            <div><dt>Vous</dt><dd>donnez les accès, validez les premiers messages.</dd></div>
+            <div><dt>Nous</dt><dd>construisons, testons, ajustons le ton.</dd></div>
+          </dl>
+        </li>
+        <li class="etape">
+          <span class="noeud" aria-hidden="true">3</span>
+          <h3 class="titre-3">Passation</h3>
+          <p>Vous savez ce qui tourne, comment le couper, et vous pouvez l’expliquer à quelqu’un d’autre.</p>
+          <dl class="qui-fait">
+            <div><dt>Vous</dt><dd>gardez la main&nbsp;: vos comptes, vos données.</dd></div>
+            <div><dt>Nous</dt><dd>vous montrons tout, à l’écran, jusqu’à ce que ce soit clair.</dd></div>
+          </dl>
+        </li>
+      </ol>
+      <p class="apres-etapes">Pas d’abonnement forcé. <span>Ensuite, c’est vous qui décidez de la suite.</span></p>
+    </div>
+  </section>
+
+  <!-- Questions -->
+  <section class="section" id="questions" aria-labelledby="titre-questions">
+    <div class="cadre">
+      <div class="section-tete">
+        <h2 class="titre-2" id="titre-questions">Ce qu’on nous demande avant de commencer.</h2>
+        <p>Les questions telles qu’on nous les pose. Les réponses, sans détour.</p>
+      </div>
+      <div class="questions">
+        <details>
+          <summary>Le diagnostic est vraiment gratuit&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
+          <div class="reponse-q"><p>Oui. 20 minutes, sans engagement. Si on ne peut rien pour vous, on vous le dit et on s’arrête là.</p></div>
+        </details>
+        <details>
+          <summary>Je n’ai pas le temps.<span class="plus" aria-hidden="true"></span></summary>
+          <div class="reponse-q"><p>Le diagnostic dure 20 minutes. Ensuite, on vous demande surtout des accès et des validations. Le but, c’est justement de vous rendre du temps.</p></div>
+        </details>
+        <details>
+          <summary>On a déjà un logiciel.<span class="plus" aria-hidden="true"></span></summary>
+          <div class="reponse-q"><p>Tant mieux. On se branche dessus quand c’est possible, plutôt que de le remplacer. S’il fait déjà le travail, on vous le dit.</p></div>
+        </details>
+        <details>
+          <summary>Y aura-t-il des frais chaque mois&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
+          <div class="reponse-q"><p>Pas d’abonnement imposé. Certains outils ont un coût chez un fournisseur&nbsp;: l’envoi de SMS, l’hébergement d’une appli, un service d’IA.</p><p>Quand c’est le cas, il est chiffré au diagnostic et écrit sur le devis, avant tout engagement. Pas de mauvaise surprise le mois suivant.</p></div>
+        </details>
+        <details>
+          <summary>Combien de temps avant que ça tourne&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
+          <div class="reponse-q"><p>Le devis écrit arrive sous 48&nbsp;h après le diagnostic, avec le délai de réalisation noté dessus.</p><p>Ce délai démarre quand on a ce qu’il faut&nbsp;: les accès, votre catalogue, vos textes. C’est le plus souvent ce qui fait gagner ou perdre du temps.</p></div>
+        </details>
+        <details>
+          <summary>Et les données de mes clients&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
+          <div class="reponse-q"><p>Elles restent sur vos comptes et dans vos outils. Elles ne sont ni revendues ni réutilisées ailleurs.</p><p>Les accès que vous donnez pour le travail restent les vôtres&nbsp;: vous pouvez les retirer quand vous voulez, et tout s’exporte dans un format courant.</p></div>
+        </details>
+        <details>
+          <summary>L’IA va se tromper avec mes clients.<span class="plus" aria-hidden="true"></span></summary>
+          <div class="reponse-q"><p>Le premier jour, rien ne part sans votre validation. Vous voyez chaque message avant envoi.</p><p>L’envoi automatique ne s’ouvre que sur ce que vous avez validé, quand vous êtes à l’aise.</p></div>
+        </details>
+        <details>
+          <summary>C’est une micro-entreprise. Et si vous disparaissez&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
+          <div class="reponse-q"><p>C’est pour ça que la passation fait partie du travail. Vous savez comment ça marche, comment le couper, et vous pouvez l’expliquer à quelqu’un d’autre. Vos données restent exportables.</p></div>
+        </details>
+        <details>
+          <summary>Et si ça ne sert à rien&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
+          <div class="reponse-q"><p>C’est l’objet du diagnostic. Si le gain ne couvre pas le prix, on vous le dit, et vous n’avez rien payé.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Diagnostic : le bon à découper -->
+  <section class="section section-contact" id="diagnostic" aria-labelledby="titre-diagnostic">
+    <div class="cadre contact">
+      <div class="contact-cote">
+        <h2 class="titre-2" id="titre-diagnostic">Votre diagnostic gratuit, en 20 minutes.</h2>
+        <ol class="deroule">
+          <li>Vous nous montrez un processus qui vous prend du temps.</li>
+          <li>On regarde ce qu’il coûterait de l’automatiser, et ce qu’il vous rendrait.</li>
+          <li>On vous dit franchement si ça vaut le coup. Sinon, on s’arrête là.</li>
+        </ol>
+        <figure class="photo" id="photo-portrait" data-photo="portrait"></figure>
+        <p class="interlocuteur" id="interlocuteur" hidden></p>
+        <p class="direct">Vous préférez écrire directement&nbsp;? <a class="lien" data-email href="mailto:contact@onklaud.com">contact@onklaud.com</a><span data-whatsapp hidden>, <a class="lien" href="#" rel="noopener">par WhatsApp</a></span><span data-telephone hidden>, ou appeler le <a class="lien" href="#"></a></span>.</p>
+      </div>
+
+      <div class="bon">
+        <svg class="ciseaux" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="5.5" cy="6.5" r="3"/><circle cx="5.5" cy="17.5" r="3"/><path d="M8.2 8 21 17.5M8.2 16 21 6.5"/></g></svg>
+        <div class="bon-tete">
+          <p class="bon-pour" aria-hidden="true">Bon pour</p>
+          <h3 class="titre-3"><span class="sr-texte">Bon pour </span>un diagnostic gratuit de 20 minutes</h3>
+          <p>À remplir en une minute. On revient vers vous pour caler le créneau.</p>
+          <p class="prise-rdv" id="agenda" hidden><a class="bouton" href="#" target="_blank" rel="noopener">Choisir mon créneau directement <svg class="fleche" aria-hidden="true"><use href="#fleche"/></svg></a><span>ou remplissez le bon ci-dessous.</span></p>
+        </div>
+        <form class="formulaire" id="formulaire" autocomplete="on" novalidate action="mailto:contact@onklaud.com?subject=Diagnostic%20gratuit" method="post" enctype="text/plain">
+          <div class="deux">
+            <div class="champ">
+              <label for="f-prenom">Prénom</label>
+              <input id="f-prenom" name="prenom" type="text" autocomplete="given-name" required>
+            </div>
+            <div class="champ">
+              <label for="f-commerce">Commerce ou structure</label>
+              <input id="f-commerce" name="commerce" type="text" autocomplete="organization" required>
+            </div>
+          </div>
+          <div class="deux">
+            <div class="champ">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="f-joindre">
+            </div>
+            <div class="champ">
+              <label for="f-tel">Téléphone</label>
+              <input id="f-tel" name="telephone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="f-joindre">
+            </div>
+          </div>
+          <p class="aide" id="f-joindre">L’un des deux suffit&nbsp;: c’est là qu’on vous répond.</p>
+          <div class="piege" aria-hidden="true"><label for="f-site">Ne pas remplir ce champ</label><input id="f-site" name="site_web" type="text" tabindex="-1" autocomplete="off"></div>
+          <fieldset class="sujets">
+            <legend>Sujet</legend>
+            <label><input type="radio" name="sujet" value="relances"><span>Mes relances</span></label>
+            <label><input type="radio" name="sujet" value="site"><span>Mon site</span></label>
+            <label><input type="radio" name="sujet" value="outil"><span>Un outil ou une appli</span></label>
+            <label><input type="radio" name="sujet" value="je-ne-sais-pas" checked><span>Je ne sais pas encore</span></label>
+          </fieldset>
+          <div class="champ">
+            <label for="f-phrase">En une phrase, qu’est-ce qui vous prend du temps&nbsp;?</label>
+            <textarea id="f-phrase" name="phrase" rows="3" maxlength="500" required></textarea>
+          </div>
+          <button class="bouton bouton-plein" type="submit">Demander mon diagnostic gratuit <svg class="fleche" aria-hidden="true"><use href="#fleche"/></svg></button>
+          <p class="note-form" id="note-form">Votre demande part par email chez Onklaud. Rien n’est conservé sur ce site.</p>
+
+          <div class="confirmation" id="confirmation" role="status" tabindex="-1" hidden>
+            <div class="etat-envoye" hidden>
+              <span class="tampon" aria-hidden="true">Reçu</span>
+              <strong>Demande envoyée.</strong>
+              <p>Elle est arrivée chez Onklaud. On revient vers vous pour caler les 20 minutes.</p>
+            </div>
+            <div class="etat-messagerie">
+              <span class="tampon" aria-hidden="true">Prêt à partir</span>
+              <strong>Demande prête à partir.</strong>
+              <p>Votre messagerie vient de s’ouvrir avec le message rempli. Il ne reste qu’à appuyer sur Envoyer.</p>
+              <p>Rien ne s’est ouvert&nbsp;? Copiez le message et envoyez-le à <a class="lien" data-email href="mailto:contact@onklaud.com">contact@onklaud.com</a>.</p>
+              <button class="bouton" type="button" id="copier">Copier le message</button><span class="copie" id="copie" aria-live="polite"></span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Pied de page : l'étiquette du cahier -->
+<footer class="pied">
+  <div class="cadre">
+    <div class="etiquette">
+      <a class="logo" href="#haut" aria-label="Onklaud, retour en haut"><span aria-hidden="true">onklaud</span><svg class="coche" viewBox="0 0 30 24" aria-hidden="true"><path pathLength="1" d="M3 13.5c2.6 1.8 4.4 4.3 6 7.5C13 12 19.5 5.5 27.5 2.5" fill="none" stroke="#2337a8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <dl>
+        <div><dt>Matière</dt><dd>vos corvées</dd></div>
+        <div><dt>Pour</dt><dd>commerces et petites équipes</dd></div>
+        <div><dt>Contact</dt><dd><a data-email href="mailto:contact@onklaud.com">contact@onklaud.com</a></dd></div>
+        <div data-telephone hidden><dt>Téléphone</dt><dd><a href="#"></a></dd></div>
+      </dl>
+    </div>
+    <div>
+      <nav aria-label="Pied de page">
+        <ul>
+          <li><a href="#offres">Offres</a></li>
+          <li><a href="#demos">Démos</a></li>
+          <li><a href="outils/">Outils gratuits</a></li>
+          <li><a href="#methode">Méthode</a></li>
+          <li><a href="#diagnostic">Diagnostic gratuit</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+        </ul>
+      </nav>
+      <p class="legal">
+        Onklaud, <span data-nom-ei>entrepreneur individuel (micro-entreprise)</span>. SIRET <span data-champ="siret">à compléter</span><br>
+        <span data-tva>TVA non applicable, art. 293&nbsp;B du CGI</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<a class="bouton bouton-plein cta-mobile" id="cta-mobile" href="#diagnostic" tabindex="-1" aria-hidden="true">Mon diagnostic gratuit <svg class="fleche" aria-hidden="true"><use href="#fleche"/></svg></a>
+
+<script src="reglages.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

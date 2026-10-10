@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Les devis qui dorment · Onklaud</title>
+  <meta name="description" content="Relances de devis : la boucle prépare les relances à J+5 et J+12, vous validez d'un geste.">
+  <link rel="icon" href="../commun/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../commun/icones/apple-touch-icon.png">
+  <meta name="theme-color" content="#f5f5f0">
+  <meta name="apple-mobile-web-app-title" content="Relances">
+  <link rel="preload" href="../commun/polices/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../commun/polices/caveat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../commun/commun.css">
+  <link rel="stylesheet" href="relances.css">
+  <link rel="stylesheet" href="../commun/public.css">
+</head>
+<body>
+  <header class="entete">
+    <div class="entete-dedans">
+      <a class="logo" href="../../" aria-label="Onklaud, page d'accueil"><span aria-hidden="true">onklaud</span><svg class="coche" viewBox="0 0 30 24" aria-hidden="true"><path pathLength="1" d="M3 13.5c2.6 1.8 4.4 4.3 6 7.5C13 12 19.5 5.5 27.5 2.5" fill="none" stroke="#2337a8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <span class="sep" aria-hidden="true"></span>
+      <h1 class="titre-outil">Les devis qui dorment<small>Relances de devis, préparées chaque matin</small></h1>
+      <div class="entete-actions">
+        <button class="bouton bouton-petit bouton-plein" type="button" data-action="ajouter">+ Devis</button>
+        <button class="bouton bouton-petit" type="button" data-action="menu" aria-haspopup="dialog">Fichier</button>
+      </div>
+    </div>
+  </header>
+  <div class="bandeau-exemple" id="bandeau" hidden></div>
+
+  <main class="page" id="page">
+    <div class="colonne-gauche">
+      <section class="total carte seyes" aria-labelledby="titre-total" id="carte-total">
+        <h2 class="libelle" id="titre-total">En attente de réponse</h2>
+        <p class="chiffre" id="total" aria-live="polite">0 €</p>
+        <p class="sous" id="total-sous"></p>
+        <dl class="repartition" id="repartition"></dl>
+      </section>
+
+      <section class="boucle carte" aria-labelledby="titre-boucle" id="carte-boucle">
+        <div class="boucle-tete">
+          <h2 class="titre-section" id="titre-boucle">La boucle</h2>
+          <button class="bouton-texte" type="button" data-action="reglages">Réglages</button>
+        </div>
+        <p class="aujourdhui" id="aujourdhui"></p>
+        <div class="regles" id="regles"></div>
+        <p class="dernier-passage" id="dernier-passage"></p>
+        <div class="simulateur">
+          <span class="libelle">Simulateur de jours (pour voir la boucle tourner)</span>
+          <button class="bouton bouton-petit" type="button" data-action="jour+1" id="jour-plus-1">+1 jour</button>
+          <button class="bouton bouton-petit" type="button" data-action="jour+7">+7 jours</button>
+          <button class="bouton bouton-petit" type="button" data-action="jour0" id="jour-zero">Revenir à aujourd'hui</button>
+        </div>
+      </section>
+
+      <section class="carte-journal carte" aria-labelledby="titre-journal">
+        <h2 class="titre-section" id="titre-journal">Journal de la boucle</h2>
+        <ol class="journal" id="journal"></ol>
+      </section>
+    </div>
+
+    <div class="colonne-droite">
+      <section aria-labelledby="titre-valider" id="bloc-valider">
+        <div class="bloc-tete">
+          <h2 class="titre-section" id="titre-valider">À valider aujourd'hui <small id="nb-valider"></small></h2>
+        </div>
+        <div class="liste-valider" id="liste-valider"></div>
+      </section>
+
+      <section class="bloc-devis carte" aria-labelledby="titre-devis" id="bloc-devis">
+        <div class="bloc-tete">
+          <h2 class="titre-section" id="titre-devis">Les devis</h2>
+          <div class="filtres" id="filtres" role="group" aria-label="Filtrer les devis"></div>
+        </div>
+        <div class="liste-devis" id="liste-devis"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="pied-public pas-imprimer">
+    <p class="pied-bandeau">Outil gratuit d'Onklaud. Vos données restent dans ce navigateur. · Le faire tourner tout seul chez vous : <a href="../../#diagnostic">diagnostic gratuit de 20 min</a></p>
+    <p class="pied-actions"><button class="bouton bouton-petit" type="button" id="installer-appli" hidden>Installer l'appli</button><span class="aide-iphone" id="aide-iphone" hidden>Sur iPhone ou iPad : touchez Partager, puis « Sur l'écran d'accueil ».</span><span>Pensez à exporter une sauvegarde (menu Fichier).</span><a href="../">Tous les outils</a></p>
+  </footer>
+
+  <div id="fenetre-zone"></div>
+
+  <script src="../commun/commun.js"></script>
+  <script src="../commun/public.js"></script>
+  <script src="relances.js"></script>
+</body>
+</html>

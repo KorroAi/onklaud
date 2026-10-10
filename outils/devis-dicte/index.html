@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Le devis dicté · Onklaud</title>
+  <meta name="description" content="Dictez les travaux en sortant du chantier : le devis se remplit avec les prix de votre catalogue. L'inconnu est signalé, jamais inventé.">
+  <link rel="icon" href="../commun/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../commun/icones/apple-touch-icon.png">
+  <meta name="theme-color" content="#f5f5f0">
+  <meta name="apple-mobile-web-app-title" content="Devis dicté">
+  <link rel="preload" href="../commun/polices/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../commun/polices/caveat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../commun/commun.css">
+  <link rel="stylesheet" href="devis.css">
+  <link rel="stylesheet" href="../commun/public.css">
+</head>
+<body>
+  <header class="entete">
+    <div class="entete-dedans">
+      <a class="logo" href="../../" aria-label="Onklaud, page d'accueil"><span aria-hidden="true">onklaud</span><svg class="coche" viewBox="0 0 30 24" aria-hidden="true"><path pathLength="1" d="M3 13.5c2.6 1.8 4.4 4.3 6 7.5C13 12 19.5 5.5 27.5 2.5" fill="none" stroke="#2337a8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <span class="sep" aria-hidden="true"></span>
+      <h1 class="titre-outil">Le devis dicté<small>Vous parlez, le devis se remplit avec vos prix</small></h1>
+      <div class="entete-actions">
+        
+      </div>
+    </div>
+  </header>
+  <div class="bandeau-exemple" id="bandeau" hidden></div>
+  <nav class="onglets onglets-haut" id="onglets" role="tablist" aria-label="Sections"></nav>
+
+  <main class="page vue-devis" id="page"></main>
+
+  <footer class="pied-public pas-imprimer">
+    <p class="pied-bandeau">Outil gratuit d'Onklaud. Vos données restent dans ce navigateur. · Le faire tourner tout seul chez vous : <a href="../../#diagnostic">diagnostic gratuit de 20 min</a></p>
+    <p class="pied-actions"><button class="bouton bouton-petit" type="button" id="installer-appli" hidden>Installer l'appli</button><span class="aide-iphone" id="aide-iphone" hidden>Sur iPhone ou iPad : touchez Partager, puis « Sur l'écran d'accueil ».</span><span>Pensez à exporter une sauvegarde (onglet Mes devis).</span><a href="../">Tous les outils</a></p>
+  </footer>
+  <div id="fenetre-zone"></div>
+
+  <script src="../commun/commun.js"></script>
+  <script src="../commun/public.js"></script>
+  <script src="moteur.js"></script>
+  <script src="devis.js"></script>
+</body>
+</html>

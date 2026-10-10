@@ -1,0 +1,20 @@
+{
+  "relances": {
+    "nom": "Les devis qui dorment",
+    "page": "outils/relances/",
+    "zip": "telechargements/onklaud-relances.zip",
+    "taille_ko": 320,
+    "date": "2026-10-08",
+    "date_affichee": "8 octobre 2026",
+    "version": "4c77d51f6c8d"
+  },
+  "devis-dicte": {
+    "nom": "Le devis dicté",
+    "page": "outils/devis-dicte/",
+    "zip": "telechargements/onklaud-devis-dicte.zip",
+    "taille_ko": 326,
+    "date": "2026-10-08",
+    "date_affichee": "8 octobre 2026",
+    "version": "d48aef05127b"
+  }
+}
