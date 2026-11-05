@@ -1,0 +1,10 @@
+CAPTURES DES EXEMPLES (page d'accueil)
+======================================
+Entreprises fictives (Maison Lucie, Atelier Morel, Institut Belle Rive, Boulangerie des Halles),
+présentées sur le site comme « exemples de réalisations possibles ».
+Ce sont de vraies pages HTML (propositions/maquettes/), capturées en image (×2) puis compressées.
+Pour les refaire : servir la racine du projet (python -m http.server 8935), lancer le script de capture
+Playwright sur propositions/maquettes/<page>.html (1440×900 pour resto et logiciel, 390×844 pour les applis).
+
+Photos utilisées dans les maquettes et assets/photos/salle-restaurant.jpg : Unsplash (licence Unsplash),
+références dans propositions/photos/SOURCES.txt.

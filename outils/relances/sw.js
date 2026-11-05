@@ -3,14 +3,14 @@
    Généré par outils/publier.py depuis outils/publication/sw.js :
    ne pas modifier dans site/.
    - à l'installation : met en cache tous les fichiers de l'outil
-     et les polices (version 4c77d51f6c8d) ;
+     et les polices (version d85919794c80) ;
    - ensuite : sert le cache d'abord, le réseau si besoin ;
    - nouvelle version publiée = nouveau nom de cache : l'ancien est
      effacé, la page propose de recharger.
    ================================================================ */
 "use strict";
 const PREFIXE = "onklaud-relances-";
-const CACHE = PREFIXE + "4c77d51f6c8d";
+const CACHE = PREFIXE + "d85919794c80";
 const FICHIERS = [
   "index.html",
   "relances.css",
