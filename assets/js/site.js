@@ -26,6 +26,7 @@
     const a = el.tagName === "A" ? el : $("a", el);
     if (a) { a.href = "tel:" + tel; if (!a.textContent.trim()) a.textContent = reglages.telephone.trim().replace(/ /g, " "); }
   });
+  if (tel) { const c = $("#cta-tel"); if (c) c.href = "tel:" + tel; const b = $(".contact-direct a"); if (b) b.textContent = "Appeler le " + reglages.telephone.trim().replace(/ /g, " "); }
   if (rempli(reglages.mentionTVA)) $$("[data-tva]").forEach((el) => {
     const point = /\.\s*$/.test(el.textContent);
     el.textContent = reglages.mentionTVA.trim().replace(/ (?=B du|du CGI|du CIBS)/g, " ") + (point ? "." : "");
@@ -46,7 +47,7 @@
     interlocuteur.innerHTML = "Votre interlocuteur&nbsp;: <b>" + echappe(quiRepond.trim()) + "</b>" +
       (rempli(reglages.ville) ? ", basé à " + echappe(reglages.ville.trim()) : "") + "." +
       (rempli(reglages.zone) ? " Intervention " + echappe(reglages.zone.trim().replace(/\.?$/, ".")) : "");
-    interlocuteur.hidden = false;
+    $("#qui").hidden = false;
   }
   const agenda = $("#agenda");
   if (agenda && /^https:\/\//.test(String(reglages.agenda || "").trim())) { $("a", agenda).href = reglages.agenda.trim(); agenda.hidden = false; }
@@ -90,7 +91,7 @@
   const suivre = (nom, donnees) => { if (mesure && window.va) window.va("event", { name: nom, data: donnees || {} }); };
 
   /* ---------- Anciens liens (ancienne page d'accueil, démos) ---------- */
-  if (/^#(demo-|outil$)/.test(location.hash) && $("#contact")) location.replace("outils/");
+  if (/^#(demo-[a-z]+-|demo-relances|demo-commandes|outil$)/.test(location.hash) && $("#contact")) location.replace("demos/");
   const anciens = { "#diagnostic": "#contact", "#services": "#prix", "#deroule": "#prix" };
   if (anciens[location.hash] && $(anciens[location.hash])) {
     history.replaceState && history.replaceState(null, "", anciens[location.hash]);
@@ -129,6 +130,35 @@
   $$("[data-sujet]").forEach((a) => a.addEventListener("click", () => {
     if (choixProjet && $('option[value="' + a.dataset.sujet + '"]', choixProjet)) choixProjet.value = a.dataset.sujet;
   }));
+
+  /* ---------- Essai direct : signer un devis sur la page ---------- */
+  const sig = $("#essai-sig");
+  if (sig) {
+    const ok = $("#essai-ok"), etapes = $$("#essai-etapes li");
+    const ctx = sig.getContext("2d");
+    const preparer = () => {
+      const r = sig.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+      sig.width = r.width * dpr; sig.height = r.height * dpr;
+      ctx.scale(dpr, dpr); ctx.lineWidth = 2.6; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.strokeStyle = "#16233f";
+      ok.disabled = true;
+    };
+    let actif = false, fini = false;
+    const pt = (e) => { const b = sig.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
+    sig.addEventListener("pointerdown", (e) => { if (fini) return; actif = true; try { sig.setPointerCapture(e.pointerId); } catch (_) { /* simulé */ } ctx.beginPath(); ctx.moveTo(...pt(e)); });
+    sig.addEventListener("pointermove", (e) => { if (!actif) return; ctx.lineTo(...pt(e)); ctx.stroke(); ok.disabled = false; });
+    sig.addEventListener("pointerup", () => { actif = false; });
+    $("#essai-efface").addEventListener("click", () => {
+      fini = false; preparer(); etapes.forEach((l) => l.classList.remove("fait")); $("#essai-fin").hidden = true;
+    });
+    ok.addEventListener("click", () => {
+      fini = true; ok.disabled = true;
+      const lent = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      etapes.forEach((l, i) => setTimeout(() => l.classList.add("fait"), lent ? 120 + i * 420 : 0));
+      setTimeout(() => { $("#essai-fin").hidden = false; }, lent ? 120 + etapes.length * 420 : 0);
+    });
+    preparer();
+    addEventListener("resize", () => { if (!fini) preparer(); });
+  }
 
   /* ---------- Formulaire de contact ---------- */
   const formulaire = $("#formulaire");
@@ -203,6 +233,11 @@
       window.location.href = "mailto:" + reglages.email +
         "?subject=" + encodeURIComponent(objet) +
         "&body=" + encodeURIComponent(corps.replace(/\n/g, "\r\n"));
+      const sms = $("#envoi-sms");
+      if (sms && tel && /Android|iPhone|iPad/i.test(navigator.userAgent)) {
+        sms.href = "sms:" + tel.replace(/^0/, "+33") + "?body=" + encodeURIComponent(v("prenom") + ", " + v("commerce") + ". " + v("phrase") + " Me joindre : " + (v("telephone") || v("email")));
+        sms.hidden = false;
+      }
       confirmer("messagerie");
     });
 
@@ -230,6 +265,8 @@
       cta.classList.toggle("visible", montrer);
       cta.setAttribute("aria-hidden", String(!montrer));
       cta.tabIndex = montrer ? 0 : -1;
+      const ct = $("#cta-tel");
+      if (ct) { ct.classList.toggle("visible", montrer); ct.setAttribute("aria-hidden", String(!montrer)); ct.tabIndex = montrer ? 0 : -1; }
     };
     const io = new IntersectionObserver((entrees) => {
       entrees.forEach((en) => { const k = en.target.dataset.cta; if (en.isIntersecting) vus.add(k); else vus.delete(k); });

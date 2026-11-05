@@ -1,8 +1,7 @@
 CAPTURES DES EXEMPLES (page d'accueil)
 ======================================
-Entreprises fictives (Maison Lucie, Atelier Morel, Institut Belle Rive, Boulangerie des Halles),
-présentées sur le site comme « exemples de réalisations possibles ».
-Ce sont de vraies pages HTML (propositions/maquettes/), capturées en image (×2) puis compressées.
+Entreprises fictives (Maison Lucie, Atelier Morel, Institut Belle Rive, Boulangerie des Halles).
+Ce sont de vraies captures des démos de site/demos/, produites par outils/captures_demos.py.
 Pour les refaire : servir la racine du projet (python -m http.server 8935), lancer le script de capture
 Playwright sur propositions/maquettes/<page>.html (1440×900 pour resto et logiciel, 390×844 pour les applis).
 

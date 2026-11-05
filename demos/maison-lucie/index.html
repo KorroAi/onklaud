@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f4eee3">
+<title>Maison Lucie · Bistrot de saison, démo Onklaud</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../commun/base.css">
+<style>
+  :root { --accent: #1f3a2e; --creme: #f4eee3; --vert: #1f3a2e; --or: #a16d2f; --encre: #1f2a22; --texte: #4d5a50; }
+  html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+  body { background: var(--creme); color: var(--encre); font: 400 17px/1.62 "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  h1, h2, .marque { font-family: "Fraunces", Georgia, serif; }
+  .nav { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 28px; padding: 16px clamp(20px, 5vw, 72px); background: rgba(244, 238, 227, .96); border-bottom: 1px solid #e6dcca; font-size: 15px; color: var(--texte); }
+  .nav a { text-decoration: none; }
+  .nav a:hover { color: var(--encre); }
+  .marque { margin-right: auto; font-size: 26px; font-weight: 600; color: var(--vert); letter-spacing: -.01em; }
+  .nav .reserver { padding: 10px 20px; border-radius: 99px; background: var(--vert); color: var(--creme); font-weight: 600; }
+  .accueil { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100dvh - 72px); }
+  .accueil .photo { position: relative; min-height: 340px; overflow: hidden; }
+  .accueil .photo > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 40% 50%; }
+  .vignette { position: absolute; left: 36px; bottom: 36px; width: 200px; border-radius: 14px; overflow: hidden; border: 6px solid var(--creme); box-shadow: 0 20px 40px -20px rgba(0, 0, 0, .5); }
+  .vignette img { width: 100%; height: 132px; object-fit: cover; }
+  .accueil .droite { display: flex; flex-direction: column; justify-content: center; padding: 40px clamp(20px, 5vw, 72px); }
+  .sur { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--or); font-weight: 600; }
+  h1 { margin-top: 14px; font-weight: 400; font-size: clamp(2.6rem, 4.2vw, 4.1rem); line-height: 1.03; letter-spacing: -.02em; }
+  .accueil p.t { margin-top: 18px; max-width: 30em; color: var(--texte); }
+  .resa { margin-top: 26px; padding: 18px; border-radius: 16px; background: #fff; box-shadow: 0 20px 40px -24px rgba(31, 42, 34, .4); }
+  .resa .ligne { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .resa label { display: block; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #7d7360; font-weight: 600; }
+  .resa select, .resa input { width: 100%; margin-top: 4px; padding: 10px 12px; border: 1px solid #e0d6c3; border-radius: 10px; background: #fff; font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--encre); font-weight: 500; }
+  .creneaux { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+  .creneau { padding: 8px 12px; border: 1px solid #e0d6c3; border-radius: 10px; background: #fff; font-size: 15px; font-weight: 600; color: var(--vert); font-variant-numeric: tabular-nums; }
+  .creneau[aria-pressed="true"] { background: var(--vert); border-color: var(--vert); color: var(--creme); }
+  .creneau:disabled { opacity: .4; text-decoration: line-through; cursor: default; }
+  .etiq { margin-top: 12px; font-size: 13px; color: #7d7360; }
+  .valider { width: 100%; margin-top: 12px; padding: 13px; border: 0; border-radius: 12px; background: #b0742a; color: #fff; font-weight: 700; }
+  .ok-resa b { display: block; font: 500 24px/1.15 "Fraunces", serif; color: var(--vert); }
+  .ok-resa button { margin-top: 10px; padding: 0; border: 0; background: none; color: var(--or); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .infos { display: flex; flex-wrap: wrap; gap: 12px 34px; margin-top: 20px; font-size: 14px; color: #6b7468; }
+  .infos b { display: block; color: var(--encre); font-weight: 600; }
+  .ouvert { color: #2a6e43; font-weight: 600; }
+  section.s { padding: clamp(64px, 9vw, 112px) clamp(20px, 5vw, 72px); }
+  section h2 { font-weight: 400; font-size: clamp(2.1rem, 3.2vw, 3rem); line-height: 1.06; letter-spacing: -.02em; }
+  .carte { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 36px; background: none; }
+  .carte h3 { padding-bottom: 8px; border-bottom: 1px solid #1f3a2e; font: 600 13px/1.2 "Inter", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--or); }
+  .plat { display: grid; grid-template-columns: 1fr auto; gap: 2px 14px; padding: 12px 0; border-bottom: 1px solid #e6dcca; }
+  .plat b { font-weight: 550; }
+  .plat span { font-variant-numeric: tabular-nums; }
+  .plat small { grid-column: 1 / -1; color: #6b7468; font-size: 14.5px; }
+  .fonce { background: var(--vert); color: #d5dccf; }
+  .fonce h2 { color: var(--creme); }
+  .lieu { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 14px; margin-top: 34px; }
+  .lieu img { width: 100%; height: 340px; object-fit: cover; border-radius: 12px; }
+  .bas { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .priv { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 18px; border-radius: 16px; background: #fff; box-shadow: 0 20px 40px -24px rgba(31, 42, 34, .4); }
+  .priv label { display: block; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #7d7360; font-weight: 600; }
+  .priv input { width: 100%; margin-top: 4px; padding: 10px 12px; border: 1px solid #e0d6c3; border-radius: 10px; background: #fff; font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--encre); font-weight: 500; }
+  .priv .valider, .priv .merci { grid-column: 1 / -1; margin-top: 0; }
+  .priv .merci { color: #2a6e43; font-weight: 600; }
+  .bas a.b { display: inline-block; margin-top: 20px; padding: 12px 22px; border-radius: 99px; background: var(--vert); color: var(--creme); font-weight: 600; text-decoration: none; }
+  footer { padding: 30px clamp(20px, 5vw, 72px); border-top: 1px solid #e6dcca; font-size: 14px; color: #6b7468; }
+  .en-cadre .nav { padding-top: 54px; }
+  @media (max-width: 920px) {
+    .accueil, .bas { grid-template-columns: 1fr; }
+    .accueil .photo { order: 2; min-height: 300px; }
+    .carte { grid-template-columns: 1fr; gap: 24px; }
+    .lieu { grid-template-columns: 1fr; }
+    .lieu img { height: 240px; }
+    .nav { gap: 14px; padding: 12px 18px; }
+    .nav .lien-s { display: none; }
+    .marque { font-size: 22px; }
+    .vignette { left: 16px; bottom: 16px; width: 130px; }
+    .vignette img { height: 90px; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Navigation"><span class="marque" data-marque>Maison Lucie</span><a class="lien-s" href="#carte">La carte</a><a class="lien-s" href="#lieu">Le lieu</a><a class="lien-s" href="#privatiser">Privatiser</a><a class="reserver" href="#resa">Réserver</a></nav>
+<header class="accueil">
+  <div class="photo"><img src="../commun/photos/resto-table.jpg" alt="Une assiette de saison sur une table dressée"><div class="vignette"><img src="../commun/photos/resto-plats.jpg" alt="Plats à partager"></div></div>
+  <div class="droite">
+    <p class="sur">Bistrot de saison</p>
+    <h1>Une cuisine du marché, à deux pas des quais.</h1>
+    <p class="t">Produits frais, carte renouvelée chaque semaine et belle cave de vignerons indépendants.</p>
+    <div class="resa" id="resa"></div>
+    <div class="infos"><p><b>Aujourd’hui</b><span class="ouvert" id="ouvert"></span></p><p><b>Adresse</b>Quai Saint-Antoine</p><p><b>Terrasse</b>Face à la Saône</p></div>
+  </div>
+</header>
+<main>
+  <section class="s" id="carte">
+    <h2>La carte de la semaine</h2>
+    <div class="carte">
+      <div><h3>Pour commencer</h3><div class="plat"><b>Œuf parfait, champignons</b><span>12 €</span><small>Crème de noisette, pain grillé</small></div><div class="plat"><b>Truite fumée maison</b><span>14 €</span><small>Betterave, raifort doux</small></div><div class="plat"><b>Velouté de courge</b><span>9 €</span><small>Châtaignes, huile de sauge</small></div></div>
+      <div><h3>Pour suivre</h3><div class="plat"><b>Saumon mi-cuit</b><span>24 €</span><small>Herbes du marché, jus citronné</small></div><div class="plat"><b>Paleron confit</b><span>26 €</span><small>Purée fumée, carottes rôties</small></div><div class="plat"><b>Risotto de saison</b><span>21 €</span><small>Parmesan, légumes du jour</small></div></div>
+      <div><h3>Pour finir</h3><div class="plat"><b>Tarte fine aux pommes</b><span>9 €</span><small>Glace vanille</small></div><div class="plat"><b>Mousse au chocolat</b><span>8 €</span><small>Fleur de sel</small></div><div class="plat"><b>Fromages affinés</b><span>11 €</span><small>Selon l’arrivage</small></div></div>
+    </div>
+  </section>
+  <section class="s fonce" id="lieu">
+    <h2>Une salle chaleureuse, une terrasse sur la Saône.</h2>
+    <div class="lieu"><img src="../commun/photos/resto-salle.jpg" alt="La salle du restaurant" loading="lazy"><img src="../commun/photos/resto-cafe.jpg" alt="Le comptoir" loading="lazy"><img src="../commun/photos/resto-plats.jpg" alt="Assiettes du jour" loading="lazy"></div>
+  </section>
+  <section class="s bas" id="privatiser">
+    <div><h2>Privatisez la maison.</h2><p style="margin-top:16px;max-width:30em;color:var(--texte)">Déjeuner d’équipe, anniversaire ou repas de famille : nous composons le menu avec vous.</p></div>
+    <form class="priv" id="priv"><label>Votre nom<input name="nom" required autocomplete="name"></label><label>Téléphone<input name="tel" type="tel" required autocomplete="tel"></label><label>Nombre de personnes<input name="pers" type="number" min="8" max="60" value="20" required></label><label>Date souhaitée<input name="jour" type="date" required></label><button type="submit" class="valider">Envoyer ma demande</button><p class="merci" id="merci" role="status" hidden>Merci, votre demande est transmise. Nous vous rappelons pour composer le menu.</p></form>
+  </section>
+  <section class="s" style="padding-top:0"><div class="bas">
+    <div><p><b>Horaires</b></p><p style="color:var(--texte)">Du mardi au samedi, 12:00 à 14:00 et 19:00 à 23:00</p><p style="margin-top:14px"><b>Adresse</b></p><p style="color:var(--texte)">Quai Saint-Antoine, Lyon</p></div>
+  </div></section>
+</main>
+<footer id="pied-l">Maison Lucie est un restaurant fictif : ce site est une démonstration créée par Onklaud. Les réservations restent sur votre appareil.</footer>
+<script src="../commun/magasin.js"></script>
+<script src="donnees.js"></script>
+<script>
+(function () {
+  "use strict";
+  const O = window.Outils, L = window.MaisonLucie, esc = O.esc;
+  const m = window.Magasin("maison-lucie", L.depart);
+  const $ = (s, r = document) => r.querySelector(s);
+  const jours = () => L.joursOuverts(7);
+  const prochain = jours().find((j) => j > O.jour()) || jours()[0];
+  const ui = { jour: prochain, pers: 2, heure: null, fait: null };
+  const h = new Date().getHours();
+  $("#ouvert").textContent = !L.ouvert(O.jour()) ? "Fermé, à bientôt" : h < 23 ? "Ouvert jusqu’à 23:00" : "Fermé, à demain";
+  if (!L.ouvert(O.jour()) || h >= 23) $("#ouvert").style.color = "#6b7468";
+  const passe = (j, h) => j === O.jour() && Number(h.slice(0, 2)) + Number(h.slice(3)) / 60 <= new Date().getHours() + new Date().getMinutes() / 60;
+  const creneaux = (s) => s.map((h) => {
+    const libre = L.CAPACITE - L.occupes(m.d, ui.jour, h) >= ui.pers && !passe(ui.jour, h);
+    return '<button type="button" class="creneau" data-h="' + h + '" aria-pressed="' + (ui.heure === h) + '"' + (libre ? "" : " disabled") + ">" + h + "</button>";
+  }).join("");
+  const rendre = () => {
+    const z = $("#resa");
+    if (ui.fait) {
+      z.innerHTML = '<div class="ok-resa"><b>Votre table est confirmée, ' + esc(ui.fait.nom) + ".</b><p>" + O.dateLongue(ui.fait.jour) + " à " + ui.fait.heure + ", " + ui.fait.pers + (ui.fait.pers > 1 ? " personnes" : " personne") + '. Un rappel vous sera envoyé la veille.</p><button type="button" data-action="encore">Faire une autre réservation</button></div>';
+      return;
+    }
+    const nom = $("#r-nom", z), tel = $("#r-tel", z), vNom = nom ? nom.value : "", vTel = tel ? tel.value : "";
+    z.innerHTML = '<div class="ligne"><label>Date<select id="r-jour">' + jours().map((j) => '<option value="' + j + '"' + (j === ui.jour ? " selected" : "") + ">" + (j === O.jour() ? "Aujourd’hui" : j === O.jour(1) ? "Demain" : O.dateLongue(j)) + '</option>').join("") + '</select></label><label>Couverts<select id="r-pers">' + [1, 2, 3, 4, 5, 6, 7, 8].map((n) => '<option value="' + n + '"' + (n === ui.pers ? " selected" : "") + ">" + n + (n > 1 ? " personnes" : " personne") + "</option>").join("") + '</select></label></div><p class="etiq">Midi</p><div class="creneaux">' + creneaux(L.SERVICES.midi) + '</div><p class="etiq">Soir</p><div class="creneaux">' + creneaux(L.SERVICES.soir) + "</div>" +
+      (ui.heure ? '<div class="ligne" style="margin-top:12px"><label>Nom<input id="r-nom" autocomplete="name" value="' + esc(vNom) + '"></label><label>Téléphone<input id="r-tel" type="tel" autocomplete="tel" value="' + esc(vTel) + '"></label></div><button type="button" class="valider" id="r-valider">Confirmer la table de ' + ui.heure + "</button>" : "");
+  };
+  document.addEventListener("change", (e) => {
+    if (e.target.id === "r-jour") { ui.jour = e.target.value; ui.heure = null; rendre(); }
+    if (e.target.id === "r-pers") { ui.pers = Number(e.target.value); ui.heure = null; rendre(); }
+  });
+  document.addEventListener("click", (e) => {
+    const c = e.target.closest(".creneau:not([disabled])");
+    if (c) { ui.heure = c.dataset.h; rendre(); return; }
+    if (e.target.dataset.action === "encore") { ui.fait = null; ui.heure = null; rendre(); return; }
+    if (e.target.id === "r-valider") {
+      const nom = $("#r-nom").value.trim(), tel = $("#r-tel").value.trim();
+      if (!nom) { $("#r-nom").focus(); return; }
+      if (!tel) { $("#r-tel").focus(); return; }
+      const r = { id: O.id(), jour: ui.jour, heure: ui.heure, nom, pers: ui.pers, tel, etat: "attendue", source: "site" };
+      ui.fait = r;
+      m.maj((d) => { d.resas.push(r); });
+    }
+  });
+  if (O.perso) $("#pied-l").textContent = "Aperçu préparé par Onklaud. Textes, carte et photos d’exemple, à remplacer par les vôtres.";
+  $("#priv").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const v = Object.fromEntries(new FormData(e.target));
+    m.maj((d) => { d.privatisations.push({ id: O.id(), ...v }); });
+    e.target.reset(); $("#merci").hidden = false;
+  });
+  m.surChange(rendre);
+  window.bandeauDemo(m, "../", "réservez une table, puis ouvrez <a href=\"carnet.html\" target=\"_blank\" rel=\"noopener\">le carnet du restaurant</a>.");
+  rendre();
+  window.demoLucie = { m, ui, rendre };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Deux écrans en direct · Démos Onklaud</title>
+<meta name="description" content="Une démo préparée par Onklaud : essayez-la, chaque action arrive en direct de l’autre côté.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Onklaud">
+<meta property="og:title" content="Votre démo est prête">
+<meta property="og:description" content="Essayez-la sur votre téléphone. Elle fonctionne vraiment.">
+<meta property="og:image" content="https://onklaud.com/demos/captures/atelier.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="duo.css">
+</head>
+<body class="page-duo">
+<header class="duo-haut">
+  <a class="logo" href="./" aria-label="Toutes les démos"><i aria-hidden="true"><svg viewBox="0 0 30 24"><path d="M3 13.5c2.6 1.8 4.4 4.3 6 7.5C13 12 19.5 5.5 27.5 2.5" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span aria-hidden="true">onklaud</span></a>
+  <p id="consigne"></p>
+  <button class="bouton bouton-calme" type="button" id="recommencer">Recommencer</button>
+</header>
+<main class="scene-duo" id="scene">
+  <div class="poste" id="poste"><div class="poste-ecran"><iframe id="cadre-pro" title="Écran du professionnel"></iframe></div><p>Côté professionnel</p></div>
+  <div class="mobile" id="mobile"><div class="mobile-ecran"><iframe id="cadre-client" title="Téléphone du client"></iframe></div><p>Côté client</p><a class="ouvrir-pro" id="ouvrir-pro" target="_blank" rel="noopener">Ouvrir le côté professionnel dans un autre onglet</a></div>
+</main>
+<script src="duo.js"></script>
+</body>
+</html>

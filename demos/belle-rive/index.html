@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f7f3f0">
+<title>Institut Belle Rive · Application, démo Onklaud</title>
+<link rel="manifest" href="appli.webmanifest">
+<link rel="apple-touch-icon" href="icone-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../commun/base.css">
+<style>
+  .appli { --accent: #9b4d43; background: #f7f3f0; }
+  .alerte-ios { --accent: #9b4d43; }
+  .couverture { position: relative; height: 230px; overflow: hidden; background: #6b3a33; }
+  .en-cadre .couverture { margin-top: -54px; height: 284px; }
+  .couverture img { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
+  .couverture::after { content: ""; position: absolute; inset: 0; background: rgba(40, 20, 15, .36); }
+  .bienvenue { position: absolute; z-index: 1; left: 20px; right: 20px; bottom: 30px; color: #fff; }
+  .bienvenue small { font-size: 14px; }
+  .bienvenue h1 { font: 500 32px/1.05 "Fraunces", serif; letter-spacing: -.01em; }
+  .feuille { position: relative; margin-top: -16px; padding-top: 18px; border-radius: 22px 22px 0 0; background: #f7f3f0; }
+  .carte-fid { margin: 0 16px; padding: 18px; border-radius: 18px; background: #9b4d43; color: #fff; box-shadow: 0 14px 28px -16px rgba(110, 40, 30, .8); }
+  .carte-fid .l1 { display: flex; justify-content: space-between; align-items: baseline; }
+  .carte-fid b { font-size: 17px; font-weight: 600; }
+  .carte-fid span.d { font-size: 13px; opacity: .9; }
+  .carte-fid p { margin-top: 4px; font-size: 14px; }
+  .tampons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; margin-top: 14px; }
+  .tampon { aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; border: 1.5px dashed rgba(255, 255, 255, .62); }
+  .tampon svg { width: 44%; height: 44%; fill: none; stroke: #9b4d43; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .tampon.plein { border: 0; background: #fff; }
+  .tampon.neuf { animation: tampon .5s cubic-bezier(.2, 1.5, .4, 1); }
+  @keyframes tampon { from { transform: scale(.3); } }
+  .tampon.cadeau { border: 1.5px solid #ffd9c7; }
+  .tampon.cadeau svg { stroke: #ffd9c7; stroke-width: 2; }
+  .tampon.cadeau.gagne { background: #ffd9c7; }
+  .tampon.cadeau.gagne svg { stroke: #9b4d43; }
+  .prestation { width: 100%; }
+  .jours-c { display: flex; gap: 8px; margin: 0 16px; overflow-x: auto; }
+  .jour-c { flex: none; padding: 9px 13px; border: 0; border-radius: 12px; background: #fff; color: #4a2a25; font-weight: 600; font-size: 14.5px; }
+  .jour-c[aria-pressed="true"] { background: #9b4d43; color: #fff; }
+  .annuler { padding: 0; border: 0; background: none; color: #9b4d43; font-size: 15px; font-weight: 500; }
+  .creneaux { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 16px; }
+  .creneau { padding: 12px 4px; border: 0; border-radius: 12px; background: #fff; font-weight: 600; color: #4a2a25; }
+  .creneau[aria-pressed="true"] { background: #9b4d43; color: #fff; }
+  .creneau:disabled { opacity: .4; text-decoration: line-through; }
+  .cellule[aria-pressed="true"] { background: #f7e9e4; }
+</style>
+</head>
+<body>
+<div class="appli">
+  <div class="statut-ios"><span>9:41</span><svg viewBox="0 0 66 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="6" width="3" height="6" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/><rect x="42" y="1" width="20" height="10" rx="3"/><rect x="63" y="4" width="2" height="4" rx="1"/></svg></div>
+  <div class="appli-corps" id="corps"></div>
+  <nav class="onglets-ios" id="onglets" aria-label="Sections"></nav>
+</div>
+<div class="alerte-ios" id="alerte" role="status"></div>
+<script src="../commun/magasin.js"></script>
+<script src="donnees.js"></script>
+<script>
+(function () {
+  "use strict";
+  const O = window.Outils, B = window.BelleRive, esc = O.esc;
+  const m = window.Magasin("belle-rive", B.depart);
+  const $ = (s) => document.querySelector(s);
+  const MOI = "camille";
+  const COCHE = '<svg viewBox="0 0 24 24"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg>';
+  const CADEAU = '<svg viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M12 9v11M4 13h16M12 9c-2-5-6-4-6-2s3 2 6 2zM12 9c2-5 6-4 6-2s-3 2-6 2z"/></svg>';
+  const ONGLETS = [["fidelite", "Fidélité", '<path d="M12 21s-7.500-4.600-7.500-10.200A4.300 4.300 0 0112 8a4.300 4.300 0 017.500 2.800C19.500 16.400 12 21 12 21z"/>'], ["rdv", "Réserver", '<rect x="4" y="5" width="16" height="15" rx="2.500"/><path d="M8 3v4M16 3v4M4 10h16"/>']];
+  const joursDispo = () => { const l = []; for (let i = 1; l.length < 5; i += 1) { const j = O.jour(i); if (new Date(j + "T12:00:00").getDay() !== 0) l.push(j); } return l; };
+  const ui = { vue: "fidelite", presta: null, heure: null, jour: joursDispo()[0], tamponsVus: null };
+  const moi = () => m.d.clientes.find((c) => c.id === MOI);
+  const alerte = (t, x) => { const a = $("#alerte"); a.innerHTML = "<i>" + esc(O.initiales("BR")) + "</i><div><b>" + esc(t) + "</b>" + esc(x) + "</div>"; a.classList.add("visible"); clearTimeout(alerte.t); alerte.t = setTimeout(() => a.classList.remove("visible"), 4200); };
+
+  const fidelite = () => {
+    const c = moi(), reste = B.OBJECTIF - c.tampons, gagne = reste <= 0;
+    const rdv = m.d.rdv.filter((r) => r.cliente === MOI).sort((a, b) => a.jour.localeCompare(b.jour));
+    const cases = Array.from({ length: B.OBJECTIF }, (_, i) => '<i class="tampon ' + (i < c.tampons ? "plein " : "") + (i === c.tampons - 1 && ui.neuf ? "neuf" : "") + '">' + (i < c.tampons ? COCHE : "") + "</i>").join("") + '<i class="tampon cadeau ' + (gagne ? "gagne" : "") + '">' + CADEAU + "</i>";
+    return '<div class="couverture"><img src="../commun/photos/salon.jpg" alt=""><div class="bienvenue"><small>Bonjour ' + esc(c.nom.split(" ")[0]) + '</small><h1>' + esc(O.marque("Institut Belle Rive")) + '</h1></div></div><div class="feuille"><div class="carte-fid"><div class="l1"><b>Ma carte fidélité</b><span class="d">Membre depuis ' + c.depuis + "</span></div><p>" + (gagne ? "Votre soin du visage offert vous attend." : reste === 1 ? "Plus qu’une visite avant votre soin offert." : "Encore " + reste + " visites avant votre soin offert.") + '</p><div class="tampons">' + cases + '</div></div><p class="entete-groupe">Prochain rendez-vous</p><div class="groupe">' +
+      (rdv.length ? rdv.map((r) => { const p = B.PRESTATIONS.find((x) => x.id === r.prestation); return '<div class="cellule"><div class="texte"><b>' + O.dateLongue(r.jour).replace(/^./, (l) => l.toUpperCase()) + " à " + r.heure + "</b><small>" + esc(p.nom) + '</small></div><button class="annuler" data-annuler="' + r.id + '">Annuler</button></div>'; }).join("") : '<div class="cellule"><div class="texte"><small>Aucun rendez-vous prévu.</small></div></div>') + '</div><button class="bouton-ios" data-vue="rdv">Réserver un soin</button></div>';
+  };
+  const rdv = () => {
+    const pris = m.d.rdv.filter((r) => r.jour === ui.jour).map((r) => r.heure);
+    const courte = (j) => new Date(j + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" }).replace(".", "");
+    return '<h1 class="grand-titre" style="padding-top:12px">Réserver</h1><p class="entete-groupe">Votre soin</p><div class="groupe">' + B.PRESTATIONS.map((p) => '<button class="cellule prestation" data-p="' + p.id + '" aria-pressed="' + (ui.presta === p.id) + '"><div class="texte"><b>' + esc(p.nom) + "</b><small>" + p.duree + '</small></div><span class="droite">' + O.eur(p.prix, 0) + "</span></button>").join("") + "</div>" +
+      (ui.presta ? '<p class="entete-groupe">Votre date</p><div class="jours-c">' + joursDispo().map((j) => '<button class="jour-c" data-j="' + j + '" aria-pressed="' + (j === ui.jour) + '">' + courte(j) + "</button>").join("") + '</div><p class="entete-groupe">Votre heure</p><div class="creneaux">' + B.HEURES.map((h) => '<button class="creneau" data-h="' + h + '" aria-pressed="' + (ui.heure === h) + '"' + (pris.includes(h) ? " disabled" : "") + ">" + h + "</button>").join("") + "</div>" : "") +
+      (ui.heure ? '<button class="bouton-ios" id="r-valider">Confirmer à ' + ui.heure + "</button>" : "");
+  };
+  const rendre = () => {
+    const h = $("#corps").scrollTop;
+    $("#corps").innerHTML = { fidelite, rdv }[ui.vue]();
+    $("#onglets").innerHTML = ONGLETS.map(([k, t, i]) => '<button data-vue="' + k + '" data-onglet="' + k + '" aria-current="' + (ui.vue === k) + '"><svg viewBox="0 0 24 24">' + i + "</svg>" + t + "</button>").join("");
+    $("#corps").scrollTop = h;
+  };
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-vue],[data-p],[data-j],[data-annuler],[data-h]:not([disabled]),#r-valider"); if (!b) return;
+    if (b.dataset.j) { ui.jour = b.dataset.j; ui.heure = null; }
+    if (b.dataset.annuler) { m.maj((d) => { d.rdv = d.rdv.filter((r) => r.id !== b.dataset.annuler); }); return; }
+    if (b.dataset.vue) { ui.vue = b.dataset.vue; $("#corps").scrollTop = 0; }
+    if (b.dataset.p) { ui.presta = b.dataset.p; ui.heure = null; }
+    if (b.dataset.h) ui.heure = b.dataset.h;
+    if (b.id === "r-valider") {
+      m.maj((d) => { d.rdv.push({ id: O.id(), cliente: MOI, prestation: ui.presta, jour: ui.jour, heure: ui.heure }); });
+      alerte("Rendez-vous confirmé", "Un rappel vous sera envoyé la veille.");
+      ui.presta = null; ui.heure = null; ui.vue = "fidelite"; $("#corps").scrollTop = 0;
+    }
+    rendre();
+  });
+  ui.tamponsVus = moi().tampons;
+  m.surChange(() => {
+    const t = moi().tampons;
+    ui.neuf = t > ui.tamponsVus;
+    if (ui.neuf) { alerte("Merci pour votre visite", t >= B.OBJECTIF ? "Votre soin du visage est offert." : "Un tampon de plus sur votre carte."); }
+    ui.tamponsVus = t;
+    rendre();
+    ui.neuf = false;
+  });
+  window.bandeauDemo(m, "../", "ouvrez <a href=\"caisse.html\" target=\"_blank\" rel=\"noopener\">la caisse de l’institut</a> et ajoutez un tampon à Camille. Il apparaît ici.");
+  rendre();
+  window.demoBelleRive = { m, ui, rendre };
+})();
+</script>
+</body>
+</html>

@@ -41,9 +41,9 @@
           <li>Vos devis restent sur votre ordinateur&nbsp;: rien n’est envoyé à Onklaud</li>
         </ul>
         <div class="telechargement">
-          <a class="bouton" href="../telechargements/onklaud-devis-qui-dorment.exe" download data-exe="relances">Télécharger pour Windows</a>
-          <p>Fichier <code>onklaud-devis-qui-dorment.exe</code>, pour Windows 10 et 11.</p>
-          <p>Vous utilisez un téléphone ou un Mac&nbsp;? <a class="lien" href="relances/">Utilisez la version en ligne</a>.</p>
+          <a class="bouton" href="relances/">Essayer en ligne</a>
+          <p>Rien à installer, sur téléphone comme sur ordinateur.</p>
+          <p>Vous préférez un fichier pour Windows&nbsp;? <a class="lien" href="../telechargements/onklaud-devis-qui-dorment.exe" download data-exe="relances">Télécharger l’application</a>.</p>
         </div>
       </div>
       <ol class="etapes-outil" aria-label="Fonctionnement de l’outil">
@@ -135,7 +135,7 @@
     .then((v) => {
       const info = v && v.relances;
       const a = document.querySelector("[data-exe]");
-      if (a && info && info.taille_ko) a.textContent = "Télécharger pour Windows (" + (info.taille_ko / 1024).toFixed(1).replace(".", ",") + " Mo)";
+      if (a && info && info.taille_ko) a.textContent = "Télécharger l’application (" + (info.taille_ko / 1024).toFixed(1).replace(".", ",") + " Mo)";
     })
     .catch(() => {});
 </script>

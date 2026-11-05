@@ -8,7 +8,7 @@
 @font-face { font-family: "Plus Jakarta Sans"; src: url("../polices/plus-jakarta-sans-latin-wght-normal.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
 @font-face { font-family: "Inter"; src: url("../polices/inter-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 /* Grands titres : l'apostrophe et le point de Plus Jakarta Sans laissent un trou une fois l'interlettrage resserré. */
-@font-face { font-family: "Ponctuation titres"; src: url("../polices/inter-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+2019, U+002E; }
+@font-face { font-family: "Ponctuation titres"; src: url("../polices/inter-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+2019, U+002E, U+002C; }
 
 :root {
   --bleu: #1d3466; --nuit: #13234a; --bleu-clair: #e8edf6;
@@ -51,7 +51,7 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 .bouton-calme:hover { background: var(--fond); }
 
 /* ---------- Barre du haut ---------- */
-.barre { position: sticky; top: 0; z-index: 40; background: rgba(255, 255, 255, .96); border-bottom: 1px solid transparent; transition: border-color .2s; }
+.barre { position: sticky; top: 0; z-index: 40; background: #fff; border-bottom: 1px solid transparent; transition: border-color .2s; }
 .barre.defile { border-bottom-color: var(--filet); }
 .barre .cadre { display: flex; align-items: center; gap: 40px; height: 74px; }
 .logo { display: inline-flex; align-items: center; gap: 10px; font: 780 22px/1 var(--police); letter-spacing: -.035em; color: var(--encre); text-decoration: none; }
@@ -98,32 +98,8 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 @media (max-width: 560px) { .heros .actions .bouton, .texte-ex .bouton { width: 100%; } }
 @media (max-width: 600px) { .heros h1 { letter-spacing: -.035em; } }
 
-.mosaique { margin-top: clamp(56px, 7vw, 84px); display: grid; gap: 16px; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: auto 340px; grid-template-areas: "site app1 app2" "logiciel logiciel notifs"; }
-.tuile { position: relative; overflow: hidden; border-radius: 22px; }
-.tuile .nom-t { position: absolute; left: 16px; bottom: 14px; z-index: 3; padding: 7px 12px; border-radius: 99px; background: rgba(13, 22, 46, .9); color: #fff; font-size: 12.5px; font-weight: 700; }
-.t-site { grid-area: site; background: #24365e; padding: 28px 28px 0; }
-.t-site .navigateur { border-radius: 12px 12px 0 0; }
-.t-app1 { grid-area: app1; background: #e9d9d3; }
-.t-app2 { grid-area: app2; background: #ede3d6; }
-.t-app1 .telephone, .t-app2 .telephone { position: absolute; top: 28px; left: 50%; transform: translateX(-50%); width: 82%; max-width: 250px; }
-.t-logiciel { grid-area: logiciel; background: #dfe7f3; padding: 28px 28px 0; }
-.t-logiciel .navigateur { border-radius: 12px 12px 0 0; }
-.t-notifs { grid-area: notifs; background: #0d1426 url("../photos/salle-restaurant.jpg") center / cover; padding: 18px 14px 58px; display: flex; flex-direction: column; gap: 8px; }
-.t-notifs::before { content: ""; position: absolute; inset: 0; background: rgba(8, 14, 30, .55); }
-.notif-ios { position: relative; z-index: 1; display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 11px 12px; border-radius: 18px; background: rgba(245, 245, 247, .9); font: 400 12.5px/1.35 "Inter", sans-serif; color: #111; }
-.notif-ios .app { width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 13px; }
-.notif-ios .l1 { display: flex; justify-content: space-between; gap: 8px; }
-.notif-ios b { font-weight: 600; font-size: 13px; color: #111; }
-.notif-ios small { color: #5e5e63; font-size: 11.5px; }
-@media (max-width: 1000px) {
-  .mosaique { grid-template-columns: 1fr 1fr; grid-template-rows: auto 420px 300px; grid-template-areas: "site site" "app1 app2" "notifs notifs"; }
-  .mosaique .t-logiciel { display: none; }
-}
-@media (max-width: 600px) {
-  .mosaique { grid-template-columns: 1fr; grid-template-rows: auto 440px 300px; grid-template-areas: "site" "app1" "notifs"; }
-  .mosaique .t-app2 { display: none; }
-  .t-site { padding: 18px 18px 0; }
-}
+.vitrine-heros { display: block; margin-top: clamp(40px, 5vw, 64px); border-radius: 22px; overflow: hidden; box-shadow: var(--ombre-appareil); }
+.vitrine-heros img { width: 100%; height: auto; }
 .legende-heros { margin-top: 14px; text-align: right; font-size: 12.5px; color: #93a4c5; }
 
 /* Arrivée : une seule séquence, au chargement */
@@ -140,7 +116,7 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 /* Tout ce que nous créons */
 .creations { margin-top: 56px; display: grid; gap: 16px; }
 @media (min-width: 700px) { .creations { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1100px) { .creations { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 1100px) { .creations { grid-template-columns: repeat(3, 1fr); } }
 .creation { padding: 26px; border-radius: 20px; background: var(--blanc); box-shadow: inset 0 0 0 1px var(--filet), 0 1px 2px rgba(16, 28, 56, .05); }
 .creation .ic-c { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: var(--orange-clair); }
 .creation .ic-c svg { width: 24px; height: 24px; fill: none; stroke: var(--orange-fonce); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
@@ -175,6 +151,40 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 .seul { max-width: 900px; margin: 0 auto; }
 @media (max-width: 1000px) { .duo .telephone { display: none; } .duo .ordinateur { max-width: none; } .trio .telephone:nth-child(3) { display: none; } }
 @media (max-width: 640px) { .trio .telephone:nth-child(1) { display: none; } .trio .telephone:nth-child(2) { transform: none; } }
+
+/* Film et actions des démos */
+.film { background: var(--fond); }
+.lecteur { max-width: 1040px; margin: 44px auto 0; border-radius: 20px; overflow: hidden; background: var(--nuit); box-shadow: var(--ombre-appareil); }
+.lecteur video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+.actions-ex { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 30px; }
+.texte-ex .actions-ex .bouton { margin-top: 0; }
+.legende-heros a { color: #fff; }
+.essai { display: grid; gap: 20px; max-width: 1040px; margin: 24px auto 0; }
+@media (min-width: 860px) { .essai { grid-template-columns: 1.2fr 1fr; } }
+.essai > div { padding: clamp(20px, 3vw, 30px); border-radius: 20px; background: var(--blanc); box-shadow: inset 0 0 0 1px var(--filet); }
+.essai h3 { font-family: var(--police-titres); font-size: 1.5rem; font-weight: 770; letter-spacing: -.03em; color: var(--encre); }
+#essai-sig { display: block; width: 100%; height: 170px; margin-top: 14px; border-radius: 12px; background: var(--fond); box-shadow: inset 0 0 0 1px #c9d1de; touch-action: none; cursor: crosshair; }
+.essai-actions { display: flex; align-items: center; gap: 18px; margin-top: 14px; }
+.essai-efface { padding: 0; border: 0; background: none; font: inherit; cursor: pointer; }
+.essai .bouton:disabled { opacity: .45; cursor: not-allowed; }
+.essai-t { font-weight: 700; color: var(--encre); }
+#essai-etapes { margin-top: 12px; display: grid; gap: 10px; }
+#essai-etapes li { position: relative; padding-left: 32px; color: var(--gris); transition: color .25s; }
+#essai-etapes li::before { content: ""; position: absolute; left: 0; top: .15em; width: 20px; height: 20px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px #c9d1de; transition: background-color .25s; }
+#essai-etapes li.fait { color: var(--encre); font-weight: 600; }
+#essai-etapes li.fait::before { background: var(--vert); box-shadow: none; }
+#essai-etapes li.fait::after { content: ""; position: absolute; left: 5.5px; top: calc(.15em + 6px); width: 9px; height: 5px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg); }
+.essai-fin { margin-top: 16px; font-size: 16px; }
+.mon-nom { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 26px; }
+.mon-nom input { flex: 1 1 260px; max-width: 380px; min-height: 58px; padding: 0 18px; border: 1px solid #b9c3d3; border-radius: 14px; background: #fff; font: 500 16px var(--police); color: var(--encre); }
+.entete .plus-demos { margin-top: 14px; font-size: 15.5px; }
+
+.creation .lien { display: inline-block; margin-top: 12px; font-size: 15px; }
+.contact .qui { display: flex; align-items: center; gap: 12px; margin-top: 24px; }
+.avatar-q { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--bleu); font-weight: 780; letter-spacing: -.02em; }
+.contact .qui .direct { margin-top: 0; }
+.contact-direct { margin-top: 16px; }
+.contact-direct .bouton { width: 100%; max-width: 340px; }
 
 /* Conviction */
 .conviction { background: var(--nuit); color: #c9d4ea; text-align: center; }
@@ -249,9 +259,12 @@ form.demande { background: var(--blanc); border-radius: 22px; padding: clamp(22p
 .pied .legal { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--filet); font-size: 13.5px; line-height: 1.7; color: var(--gris); }
 
 /* Mobile : bouton toujours accessible (affiché par site.js une fois l'en-tête passé) */
-.cta-mobile { display: none; }
+.cta-mobile, .cta-tel { display: none; }
 @media (max-width: 760px) {
-  .cta-mobile { display: flex; position: fixed; left: 16px; right: 16px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 30; transform: translateY(160%); transition: transform .25s; }
+  .cta-tel { display: flex; position: fixed; right: 16px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 30; width: 58px; padding: 0; background: var(--bleu); box-shadow: 0 12px 28px -12px rgba(19, 35, 74, .8); transform: translateY(160%); transition: transform .25s; }
+  .cta-tel svg { width: 24px; height: 24px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .cta-tel.visible { transform: none; }
+  .cta-mobile { display: flex; position: fixed; left: 16px; right: 84px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 30; transform: translateY(160%); transition: transform .25s; }
   .cta-mobile.visible { transform: none; }
 }
 

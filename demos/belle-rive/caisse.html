@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Caisse · Institut Belle Rive, démo Onklaud</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../commun/base.css">
+<style>
+  :root { --accent: #9b4d43; }
+  body { min-height: 100dvh; background: #f7f3f0; color: #33201c; font: 400 14.5px/1.45 "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .en-tete { display: flex; align-items: center; gap: 14px; padding: 16px 28px; background: #fff; border-bottom: 1px solid #eee4df; }
+  .en-tete h1 { margin-right: auto; font: 500 24px/1.1 "Fraunces", serif; color: #6b3128; }
+  .en-tete span { color: #8d6e66; }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 18px; padding: 22px 28px 40px; align-items: start; }
+  section { padding: 18px; border-radius: 14px; background: #fff; box-shadow: 0 1px 2px rgba(80, 40, 30, .08); }
+  h2 { margin-bottom: 10px; font-size: 15px; font-weight: 650; }
+  .rdv { display: grid; grid-template-columns: 70px 1fr; gap: 10px; padding: 10px 0; border-top: 1px solid #f4ece8; }
+  .rdv b { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .rdv small { display: block; color: #8d6e66; }
+  .vide { color: #8d6e66; }
+  .cliente { display: grid; grid-template-columns: 1fr auto; gap: 10px 14px; align-items: center; padding: 13px 0; border-top: 1px solid #f4ece8; }
+  .cliente b { font-size: 15.5px; font-weight: 600; }
+  .barre-f { display: flex; gap: 4px; margin-top: 7px; }
+  .barre-f i { width: 20px; height: 8px; border-radius: 4px; background: #f1e2dd; }
+  .barre-f i.on { background: #9b4d43; }
+  .cliente button { padding: 10px 14px; border: 0; border-radius: 10px; background: #9b4d43; color: #fff; font-weight: 600; white-space: nowrap; }
+  .cliente button.offert { background: #1c7c4a; }
+  @keyframes arrive { from { background: #fbeee9; } }
+  @media (max-width: 800px) { main { grid-template-columns: 1fr; padding: 14px; } .en-tete { padding: 12px 14px; } }
+</style>
+</head>
+<body>
+<header class="en-tete"><h1 data-marque>Institut Belle Rive</h1><span id="date"></span></header>
+<main>
+  <section><h2>Rendez-vous</h2><div id="agenda"></div></section>
+  <section><h2>Cartes de fidélité</h2><div id="clientes"></div></section>
+</main>
+<script src="../commun/magasin.js"></script>
+<script src="donnees.js"></script>
+<script>
+(function () {
+  "use strict";
+  const O = window.Outils, B = window.BelleRive, esc = O.esc;
+  const m = window.Magasin("belle-rive", B.depart);
+  const $ = (s) => document.querySelector(s);
+  const rendre = () => {
+    $("#date").textContent = O.dateLongue(O.jour());
+    const rang = (r) => r.jour + String(B.HEURES.indexOf(r.heure)).padStart(2, "0");
+    $("#agenda").innerHTML = m.d.rdv.slice().sort((a, b) => rang(a).localeCompare(rang(b))).map((r) => {
+      const c = m.d.clientes.find((x) => x.id === r.cliente), p = B.PRESTATIONS.find((x) => x.id === r.prestation);
+      return '<div class="rdv"><b>' + r.heure + "</b><span>" + esc(c.nom) + "<small>" + esc(p.nom) + ", " + O.dateCourte(r.jour) + "</small></span></div>";
+    }).join("") || '<p class="vide">Aucun rendez-vous.</p>';
+    $("#clientes").innerHTML = m.d.clientes.map((c) => {
+      const pleine = c.tampons >= B.OBJECTIF;
+      return '<div class="cliente"><div><b>' + esc(c.nom) + '</b><div class="barre-f">' + Array.from({ length: B.OBJECTIF }, (_, i) => '<i class="' + (i < c.tampons ? "on" : "") + '"></i>').join("") + "</div></div>" + (pleine ? '<button class="offert" data-offrir="' + c.id + '">Offrir le soin</button>' : '<button data-tampon="' + c.id + '">Ajouter un tampon</button>') + "</div>";
+    }).join("");
+  };
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-tampon],[data-offrir]"); if (!b) return;
+    m.maj((d) => { const c = d.clientes.find((x) => x.id === (b.dataset.tampon || b.dataset.offrir)); c.tampons = b.dataset.tampon ? c.tampons + 1 : 0; });
+  });
+  m.surChange(rendre);
+  window.bandeauDemo(m, "../", "ouvrez <a href=\"./\" target=\"_blank\" rel=\"noopener\">l’application de Camille</a>, puis ajoutez-lui un tampon ici.");
+  rendre();
+  window.demoCaisse = { m, rendre };
+})();
+</script>
+</body>
+</html>
