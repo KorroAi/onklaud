@@ -1,6 +1,6 @@
 {
   "relances": {
-    "nom": "Les devis qui dorment",
+    "nom": "Relance des devis",
     "page": "outils/relances/",
     "exe": "telechargements/onklaud-devis-qui-dorment.exe",
     "taille_ko": 7561,

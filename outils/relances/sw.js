@@ -1,5 +1,5 @@
 /* ================================================================
-   ONKLAUD : service worker de « Les devis qui dorment »
+   ONKLAUD : service worker de « Relance des devis »
    Généré par outils/publier.py depuis outils/publication/sw.js :
    ne pas modifier dans site/.
    - à l'installation : met en cache tous les fichiers de l'outil
@@ -10,7 +10,7 @@
    ================================================================ */
 "use strict";
 const PREFIXE = "onklaud-relances-";
-const CACHE = PREFIXE + "d85919794c80";
+const CACHE = PREFIXE + "d85919794c81";
 const FICHIERS = [
   "index.html",
   "relances.css",
