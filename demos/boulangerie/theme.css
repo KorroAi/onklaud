@@ -1,0 +1,101 @@
+/* Boulangerie des Halles : le sac de papier et le ticket. Alfa Slab One, Work Sans, Courier Prime, kraft et encre rouge. */
+@font-face { font-family: "Alfa Slab One"; src: url("../../assets/polices/alfa-slab-one.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Work Sans"; src: url("../../assets/polices/work-sans-var.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Courier Prime"; src: url("../../assets/polices/courier-prime-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Courier Prime"; src: url("../../assets/polices/courier-prime-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+:root { --accent: #a3200e; --kraft: #d9bb90; --kraft-fonce: #c9a673; --encre: #26170b; --rouge: #a3200e; --papier: #fffdf7; --trait: #b98f5c; }
+body { background: var(--kraft); color: var(--encre); font: 500 16px/1.4 "Work Sans", system-ui, sans-serif; }
+.appli { background: var(--kraft); color: var(--encre); }
+.statut-ios { order: -2; background: var(--kraft); color: var(--encre); }
+
+/* Les onglets sont en haut, comme des rabats de sac */
+.onglets-ios { order: -1; padding: 6px 14px 0; gap: 6px; border-bottom: 3px solid var(--encre); }
+.onglets-ios button { flex-direction: row; justify-content: center; gap: 7px; padding: 9px 0 8px; color: var(--encre); font-size: 15px; font-weight: 700; }
+.onglets-ios svg { display: none; }
+.onglets-ios button[aria-current="true"] { background: var(--encre); color: var(--papier); }
+
+.enseigne { padding: 18px 16px 14px; text-align: center; }
+.marque-b { display: block; text-wrap: balance; font: 400 31px/1.05 "Alfa Slab One", Georgia, serif; color: var(--rouge); }
+.enseigne small { display: block; margin-top: 8px; font-size: 15px; font-weight: 600; }
+.grand-titre { padding: 18px 16px 0; font: 400 32px/1.08 "Alfa Slab One", Georgia, serif; color: var(--rouge); }
+.sous-titre { padding: 6px 16px 0; font-size: 15.5px; font-weight: 600; }
+.nav-ios { padding: 4px 16px 0; }
+.nav-ios button { padding: 0; border: 0; background: none; font-weight: 700; }
+
+.produits { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 14px 16px; }
+.produit { position: relative; display: flex; flex-direction: column; background: var(--papier); }
+.produit:first-child { grid-column: 1 / -1; display: grid; grid-template-columns: 46% 1fr; }
+.produit .img { display: block; overflow: hidden; aspect-ratio: 4 / 3; }
+.produit:first-child .img { aspect-ratio: auto; height: 100%; min-height: 128px; grid-row: 1 / span 2; }
+.produit .img img { width: 100%; height: 100%; object-fit: cover; }
+.produit .inf { padding: 9px 11px 0; flex: 1; }
+.produit b { display: block; font-size: 16px; font-weight: 700; line-height: 1.2; }
+.produit small { display: block; margin-top: 3px; font-size: 13.5px; line-height: 1.25; }
+.produit .prix { display: block; margin-top: 5px; font: 700 18px/1 "Courier Prime", monospace; color: var(--rouge); }
+.actions-p { padding: 9px 11px 11px; }
+.ajout { width: 100%; padding: 9px 0; border: 2px solid var(--encre); background: none; color: var(--encre); font-size: 15px; font-weight: 700; }
+.qte { display: flex; align-items: center; justify-content: space-between; font: 700 20px/1 "Courier Prime", monospace; }
+.rond { width: 40px; height: 38px; padding: 0; border: 0; background: var(--encre); color: var(--papier); font: 700 20px/1 "Work Sans", sans-serif; }
+.rond.clair { background: none; box-shadow: inset 0 0 0 2px var(--encre); color: var(--encre); }
+
+/* Le ticket de caisse */
+.panier { display: flex; justify-content: space-between; align-items: center; padding: 18px 14px 12px; background: var(--papier); font: 700 18px/1.2 "Courier Prime", monospace; -webkit-mask: radial-gradient(7px at 10px 0, transparent 98%, #000) -10px 0 / 20px 100% repeat-x; mask: radial-gradient(7px at 10px 0, transparent 98%, #000) -10px 0 / 20px 100% repeat-x; }
+.panier small { display: block; font: 400 14px/1.2 "Courier Prime", monospace; }
+.panier button { padding: 12px 18px; border: 0; background: var(--rouge); color: #fff; font: 700 16px/1 "Work Sans", sans-serif; }
+
+.entete-groupe { padding: 18px 16px 7px; font-size: 15px; font-weight: 700; }
+.creneaux { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin: 0 14px; }
+.creneaux button { padding: 12px 4px; border: 2px solid var(--encre); background: none; font: 700 17px/1 "Courier Prime", monospace; }
+.creneaux button[aria-pressed="true"] { background: var(--encre); color: var(--papier); }
+.groupe { margin: 0 14px; background: var(--papier); }
+.cellule { padding: 9px 13px; font: 400 15.5px/1.3 "Courier Prime", monospace; }
+.cellule + .cellule { border-top: 1px dashed var(--trait); }
+.cellule .texte b { font-weight: 400; }
+.champ-ios { width: 100%; padding: 13px; border: 0; border-radius: 0; background: none; }
+.bouton-ios { width: calc(100% - 28px); margin: 14px; padding: 15px; background: var(--rouge); color: #fff; font-size: 17px; font-weight: 700; }
+
+.suivi { position: relative; margin: 14px 14px 0; padding: 16px; background: var(--papier); font: 400 15px/1.3 "Courier Prime", monospace; }
+.suivi b { display: block; font: 700 18px/1.2 "Work Sans", sans-serif; }
+.suivi small { display: block; margin-top: 3px; font-size: 15px; }
+.etapes-c { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 13px; }
+.etapes-c i { height: 8px; background: #efe5d3; }
+.etapes-c i.on { background: var(--rouge); }
+.code { margin-top: 13px; padding-top: 11px; border-top: 1px dashed var(--trait); font: 400 34px/1 "Alfa Slab One", Georgia, serif; color: var(--encre); }
+
+.alerte-ios { background: var(--papier); color: var(--encre); border: 2px solid var(--encre); font: 400 14.5px/1.25 "Courier Prime", monospace; box-shadow: 5px 5px 0 var(--encre); }
+.alerte-ios i { background: var(--rouge); color: #fff; font: 400 13px "Alfa Slab One", serif; }
+.alerte-ios b { font: 700 15px/1.2 "Work Sans", sans-serif; }
+
+/* Comptoir */
+html.comptoir, html.comptoir body { height: 100%; }
+.en-tete { display: flex; align-items: center; gap: 16px; padding: 14px 24px; background: var(--encre); color: var(--papier); }
+.en-tete h1 { font: 400 26px/1.1 "Alfa Slab One", Georgia, serif; color: var(--kraft); }
+.en-tete .chiffre { margin-left: auto; font-size: 14px; text-align: right; }
+.en-tete .chiffre b { display: block; font: 700 24px/1 "Courier Prime", monospace; color: #fff; }
+.grille { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 16px; padding: 16px 24px 28px; align-items: start; }
+#commandes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.colonne h2 { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 3px solid var(--encre); font-size: 16px; font-weight: 700; }
+.colonne h2 span { font-family: "Courier Prime", monospace; }
+.commande { margin-bottom: 10px; padding: 11px 12px 12px; background: var(--papier); font: 400 14.5px/1.3 "Courier Prime", monospace; -webkit-mask: radial-gradient(6px at 8px 100%, transparent 98%, #000) -8px 0 / 16px 100% repeat-x; mask: radial-gradient(6px at 8px 100%, transparent 98%, #000) -8px 0 / 16px 100% repeat-x; padding-bottom: 18px; }
+.commande.neuve { animation: arrive 1.5s cubic-bezier(.2, .8, .2, 1); }
+@keyframes arrive { 0% { transform: translateY(-16px) rotate(-1.5deg); } 30% { transform: none; } }
+.commande.prete { background: #eadfca; }
+.commande .h { display: block; font: 700 21px/1 "Courier Prime", monospace; color: var(--rouge); }
+.commande b { display: block; margin-top: 5px; font: 700 15.5px/1.2 "Work Sans", sans-serif; }
+.commande small { display: block; margin-top: 4px; font-size: 14.5px; }
+.commande button { width: 100%; margin-top: 10px; padding: 10px 6px; border: 0; background: var(--rouge); color: #fff; font: 700 14.5px/1.15 "Work Sans", sans-serif; }
+.commande button.calme { background: var(--encre); }
+.commande .remise { display: block; margin-top: 9px; font-weight: 700; }
+.vide-c { padding: 12px 0; font-size: 14.5px; }
+.production { padding: 16px; background: var(--encre); color: var(--papier); }
+.production h2 { margin-bottom: 10px; font: 400 19px/1.15 "Alfa Slab One", Georgia, serif; color: var(--kraft); }
+.ligne { display: grid; grid-template-columns: 1fr auto; align-items: baseline; padding: 8px 0; border-bottom: 1px solid #5a4632; font-size: 15px; }
+.ligne:last-child { border: 0; }
+.ligne b { font: 700 25px/1 "Courier Prime", monospace; color: #fff; }
+.imprimer { width: 100%; margin-top: 12px; padding: 11px; border: 2px solid var(--kraft); background: none; color: var(--kraft); font-weight: 700; }
+@media (max-width: 860px) {
+  .grille { grid-template-columns: 1fr; padding: 12px 14px; }
+  #commandes { grid-template-columns: 1fr; }
+  .en-tete { padding: 12px 14px; flex-wrap: wrap; }
+}
+@media print { .en-tete, .bandeau-demo, #colonne, .imprimer { display: none !important; } .grille { display: block; } .production { background: none; color: #000; } .production h2, .ligne b { color: #000; } }

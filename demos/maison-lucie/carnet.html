@@ -7,39 +7,9 @@
 <title>Carnet de réservations · Maison Lucie, démo Onklaud</title>
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../commun/base.css">
-<style>
-  :root { --accent: #1f3a2e; }
-  body { min-height: 100dvh; background: #f4eee3; color: #1f2a22; font: 400 14.5px/1.45 "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-  .en-tete { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; padding: 16px 28px; background: #1f3a2e; color: #d5dccf; }
-  .en-tete h1 { margin-right: auto; font: 500 24px/1.1 "Fraunces", serif; color: #f4eee3; }
-  .jours { display: flex; gap: 6px; flex-wrap: wrap; }
-  .jours button { padding: 7px 13px; border: 0; border-radius: 99px; background: rgba(255, 255, 255, .1); color: #e6ece1; font-weight: 600; }
-  .jours button[aria-pressed="true"] { background: #f4eee3; color: #1f3a2e; }
-  #carnet { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding: 22px 28px 40px; }
-  .service { padding: 18px; border-radius: 14px; background: #fff; box-shadow: 0 1px 2px rgba(31, 42, 34, .08); }
-  .service h2 { font: 500 22px/1.1 "Fraunces", serif; }
-  .jauge { display: flex; align-items: center; gap: 10px; margin: 10px 0 12px; font-size: 13.5px; color: #6b7468; }
-  .jauge div { flex: 1; height: 7px; border-radius: 4px; background: #eee6d8; overflow: hidden; }
-  .jauge i { display: block; height: 100%; border-radius: 4px; background: #1f3a2e; transition: width .4s; }
-  .resa-l { display: grid; grid-template-columns: 58px 1fr auto auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid #f1eadd; }
-  .resa-l.neuve { animation: neuve 2.4s ease-out; border-radius: 8px; }
-  @keyframes neuve { 0%, 40% { background: #fbeed8; } }
-  .resa-l.arrivee { opacity: .55; }
-  .resa-l b { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .resa-l small { display: block; color: #6b7468; font-size: 12.5px; }
-  .etq { padding: 2px 8px; border-radius: 99px; background: #e8efe9; color: #1f3a2e; font-size: 11.5px; font-weight: 600; }
-  .resa-l span.act { display: flex; gap: 6px; }
-  .ajout { display: grid; grid-template-columns: 1.4fr .6fr .8fr 1fr auto; gap: 8px; margin: 0 28px; padding: 14px 18px; border-radius: 14px; background: #fff; }
-  .ajout input, .ajout select { min-width: 0; padding: 8px 10px; border: 1px solid #dfd6c5; border-radius: 8px; background: #fff; }
-  .ajout button { padding: 8px 14px; border: 0; border-radius: 8px; background: #1f3a2e; color: #f4eee3; font-weight: 600; }
-  .priv-l { margin: 18px 28px 0; padding: 14px 18px; border-radius: 14px; background: #fbeed8; }
-  .priv-l b { font-weight: 650; }
-  .resa-l button { padding: 6px 10px; border: 1px solid #dfd6c5; border-radius: 8px; background: #fff; font-size: 12.5px; font-weight: 600; }
-  .vide { padding: 14px 0; color: #6b7468; }
-  @media (max-width: 800px) { .ajout { grid-template-columns: 1fr 1fr; margin: 12px 14px 0; } .priv-l { margin: 12px 14px 0; } #carnet { grid-template-columns: 1fr; padding: 14px; } .en-tete { padding: 12px 14px; } .resa-l { grid-template-columns: 50px 1fr auto; } .resa-l .etq { display: none; } }
-</style>
+<link rel="stylesheet" href="theme.css">
 </head>
-<body>
+<body class="carnet-page">
 <header class="en-tete"><h1><span data-marque>Maison Lucie</span>, carnet</h1><div class="jours" id="jours"></div></header>
 <div id="demandes"></div>
 <main id="carnet"></main>
@@ -56,9 +26,9 @@
   const bloc = (titre, heures) => {
     const l = m.d.resas.filter((r) => r.jour === ui.jour && heures.includes(r.heure) && r.etat !== "annulee").sort((a, b) => a.heure.localeCompare(b.heure));
     const pers = l.reduce((t, r) => t + r.pers, 0), cap = L.CAPACITE * heures.length;
-    return '<section class="service"><h2>' + titre + '</h2><div class="jauge"><div><i style="width:' + Math.min(100, pers / cap * 100) + '%"></i></div>' + pers + " / " + cap + " couverts</div>" + (l.map((r) => {
+    return '<section class="service"><h2>' + titre + '</h2><div class="jauge"><div><i style="width:' + Math.min(100, pers / cap * 100) + '%"></i></div>' + pers + " couverts sur " + cap + "</div>" + (l.map((r) => {
       const n = !ui.vus.has(r.id);
-      return '<div class="resa-l ' + (r.etat === "arrivee" ? "arrivee " : "") + (n ? "neuve" : "") + '"><b>' + r.heure + "</b><span>" + esc(r.nom) + ", " + r.pers + " pers.<small>" + esc(r.tel) + "</small></span>" + (r.source === "site" ? '<span class="etq">En ligne</span>' : "<span></span>") + (r.etat === "arrivee" ? "<span>Arrivée</span>" : '<span class="act"><button data-arrivee="' + r.id + '">Arrivée</button><button data-annuler="' + r.id + '" aria-label="Annuler la réservation de ' + esc(r.nom) + '">Annuler</button></span>') + "</div>";
+      return '<div class="resa-l ' + (r.etat === "arrivee" ? "arrivee " : "") + (n ? "neuve" : "") + '"><b>' + r.heure + '</b><span class="qui">' + esc(r.nom) + " <small>" + r.pers + (r.pers > 1 ? " personnes" : " personne") + (r.source === "site" ? ", en ligne" : "") + "</small></span>" + (r.etat === "arrivee" ? "<span>Arrivée</span>" : '<span class="act"><button data-arrivee="' + r.id + '">Arrivée</button><button data-annuler="' + r.id + '" aria-label="Annuler la réservation de ' + esc(r.nom) + '">Annuler</button></span>') + "</div>";
     }).join("") || '<p class="vide">Aucune réservation pour ce service.</p>') + "</section>";
   };
   const rendre = () => {

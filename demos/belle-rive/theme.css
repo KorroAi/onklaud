@@ -1,0 +1,79 @@
+/* Institut Belle Rive : l'eau. Jost, lagon, écume, corail, tout est rond et la carte de fidélité est un anneau. */
+@font-face { font-family: "Jost"; src: url("../../assets/polices/jost-var.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+:root { --accent: #0b5563; --lagon: #0b5563; --lagon2: #073f4a; --eau: #d8eeec; --ecume: #f2faf9; --corail: #ff9478; --doux: #3f6f76; }
+body { background: var(--eau); color: var(--lagon2); font: 400 17px/1.4 "Jost", system-ui, sans-serif; }
+.appli { position: relative; background: var(--eau); color: var(--lagon2); }
+.statut-ios { color: var(--lagon2); }
+.appli-corps { padding-bottom: 92px; }
+
+.bonjour { padding: 12px 24px 0; text-align: center; }
+.bonjour p { font-size: 15px; letter-spacing: .22em; text-transform: uppercase; color: var(--doux); }
+.bonjour h1 { margin-top: 2px; font-size: 38px; font-weight: 300; line-height: 1.1; }
+
+.carte-fid { position: relative; width: 300px; height: 300px; margin: 18px auto 0; border-radius: 50%; background: var(--lagon); color: var(--ecume); }
+.centre { position: absolute; inset: 62px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.centre b { font-size: 68px; font-weight: 300; line-height: .95; }
+.centre p { margin-top: 4px; font-size: 16px; line-height: 1.2; }
+.tampon { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; border: 2px solid var(--eau); transform: rotate(var(--a)) translateY(-124px) rotate(calc(-1 * var(--a))); }
+.tampon svg { width: 52%; height: 52%; fill: none; stroke: var(--lagon); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.tampon.plein { border: 0; background: var(--ecume); }
+.tampon.neuf { animation: tampon .6s cubic-bezier(.2, 1.5, .4, 1); }
+@keyframes tampon { from { scale: .2; } }
+.tampon.cadeau { border: 0; background: var(--corail); }
+.tampon.cadeau svg { stroke: var(--lagon2); stroke-width: 2; }
+
+.titre-z { padding: 22px 28px 6px; font-size: 15px; letter-spacing: .16em; text-transform: uppercase; color: var(--doux); }
+.groupe { margin: 0 16px; }
+.cellule { min-height: 58px; padding: 12px 20px; border-radius: 30px; background: var(--ecume); }
+.cellule + .cellule { margin-top: 7px; }
+.cellule .texte b { font-weight: 500; }
+.cellule .texte small { font-size: 15px; color: var(--doux); }
+.cellule .droite { font-size: 18px; }
+.cellule[aria-pressed="true"] { background: var(--lagon); color: var(--ecume); }
+.cellule[aria-pressed="true"] .texte small { color: var(--eau); }
+.annuler { padding: 0; border: 0; background: none; font-size: 15.5px; text-decoration: underline; text-underline-offset: 3px; }
+.bouton-ios { width: calc(100% - 32px); margin: 16px 16px 0; padding: 16px; border-radius: 30px; background: var(--corail); color: var(--lagon2); font-size: 18.5px; font-weight: 500; }
+.grand-titre { padding: 12px 24px 0; font-size: 38px; font-weight: 300; line-height: 1.1; text-align: center; }
+.jours-c { display: flex; gap: 7px; margin: 0 16px; overflow-x: auto; }
+.jour-c { flex: none; padding: 10px 15px; border: 0; border-radius: 30px; background: var(--ecume); font-size: 16px; }
+.jour-c[aria-pressed="true"] { background: var(--lagon); color: var(--ecume); }
+.creneaux { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin: 0 16px; }
+.creneau { padding: 11px 2px; border: 0; border-radius: 30px; background: var(--ecume); font-size: 15.5px; }
+.creneau[aria-pressed="true"] { background: var(--lagon); color: var(--ecume); }
+.creneau:disabled { opacity: .45; text-decoration: line-through; }
+
+/* Les onglets flottent sur l'eau */
+.onglets-ios { position: absolute; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom)); width: 232px; padding: 5px; transform: translateX(-50%); border-radius: 30px; background: var(--lagon2); }
+.en-cadre .onglets-ios { bottom: 26px; }
+.onglets-ios button { padding: 9px 0; border-radius: 24px; color: var(--eau); font-size: 15.5px; }
+.onglets-ios svg { display: none; }
+.onglets-ios button[aria-current="true"] { background: var(--ecume); color: var(--lagon2); }
+
+.alerte-ios { border-radius: 30px; padding: 9px 18px 9px 10px; background: var(--lagon2); color: var(--ecume); font: 400 15px/1.25 "Jost", sans-serif; box-shadow: 0 14px 30px -12px rgba(7, 63, 74, .75); }
+.alerte-ios i { border-radius: 50%; background: var(--corail); color: var(--lagon2); font: 500 13px "Jost", sans-serif; }
+.alerte-ios b { font-weight: 500; }
+
+/* Caisse */
+.en-tete { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; padding: 18px 30px 8px; }
+.en-tete h1 { font-size: 30px; font-weight: 300; }
+.en-tete span { color: var(--doux); }
+main { padding: 8px 30px 34px; }
+main h2 { margin: 18px 0 10px; font-size: 15px; font-weight: 400; letter-spacing: .16em; text-transform: uppercase; color: var(--doux); }
+#agenda { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; }
+.rdv { flex: none; min-width: 190px; padding: 12px 20px; border-radius: 30px; background: var(--ecume); line-height: 1.25; }
+.rdv b { display: block; font-size: 20px; font-weight: 400; }
+.rdv small { display: block; color: var(--doux); font-size: 15px; }
+.rdv.neuf { background: var(--corail); }
+.vide { color: var(--doux); }
+#clientes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.cliente { display: flex; flex-direction: column; align-items: center; padding: 22px 18px; border-radius: 34px; background: var(--lagon); color: var(--ecume); text-align: center; }
+.cliente .rond { display: grid; place-items: center; width: 62px; height: 62px; border-radius: 50%; background: var(--eau); color: var(--lagon2); font-size: 22px; }
+.cliente b { margin-top: 9px; font-size: 21px; font-weight: 400; }
+.cliente .compte { font-size: 15.5px; color: var(--eau); }
+.barre-f { display: flex; gap: 5px; margin: 11px 0 15px; }
+.barre-f i { width: 15px; height: 15px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px rgba(242, 250, 249, .6); }
+.barre-f i.on { background: var(--ecume); box-shadow: none; }
+.cliente button { width: 100%; padding: 12px 8px; border: 0; border-radius: 30px; background: var(--corail); color: var(--lagon2); font-size: 16.5px; font-weight: 500; }
+.cliente button.offert { background: var(--ecume); }
+@media (max-width: 800px) { main { padding: 6px 14px 24px; } .en-tete { padding: 14px 14px 6px; } #clientes { grid-template-columns: 1fr; } }
+@media (max-width: 340px) { .carte-fid { transform: scale(.88); transform-origin: top center; margin-bottom: -30px; } }

@@ -5,8 +5,8 @@
  "start_url": "chantier.html",
  "scope": "./",
  "display": "standalone",
- "background_color": "#f2f2f7",
- "theme_color": "#0e6b5c",
+ "background_color": "#e9e7e1",
+ "theme_color": "#ffc800",
  "icons": [
   {
    "src": "icone-192.png",

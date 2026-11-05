@@ -4,47 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#fbf8f4">
+<meta name="theme-color" content="#d9bb90">
 <title>Commander · Boulangerie des Halles, démo Onklaud</title>
 <link rel="manifest" href="appli.webmanifest">
 <link rel="apple-touch-icon" href="icone-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../commun/base.css">
-<style>
-  .appli { --accent: #8a4a1f; background: #fbf8f4; }
-  .alerte-ios { --accent: #8a4a1f; }
-  .marque-b { font-weight: 600; color: #2b1a0f; }
-  .une { position: relative; margin: 0 16px; height: 150px; border-radius: 16px; overflow: hidden; }
-  .une img { width: 100%; height: 100%; object-fit: cover; }
-  .une::after { content: ""; position: absolute; inset: 0; background: rgba(30, 15, 5, .34); }
-  .une div { position: absolute; z-index: 1; left: 14px; bottom: 12px; color: #fff; }
-  .une b { display: block; font-size: 18px; font-weight: 700; }
-  .une small { font-size: 13px; opacity: .95; }
-  .produits { margin: 14px 16px 0; display: grid; gap: 10px; }
-  .produit { display: grid; grid-template-columns: 64px 1fr auto; gap: 12px; align-items: center; padding: 8px; border-radius: 14px; background: #fff; box-shadow: 0 1px 2px rgba(60, 40, 20, .06); }
-  .produit .img { width: 64px; height: 64px; border-radius: 11px; overflow: hidden; }
-  .produit .img img { width: 100%; height: 100%; object-fit: cover; }
-  .produit b { display: block; font-size: 15.5px; font-weight: 600; color: #2b1a0f; }
-  .produit small { font-size: 13px; color: #8c6a4f; }
-  .rond { width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: #8a4a1f; color: #fff; font-size: 20px; line-height: 1; }
-  .rond.clair { background: #f1e7dc; color: #8a4a1f; }
-  .qte { display: flex; align-items: center; gap: 9px; font-weight: 600; color: #2b1a0f; }
-  .panier { flex: none; display: flex; justify-content: space-between; align-items: center; margin: 8px 16px; padding: 12px 14px 12px 16px; border-radius: 16px; background: #2b1a0f; color: #fff; font-weight: 600; }
-  .panier small { display: block; font-weight: 400; font-size: 12.5px; opacity: .8; }
-  .panier button { padding: 9px 15px; border: 0; border-radius: 10px; background: #e7a74f; color: #2b1a0f; font-weight: 700; }
-  .creneaux { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 16px; }
-  .creneaux button { padding: 12px 4px; border: 0; border-radius: 12px; background: #fff; font-weight: 600; color: #2b1a0f; box-shadow: 0 1px 2px rgba(60, 40, 20, .08); }
-  .creneaux button[aria-pressed="true"] { background: #8a4a1f; color: #fff; }
-  .champ-ios { width: 100%; padding: 14px 16px; border: 0; background: none; }
-  .suivi { margin: 0 16px; padding: 16px; border-radius: 16px; background: #fff; }
-  .suivi b { font-size: 17px; font-weight: 600; color: #2b1a0f; }
-  .suivi small { display: block; margin-top: 2px; color: #8c6a4f; font-size: 14px; }
-  .etapes-c { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 12px; }
-  .etapes-c i { height: 5px; border-radius: 3px; background: #eee8e0; }
-  .etapes-c i.on { background: #8a4a1f; }
-  .code { margin-top: 12px; font-size: 34px; font-weight: 700; letter-spacing: .02em; color: #2b1a0f; }
-</style>
+<link rel="stylesheet" href="theme.css">
 </head>
 <body>
 <div class="appli">
@@ -67,20 +34,20 @@
   const nbArticles = () => Object.values(ui.panier).reduce((a, b) => a + b, 0);
   const alerte = (t, x) => { const a = $("#alerte"); a.innerHTML = "<i>" + esc(O.initiales("BH")) + "</i><div><b>" + esc(t) + "</b>" + esc(x) + "</div>"; a.classList.add("visible"); clearTimeout(alerte.t); alerte.t = setTimeout(() => a.classList.remove("visible"), 4200); };
 
-  const commander = () => '<div class="nav-ios"><span class="marque-b">' + esc(O.marque("Boulangerie des Halles")) + '</span></div><h1 class="grand-titre">Commander</h1><p class="sous-titre">Pour demain, à l’heure de votre choix.</p><div class="une"><img src="../commun/photos/croissants.jpg" alt=""><div><b>Viennoiseries du jour</b><small>Pur beurre, cuites à l’aube</small></div></div><div class="produits">' +
+  const commander = () => '<header class="enseigne"><h1 class="marque-b">' + esc(O.marque("Boulangerie des Halles")) + '</h1><small>Commandez aujourd’hui, retirez demain.</small></header><div class="produits">' +
     B.PRODUITS.map((p) => {
       const q = ui.panier[p.id] || 0;
-      return '<div class="produit"><span class="img"><img src="' + p.img + '" alt="" style="object-position:' + p.pos + ";transform:scale(" + p.zoom + ");transform-origin:" + p.pos + '"></span><div><b>' + esc(p.nom) + "</b><small>" + esc(p.d) + " · " + O.eur(p.prix) + "</small></div>" +
-        (q ? '<span class="qte"><button class="rond clair" data-moins="' + p.id + '" aria-label="Retirer">−</button>' + q + '<button class="rond" data-plus="' + p.id + '" aria-label="Ajouter">+</button></span>' : '<button class="rond" data-plus="' + p.id + '" aria-label="Ajouter ' + esc(p.nom) + '">+</button>') + "</div>";
+      return '<div class="produit"><span class="img"><img src="' + p.img + '" alt="" style="object-position:' + p.pos + ";transform:scale(" + p.zoom + ");transform-origin:" + p.pos + '"></span><div class="inf"><b>' + esc(p.nom) + "</b><small>" + esc(p.d) + '</small><span class="prix">' + O.eur(p.prix) + '</span></div><div class="actions-p">' +
+        (q ? '<span class="qte"><button class="rond clair" data-moins="' + p.id + '" aria-label="Retirer">−</button>' + q + '<button class="rond" data-plus="' + p.id + '" aria-label="Ajouter">+</button></span>' : '<button class="ajout" data-plus="' + p.id + '" aria-label="Ajouter ' + esc(p.nom) + '">Ajouter</button>') + "</div></div>";
     }).join("") + "</div>";
-  const valider = () => '<div class="nav-ios"><button data-vue="commander" style="border:0;background:none;color:inherit;padding:0">‹ Commander</button></div><h1 class="grand-titre">Votre retrait</h1><p class="sous-titre">Demain, ' + O.dateLongue(O.jour(1)).replace(/^\S+ /, "") + '</p><p class="entete-groupe">Heure de retrait</p><div class="creneaux">' + B.CRENEAUX.map((c) => '<button data-creneau="' + c + '" aria-pressed="' + (c === ui.creneau) + '">' + c + "</button>").join("") + '</div><p class="entete-groupe">Votre prénom</p><div class="groupe"><input class="champ-ios" id="f-prenom" autocomplete="given-name" aria-label="Votre prénom" placeholder="Prénom"></div><p class="entete-groupe">Votre commande</p><div class="groupe">' +
+  const valider = () => '<div class="nav-ios"><button data-vue="commander">‹ Retour à la commande</button></div><h1 class="grand-titre">Votre retrait</h1><p class="sous-titre">Demain, ' + O.dateLongue(O.jour(1)).replace(/^\S+ /, "") + '</p><p class="entete-groupe">Heure de retrait</p><div class="creneaux">' + B.CRENEAUX.map((c) => '<button data-creneau="' + c + '" aria-pressed="' + (c === ui.creneau) + '">' + c + "</button>").join("") + '</div><p class="entete-groupe">Votre prénom</p><div class="groupe"><input class="champ-ios" id="f-prenom" autocomplete="given-name" aria-label="Votre prénom" placeholder="Prénom"></div><p class="entete-groupe">Votre commande</p><div class="groupe">' +
     Object.entries(ui.panier).map(([k, q]) => { const p = B.PRODUITS.find((x) => x.id === k); return '<div class="cellule"><div class="texte"><b>' + q + " × " + esc(p.nom) + '</b></div><span class="droite">' + O.eur(q * p.prix) + "</span></div>"; }).join("") + '<div class="cellule"><div class="texte"><b style="font-weight:600">Total, à régler au retrait</b></div><span class="droite" style="color:#2b1a0f;font-weight:600">' + O.eur(B.total(ui.panier)) + '</span></div></div><button class="bouton-ios" id="valider">Valider ma commande</button>';
   const retraits = () => {
     const l = m.d.commandes.filter((c) => m.d.mes.includes(c.id));
-    return '<h1 class="grand-titre" style="padding-top:12px">Mes retraits</h1>' + (l.length ? l.map((c) => {
+    return '<h1 class="grand-titre">Mes retraits</h1>' + (l.length ? l.map((c) => {
       const n = { afaire: 1, prepa: 2, prete: 3, retiree: 3 }[c.etat];
       const t = { afaire: "Commande reçue", prepa: "En préparation", prete: "Votre commande est prête", retiree: "Commande retirée" }[c.etat];
-      return '<div class="suivi" style="margin-bottom:10px"><b>' + t + "</b><small>Retrait demain à " + c.heure + " · " + O.eur(B.total(c.lignes)) + '</small><div class="etapes-c">' + [1, 2, 3].map((i) => '<i class="' + (i <= n ? "on" : "") + '"></i>').join("") + '</div><p class="code">N° ' + c.num + "</p></div>";
+      return '<div class="suivi"><b>' + t + "</b><small>Retrait demain à " + c.heure + ", " + O.eur(B.total(c.lignes)) + '</small><div class="etapes-c">' + [1, 2, 3].map((i) => '<i class="' + (i <= n ? "on" : "") + '"></i>').join("") + '</div><p class="code">N° ' + c.num + "</p></div>";
     }).join("") : '<p class="sous-titre">Vos commandes apparaîtront ici.</p>');
   };
 
@@ -113,7 +80,7 @@
     m.d.commandes.filter((c) => m.d.mes.includes(c.id)).forEach((c) => { if (c.etat === "prete" && etats[c.id] !== "prete") alerte("Votre commande est prête", "Numéro " + c.num + ", à retirer à " + c.heure + "."); etats[c.id] = c.etat; });
     rendre();
   });
-  window.bandeauDemo(m, "../", "passez une commande, puis regardez-la arriver sur <a href=\"comptoir.html\" target=\"_blank\" rel=\"noopener\">l’écran du comptoir</a>.");
+  window.bandeauDemo(m, "../", "passez une commande, puis ouvrez <a href=\"comptoir.html\" target=\"_blank\" rel=\"noopener\">l’écran du comptoir</a>.");
   rendre();
   window.demoBoulangerie = { m, ui, rendre };
 })();

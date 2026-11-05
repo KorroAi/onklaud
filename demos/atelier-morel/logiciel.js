@@ -15,7 +15,7 @@
   };
   const SECTIONS = [["planning", "Planning"], ["chantiers", "Chantiers"], ["devis", "Devis"], ["factures", "Factures"], ["stocks", "Stocks"], ["clients", "Clients"]];
   const CATALOGUE = [["Main-d’œuvre", "jour", 420], ["Carrelage grès cérame, fourni posé", "m²", 78], ["Peinture, deux couches", "m²", 24], ["Déplacement", "forfait", 45]];
-  const COULEURS = { julien: ["#e6f4f1", "#0b5247"], thomas: ["#eaf0fc", "#1d3f8f"], sarah: ["#fff4e5", "#8a4b05"], karim: ["#fcecef", "#8f2138"] };
+  const COULEURS = { julien: ["#d5e4ec", "#12394d"], thomas: ["#ffe88a", "#3d3000"], sarah: ["#dcdad2", "#22272b"], karim: ["#f6d3ca", "#6e1a0c"] };
   const JOURS = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven."];
   const H0 = 8, PX_H = 76;
   const ui = { vue: new URLSearchParams(location.search).get("vue") || "planning", lundi: O.lundi(), masques: {} };

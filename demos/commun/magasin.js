@@ -97,16 +97,9 @@
     if (p.has("cadre")) { document.documentElement.classList.add("en-cadre"); return; }
     const b = document.createElement("div");
     b.className = "bandeau-demo";
-    b.innerHTML = '<span>' + (PERSO ? "Démo préparée pour " + Outils.esc(PERSO) : "Démo Onklaud<em>, données fictives</em>") + "</span>" + '<button type="button">Recommencer</button><a href="' + retour + '">Les démos</a>';
+    b.innerHTML = '<span class="qui">' + (PERSO ? "Démo préparée pour " + Outils.esc(PERSO) : "Démo Onklaud<em>, données fictives</em>") + "</span>" + (conseil ? "<p><b>À essayer&nbsp;:</b> " + conseil + "</p>" : "") + '<button type="button">Recommencer</button><a href="' + retour + '">Toutes les démos</a>';
     b.querySelector("button").addEventListener("click", () => m.recommencer());
     document.body.prepend(b);
-    if (conseil) {
-      const g = document.createElement("div");
-      g.className = "conseil-demo";
-      g.innerHTML = "<p><b>À essayer&nbsp;:</b> " + conseil + '</p><button type="button" aria-label="Masquer le conseil">×</button>';
-      g.querySelector("button").addEventListener("click", () => g.remove());
-      b.after(g);
-    }
   };
 
   window.Magasin = Magasin;

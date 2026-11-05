@@ -50,7 +50,7 @@
 <header class="barre" id="barre">
   <div class="cadre">
     <a class="logo" href="#haut" aria-label="Onklaud, retour en haut de page"><i aria-hidden="true"><svg><use href="#coche-logo"/></svg></i><span aria-hidden="true">onklaud</span></a>
-    <nav id="nav" aria-label="Navigation principale"><a href="#demo-film">Le film</a><a href="#creations">Nos créations</a><a href="#exemples">Les démos</a><a href="#prix">Le prix</a><a href="#questions">Questions</a></nav>
+    <nav id="nav" aria-label="Navigation principale"><a href="#demo-film">La vidéo</a><a href="#creations">Nos services</a><a href="#exemples">Les démos</a><a href="#prix">Le prix</a><a href="#questions">Questions</a></nav>
     <div class="actions-barre"><a class="bouton masque-mobile" href="#contact">Parler de mon projet</a></div>
   </div>
 </header>
@@ -61,7 +61,7 @@
       <div class="texte">
         <h1 class="monte" style="--d:0s">Vos clients réservent, signent et commandent sans vous appeler.</h1>
         <p class="quoi monte" style="--d:.06s">Nous créons sur mesure votre site internet, votre application ou votre logiciel de gestion.</p>
-        <div class="actions monte" style="--d:.12s"><a class="bouton" href="#contact">Parler de mon projet</a><a class="bouton bouton-calme" href="#demo-film">Voir le film (29 s)</a></div>
+        <div class="actions monte" style="--d:.12s"><a class="bouton" href="#contact">Parler de mon projet</a><a class="bouton bouton-calme" href="#demo-film">Voir la vidéo (29 s)</a></div>
         <ul class="rassure monte" style="--d:.16s">
           <li><svg class="ok-ic"><use href="#ok"/></svg>Premier échange offert</li>
           <li><svg class="ok-ic"><use href="#ok"/></svg>Prix fixe annoncé à l’avance</li>
@@ -69,18 +69,18 @@
         </ul>
       </div>
 
-      <a class="vitrine-heros monte" style="--d:.2s" href="demos/duo.html?d=atelier" aria-label="Essayer cette démo"><picture><source media="(max-width: 640px)" srcset="demos/captures/heros-mobile.webp" width="1000" height="900"><img src="demos/captures/heros.webp" width="1600" height="880" alt="Un logiciel de gestion et l’application du client, juste après la signature d’un devis" fetchpriority="high"></picture></a>
-      <p class="legende-heros">Capture de notre démo. L’entreprise est fictive. <a href="demos/duo.html?d=atelier">Essayer cette démo</a></p>
+      <a class="vitrine-heros monte" style="--d:.2s" href="demos/" aria-label="Essayer les démos"><picture><source media="(max-width: 640px)" srcset="demos/captures/heros-mobile.webp" width="1000" height="860"><img src="demos/captures/heros.webp" width="1600" height="860" alt="Quatre applications sur téléphone : suivi de chantier, commande de pain, réservation au restaurant et carte de fidélité." fetchpriority="high"></picture></a>
+      <p class="legende-heros">Quatre entreprises fictives, quatre identités différentes. <a href="demos/">Essayer les démos</a></p>
     </div>
   </section>
 
   <section class="section film" id="demo-film">
     <div class="cadre">
-      <div class="entete"><h2>Le client signe.<br>Le reste se fait tout seul.</h2><p>Votre client signe son devis sur son téléphone. Voici ce qui se passe aussitôt dans votre logiciel.</p></div>
-      <figure class="lecteur"><video controls playsinline preload="none" poster="assets/films/devis-signe.jpg" data-lecteur="Lire le film (29 s)"><source src="assets/films/devis-signe.mp4" type="video/mp4">Votre navigateur ne lit pas cette vidéo.</video></figure>
+      <div class="entete"><h2>Votre client signe. <br>Votre logiciel fait le reste.</h2><p>Votre client signe son devis sur son téléphone. Voici ce qui se passe aussitôt dans votre logiciel.</p></div>
+      <figure class="lecteur"><video controls playsinline preload="none" poster="assets/films/devis-signe.jpg" data-lecteur="Lire la vidéo (29 s)"><source src="assets/films/devis-signe.mp4" type="video/mp4">Votre navigateur ne lit pas cette vidéo.</video></figure>
       <div class="essai" id="essai">
         <div class="essai-devis">
-          <h3>À vous : signez ce devis</h3>
+          <h3>Essayez : signez ce devis</h3>
           <p>Terrasse bois, 18&nbsp;m². Total&nbsp;: 3&nbsp;029&nbsp;€ TTC.</p>
           <div class="essai-zone"><canvas id="essai-sig" aria-label="Zone de signature : signez avec le doigt ou la souris"></canvas><span id="essai-indice" aria-hidden="true">Signez ici, avec le doigt ou la souris</span></div>
           <div class="essai-actions"><button type="button" class="bouton" id="essai-ok" disabled>Signer le devis</button><button type="button" class="lien essai-efface" id="essai-efface">Effacer</button></div>
@@ -98,23 +98,23 @@
     <div class="cadre">
       <div class="entete">
         <h2>Ce que nous créons</h2>
-        <p>Vous faites votre métier. Nous créons les outils qui s’occupent du reste.</p>
+        <p>Vous vous consacrez à votre métier. Nos outils prennent en charge le reste.</p>
       </div>
       <div class="creations">
         <article class="creation"><span class="ic-c"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18M8 21h8M12 18v3"/></svg></span><h3>Site internet</h3><p>Vos clients vous trouvent, réservent ou vous contactent.</p><a class="lien" href="demos/maison-lucie/">Essayer un site</a></article>
         <article class="creation"><span class="ic-c"><svg viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></span><h3>Application mobile</h3><p>Vos clients suivent leur chantier en photos sur leur téléphone.</p><a class="lien" href="demos/atelier-morel/chantier.html">Essayer une application</a></article>
         <article class="creation"><span class="ic-c"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M8 3v4M16 3v4M4 10h16M8 14h3M13 14h3M8 17h3"/></svg></span><h3>Logiciel de gestion</h3><p>Planning, devis, factures et stocks au même endroit.</p><a class="lien" href="demos/atelier-morel/">Essayer le logiciel</a></article>
-        <article class="creation"><span class="ic-c"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg></span><h3>Automatisations</h3><p>Un devis signé crée seul le chantier et la facture d’acompte.</p><a class="lien" href="demos/duo.html?d=atelier">Voir un exemple</a></article>
-        <article class="creation"><span class="ic-c"><svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 8.5H7.5z"/><path d="M6 6L5 3H2M9 20h.01M18 20h.01"/></svg></span><h3>Commande en ligne</h3><p>Vos clients commandent, la liste de production se calcule seule.</p><a class="lien" href="demos/boulangerie/">Passer une commande</a></article>
+        <article class="creation"><span class="ic-c"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg></span><h3>Automatisations</h3><p>Un devis signé crée automatiquement le chantier et la facture d’acompte.</p><a class="lien" href="demos/duo.html?d=atelier">Voir un exemple</a></article>
+        <article class="creation"><span class="ic-c"><svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 8.5H7.5z"/><path d="M6 6L5 3H2M9 20h.01M18 20h.01"/></svg></span><h3>Commande en ligne</h3><p>Vos clients commandent. La liste de production est calculée automatiquement.</p><a class="lien" href="demos/boulangerie/">Passer une commande</a></article>
         <article class="creation"><span class="ic-c"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 8a4.3 4.3 0 0 1 7.5 2.8C19.5 16.4 12 21 12 21z"/></svg></span><h3>Réservation et fidélité</h3><p>Un agenda en ligne et une carte de fidélité dans le téléphone.</p><a class="lien" href="demos/belle-rive/">Essayer la carte</a></article>
       </div>
-      <p class="autre">Un autre besoin&nbsp;? <b>Nous le créons aussi.</b></p>
+      <p class="autre">Un autre besoin&nbsp;? <b>Nous l’étudions avec vous.</b></p>
     </div>
   </section>
 
   <section class="section fond" id="exemples">
     <div class="cadre">
-      <div class="entete"><h2>Ne nous croyez pas sur parole. Essayez.</h2><p>Tapez le nom de votre entreprise&nbsp;: la démo s’affiche à votre nom.</p>
+      <div class="entete"><h2>Essayez une démo à votre nom.</h2><p>Indiquez le nom de votre entreprise et votre activité.</p>
         <form class="mon-nom" action="demos/duo.html" method="get"><input name="nom" maxlength="40" required aria-label="Le nom de votre entreprise" placeholder="Le nom de votre entreprise" autocomplete="organization"><select name="d" aria-label="Votre activité"><option value="atelier">Artisan, bâtiment, services</option><option value="boulangerie">Commerce de bouche</option><option value="lucie">Restaurant</option><option value="fidelite">Beauté, coiffure, bien-être</option></select><button class="bouton">Voir ma démo</button></form>
       </div>
 
@@ -143,7 +143,7 @@
         <article class="exemple">
           <div class="texte-ex">
             <span class="type">Application</span>
-            <h3>Votre application, dans la poche de vos clients.</h3>
+            <h3>Votre application, sur le téléphone de vos clients.</h3>
             <p class="promesse">Ils suivent leur chantier, réservent, commandent ou cumulent leurs points de fidélité depuis leur téléphone.</p>
             <ul class="capacites">
               <li><svg class="ok-ic"><use href="#ok"/></svg>Suivi de chantier en photos</li>
@@ -166,7 +166,7 @@
           <div class="texte-ex">
             <span class="type">Logiciel de gestion</span>
             <h3>Un logiciel fait pour votre façon de travailler.</h3>
-            <p class="promesse">Tout est au même endroit, et les tâches répétitives se font toutes seules. Du bureau comme du chantier.</p>
+            <p class="promesse">Tout est au même endroit, et les tâches répétitives sont automatisées. Du bureau comme du chantier.</p>
             <ul class="capacites">
               <li><svg class="ok-ic"><use href="#ok"/></svg>Planning d’équipe partagé</li>
               <li><svg class="ok-ic"><use href="#ok"/></svg>Devis, factures et signature en ligne</li>
@@ -194,7 +194,7 @@
         <div class="prix-bloc">
           <h3>Les trois étapes</h3>
           <ol>
-            <li><span><b>Nous échangeons</b>C’est offert. Vous nous parlez de votre activité et de votre besoin.</span></li>
+            <li><span><b>Nous échangeons</b>Ce premier échange est offert. Vous nous présentez votre activité et votre besoin.</span></li>
             <li><span><b>Vous recevez votre prix</b>Sous 48&nbsp;heures, par écrit&nbsp;: ce qui sera créé, le délai et le prix fixe.</span></li>
             <li><span><b>Nous créons</b>Nous mettons tout en ligne et vous montrons comment vous en servir.</span></li>
           </ol>
@@ -217,7 +217,7 @@
 
   <section class="section fond" id="questions">
     <div class="cadre">
-      <div class="entete"><h2>Vos questions.</h2></div>
+      <div class="entete"><h2>Questions fréquentes.</h2></div>
       <div class="faq">
         <details><summary>Combien coûte un projet&nbsp;?<svg><use href="#plus"/></svg></summary><p>Le prix dépend du nombre de pages ou d’écrans, des fonctions (réservation, paiement, comptes clients) et des liens avec vos outils actuels. Vous le recevez par écrit sous 48&nbsp;heures, sans engagement.</p></details>
         <details><summary>Combien de temps faut-il&nbsp;?<svg><use href="#plus"/></svg></summary><p>Cela dépend du projet. Le délai vous est annoncé par écrit, avec le prix.</p></details>
@@ -291,7 +291,7 @@
   <div class="cadre">
     <div class="grille">
       <a class="logo" href="#haut" aria-label="Onklaud, retour en haut de page"><i aria-hidden="true"><svg><use href="#coche-logo"/></svg></i><span aria-hidden="true">onklaud</span></a>
-      <nav aria-label="Pied de page"><a href="#creations">Nos créations</a><a href="demos/">Démos</a><a href="#prix">Le prix</a><a href="#contact">Parler de mon projet</a><a href="outils/">Outil gratuit</a><a href="mentions-legales.html">Mentions légales</a></nav>
+      <nav aria-label="Pied de page"><a href="#creations">Nos services</a><a href="demos/">Démos</a><a href="#prix">Le prix</a><a href="#contact">Parler de mon projet</a><a href="outils/">Outil gratuit</a><a href="mentions-legales.html">Mentions légales</a></nav>
     </div>
     <p class="legal">
       Onklaud, <span data-nom-ei>entrepreneur individuel (micro-entreprise)</span>. SIRET <span data-champ="siret">à compléter</span>. <span data-tva>TVA non applicable, art. 293&nbsp;B du CGI.</span>

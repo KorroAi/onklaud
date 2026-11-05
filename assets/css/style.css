@@ -55,7 +55,7 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 .barre { position: sticky; top: 0; z-index: 40; background: #fff; border-bottom: 1px solid transparent; transition: border-color .2s; }
 .barre.defile { border-bottom-color: var(--filet); }
 .barre .cadre { display: flex; align-items: center; gap: 40px; height: 74px; }
-.logo { display: inline-flex; align-items: center; gap: 10px; font: 780 22px/1 var(--police); letter-spacing: -.035em; color: var(--encre); text-decoration: none; }
+.logo { display: inline-flex; align-items: center; gap: 10px; font: 780 22px/1 var(--police); letter-spacing: -.022em; color: var(--encre); text-decoration: none; }
 .logo i { width: 32px; height: 32px; border-radius: 9px; background: var(--orange); display: grid; place-items: center; }
 .logo svg { width: 17px; height: 14px; }
 .barre nav { display: flex; gap: 30px; font-size: 15.5px; font-weight: 550; white-space: nowrap; }
@@ -89,7 +89,7 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 .heros::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 44px 44px; }
 .heros .cadre { position: relative; }
 .heros .texte { text-align: center; max-width: 1060px; margin: 0 auto; }
-.heros h1 { font-size: clamp(2.5rem, 3.6vw + 1.1rem, 4.3rem); line-height: 1.05; text-wrap: balance; font-weight: 790; letter-spacing: -.045em; color: #fff; }
+.heros h1 { font-size: clamp(2.5rem, 3.6vw + 1.1rem, 4.3rem); line-height: 1.05; text-wrap: balance; font-weight: 790; letter-spacing: -.022em; color: #fff; }
 .heros .quoi { margin: 22px auto 0; max-width: 44em; text-wrap: balance; font-size: clamp(1.12rem, .45vw + 1.02rem, 1.3rem); }
 .heros .actions { margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 .heros .bouton-calme { background: rgba(255, 255, 255, .08); color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22); }
@@ -98,7 +98,7 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 .heros .rassure li { display: inline-flex; align-items: center; gap: 8px; }
 .heros .rassure .ok-ic { stroke: #7fe0a8; }
 @media (max-width: 560px) { .heros .actions .bouton, .texte-ex .bouton { width: 100%; } }
-@media (max-width: 600px) { .heros h1 { letter-spacing: -.035em; } }
+@media (max-width: 600px) { .heros h1 { letter-spacing: -.022em; } }
 
 .vitrine-heros { display: block; max-width: 1160px; margin: clamp(32px, 4vw, 48px) auto 0; }
 .vitrine-heros img { width: 100%; height: auto; }
@@ -113,7 +113,7 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 .section { padding: clamp(64px, 8vw, 104px) 0; }
 .fond, .fond-2 { background: var(--fond); }
 .entete { text-align: center; max-width: 820px; margin: 0 auto; }
-.entete h2 { font-size: clamp(2.2rem, 2.4vw + 1.2rem, 3.4rem); line-height: 1.06; font-weight: 790; letter-spacing: -.04em; color: var(--encre); }
+.entete h2 { font-size: clamp(2.2rem, 2.4vw + 1.2rem, 3.4rem); line-height: 1.06; font-weight: 790; letter-spacing: -.022em; color: var(--encre); }
 .entete p { margin-top: 14px; font-size: 1.18rem; color: var(--gris); }
 
 /* Tout ce que nous créons */
@@ -133,7 +133,7 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 @media (min-width: 1020px) { .exemple { grid-template-columns: .8fr 1.2fr; } .exemple:nth-child(even) { grid-template-columns: 1.2fr .8fr; } .exemple:nth-child(even) .texte-ex { order: 2; } }
 .note-demos { margin-top: clamp(40px, 5vw, 56px); text-align: center; font-size: 15px; color: var(--gris); text-wrap: balance; }
 .texte-ex .type { display: inline-flex; padding: 6px 12px; border-radius: 99px; background: var(--orange-clair); color: var(--orange-texte); font-size: 14px; font-weight: 700; }
-.texte-ex h3 { margin-top: 16px; font-size: clamp(1.9rem, 1.3vw + 1.2rem, 2.6rem); line-height: 1.06; font-weight: 790; letter-spacing: -.04em; color: var(--encre); }
+.texte-ex h3 { margin-top: 16px; font-size: clamp(1.9rem, 1.3vw + 1.2rem, 2.6rem); line-height: 1.06; font-weight: 790; letter-spacing: -.022em; color: var(--encre); }
 .texte-ex .promesse { margin-top: 14px; font-size: 1.1rem; }
 .capacites { margin-top: 20px; display: grid; gap: 10px; }
 .actions-ex { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 26px; }
@@ -166,7 +166,7 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 .essai { display: grid; gap: 20px; max-width: 1040px; margin: 24px auto 0; }
 @media (min-width: 860px) { .essai { grid-template-columns: 1.2fr 1fr; } }
 .essai > div { padding: clamp(20px, 3vw, 30px); border-radius: 20px; background: var(--blanc); box-shadow: inset 0 0 0 1px var(--filet); }
-.essai h3 { font-family: var(--police-titres); font-size: 1.5rem; font-weight: 770; letter-spacing: -.03em; color: var(--encre); }
+.essai h3 { font-family: var(--police-titres); font-size: 1.5rem; font-weight: 770; letter-spacing: -.02em; color: var(--encre); }
 .essai-zone { position: relative; margin-top: 14px; }
 #essai-indice { position: absolute; inset: 0; display: grid; place-items: center; padding: 0 16px; color: var(--gris); font-size: 15.5px; text-align: center; pointer-events: none; }
 #essai-sig { display: block; width: 100%; height: 170px; border-radius: 12px; background: var(--fond); box-shadow: inset 0 0 0 1px #c9d1de; touch-action: none; cursor: crosshair; }
@@ -223,7 +223,7 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 /* Contact */
 .contact { display: grid; gap: 44px; align-items: center; padding: clamp(28px, 5vw, 72px); border-radius: 32px; background: var(--bleu); color: #cdd7ea; }
 @media (min-width: 1000px) { .contact { grid-template-columns: 1fr 1fr; gap: 72px; } }
-.contact h2 { font-size: clamp(2.2rem, 2.4vw + 1.2rem, 3.2rem); line-height: 1.06; font-weight: 790; letter-spacing: -.04em; color: #fff; }
+.contact h2 { font-size: clamp(2.2rem, 2.4vw + 1.2rem, 3.2rem); line-height: 1.06; font-weight: 790; letter-spacing: -.022em; color: #fff; }
 .contact .texte-c { margin-top: 18px; font-size: 1.15rem; color: #bfcbe2; }
 .contact .direct { margin-top: 16px; font-size: 16px; }
 .contact .direct a, .contact .direct b { color: #fff; font-weight: 650; }
@@ -266,8 +266,8 @@ form.demande { background: var(--blanc); border-radius: 22px; padding: clamp(22p
 
 /* ---------- Pages secondaires (outil gratuit, mentions légales, 404) ---------- */
 .page-simple { padding: clamp(56px, 8vw, 96px) 0 clamp(72px, 9vw, 120px); }
-.titre-1 { font-size: clamp(2.4rem, 3vw + 1.2rem, 3.8rem); line-height: 1.05; font-weight: 790; letter-spacing: -.045em; color: var(--encre); }
-.titre-2 { font-size: clamp(2rem, 2vw + 1.2rem, 2.8rem); line-height: 1.08; font-weight: 790; letter-spacing: -.04em; color: var(--encre); }
+.titre-1 { font-size: clamp(2.4rem, 3vw + 1.2rem, 3.8rem); line-height: 1.05; font-weight: 790; letter-spacing: -.022em; color: var(--encre); }
+.titre-2 { font-size: clamp(2rem, 2vw + 1.2rem, 2.8rem); line-height: 1.08; font-weight: 790; letter-spacing: -.022em; color: var(--encre); }
 .titre-3 { font-size: 1.2rem; font-weight: 750; letter-spacing: -.02em; color: var(--encre); }
 .chapeau { margin-top: 20px; font-size: 1.18rem; max-width: 36em; }
 .section-tete { max-width: 760px; margin-bottom: 40px; }

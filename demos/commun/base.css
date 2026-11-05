@@ -1,6 +1,4 @@
-/* Socle des démos. Chaque entreprise fictive garde ensuite sa propre identité. */
-@font-face { font-family: "Inter"; src: url("../../assets/polices/inter-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
-@font-face { font-family: "Fraunces"; src: url("../../assets/polices/fraunces-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+/* Socle des démos : structure seule. Polices, couleurs et formes appartiennent à chaque entreprise (theme.css). */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; }
@@ -13,51 +11,42 @@ a { color: inherit; }
 [hidden] { display: none !important; }
 .en-cadre, .en-cadre * { scrollbar-width: none; }
 .en-cadre ::-webkit-scrollbar { display: none; }
-:focus-visible { outline: 2.5px solid var(--accent, #1d3466); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--accent, #333); outline-offset: 2px; }
 
-.bandeau-demo { position: relative; z-index: 60; display: flex; align-items: center; gap: 14px; padding: 7px 14px; background: #13234a; color: #cdd7ea; font: 500 12.5px/1.3 "Inter", system-ui, sans-serif; }
-.bandeau-demo span { margin-right: auto; white-space: nowrap; }
-.bandeau-demo em { font-style: normal; }
+/* Bandeau Onklaud : volontairement neutre, il n'appartient pas à l'entreprise fictive. */
+.bandeau-demo { position: relative; z-index: 60; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; padding: 8px 14px; background: #fff; border-bottom: 1px solid #d9d9d9; color: #222; font: 400 13.5px/1.35 system-ui, -apple-system, "Segoe UI", sans-serif; letter-spacing: 0; text-transform: none; }
+.bandeau-demo .qui { font-weight: 600; white-space: nowrap; }
+.bandeau-demo em { font-style: normal; font-weight: 400; }
+.bandeau-demo p { order: 3; flex: 1 1 100%; color: #444; }
+.bandeau-demo p b { font-weight: 600; color: #222; }
+.bandeau-demo a, .bandeau-demo button { padding: 0; border: 0; background: none; color: #222; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.bandeau-demo .qui ~ button { margin-left: auto; }
+@media (min-width: 900px) { .bandeau-demo p { order: 0; flex: 1 1 0; } .bandeau-demo .qui ~ button { margin-left: 0; } }
 @media (max-width: 460px) { .bandeau-demo em { display: none; } }
-.conseil-demo { position: relative; z-index: 59; display: flex; align-items: center; gap: 10px; padding: 7px 14px; background: #fff4e5; color: #5b3a12; font: 450 13px/1.35 "Inter", system-ui, sans-serif; }
-.conseil-demo p { flex: 1; }
-.conseil-demo b { font-weight: 650; color: inherit; }
-.conseil-demo button { flex: none; width: 26px; height: 26px; padding: 0; border: 0; border-radius: 50%; background: rgba(91, 58, 18, .1); color: inherit; font-size: 16px; line-height: 1; }
-.bandeau-demo button { padding: 0; border: 0; background: none; color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
-.bandeau-demo a { color: #fff; font-weight: 600; text-underline-offset: 2px; white-space: nowrap; }
 
-/* Applications sur téléphone : conventions iOS, sans simulateur. */
-.appli { --accent: #0e6b5c; display: flex; flex-direction: column; min-height: 100dvh; max-width: 480px; margin: 0 auto; background: #f2f2f7; color: #000; font: 400 16px/1.32 "Inter", -apple-system, system-ui, sans-serif; letter-spacing: -.012em; -webkit-font-smoothing: antialiased; }
+/* Applications sur téléphone */
+.appli { display: flex; flex-direction: column; min-height: 100dvh; max-width: 480px; margin: 0 auto; }
 .statut-ios { display: none; }
-.en-cadre .statut-ios { display: flex; align-items: center; justify-content: space-between; height: 54px; flex: none; padding: 14px 30px 0; font-weight: 600; font-size: 16px; }
-.en-cadre .statut-ios svg { height: 13px; }
+.en-cadre .statut-ios { display: flex; align-items: center; justify-content: space-between; height: 54px; flex: none; padding: 14px 30px 0; font: 600 16px/1 system-ui, -apple-system, sans-serif; }
+.en-cadre .statut-ios svg { height: 13px; fill: currentColor; }
 .en-cadre .appli { height: 100dvh; min-height: 0; }
-.appli-corps { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 16px; }
-.nav-ios { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; color: var(--accent); }
-.grand-titre { padding: 4px 16px 8px; font-size: 32px; font-weight: 700; letter-spacing: -.025em; line-height: 1.12; }
-.sous-titre { padding: 0 16px 12px; font-size: 15px; color: #6c6c70; }
-.entete-groupe { padding: 18px 32px 7px; font-size: 13px; color: #6c6c70; text-transform: uppercase; letter-spacing: 0; }
-.groupe { margin: 0 16px; border-radius: 12px; background: #fff; overflow: hidden; }
-.cellule { position: relative; display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 11px 16px; width: 100%; border: 0; background: none; text-align: left; }
-.cellule + .cellule::before { content: ""; position: absolute; top: 0; left: 16px; right: 0; height: .5px; background: #c6c6c8; }
+.appli-corps { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.nav-ios { display: flex; align-items: center; justify-content: space-between; min-height: 44px; }
+.cellule { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: none; text-align: left; color: inherit; }
 .cellule .texte { flex: 1; min-width: 0; }
-.cellule .texte b { display: block; font-weight: 500; }
-.cellule .texte small { display: block; margin-top: 1px; font-size: 13.5px; color: #6c6c70; }
-.cellule .droite { color: #8a8a8e; font-size: 15px; white-space: nowrap; }
-.bouton-ios { display: block; width: calc(100% - 32px); margin: 16px; padding: 15px; border: 0; border-radius: 14px; background: var(--accent); color: #fff; text-align: center; font-weight: 600; font-size: 17px; }
+.cellule .texte b, .cellule .texte small { display: block; }
+.cellule .droite { white-space: nowrap; }
+.bouton-ios { display: block; border: 0; text-align: center; }
 .bouton-ios:disabled { opacity: .45; cursor: default; }
-.bouton-ios.second { background: #e5e5ea; color: var(--accent); }
-.onglets-ios { flex: none; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: 7px 0 calc(6px + env(safe-area-inset-bottom)); background: rgba(249, 249, 249, .96); border-top: .5px solid #c6c6c8; }
-.onglets-ios button { display: flex; flex-direction: column; align-items: center; gap: 3px; border: 0; background: none; color: #8e8e93; font-size: 10.5px; font-weight: 500; }
-.onglets-ios button[aria-current="true"] { color: var(--accent); }
-.onglets-ios svg { width: 25px; height: 25px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.en-cadre .onglets-ios { padding-bottom: 24px; }
+.onglets-ios { flex: none; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; }
+.onglets-ios button { display: flex; flex-direction: column; align-items: center; border: 0; background: none; }
+.onglets-ios svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
 
-/* Notification reçue dans l'application */
-.alerte-ios { --accent: #0e6b5c; position: fixed; top: 10px; left: 50%; z-index: 70; visibility: hidden; color: #000; font: 400 13.5px/1.32 "Inter", -apple-system, system-ui, sans-serif; letter-spacing: -.01em; display: grid; grid-template-columns: 34px 1fr; gap: 10px; width: min(calc(100% - 20px), 440px); padding: 11px 12px; border-radius: 18px; background: rgba(245, 245, 247, .97); box-shadow: 0 12px 30px -10px rgba(0, 0, 0, .35); transform: translate(-50%, -240%); transition: transform .38s cubic-bezier(.2, .9, .3, 1.05), visibility 0s .38s; }
+/* Notification reçue dans l'application : position seule */
+.alerte-ios { position: fixed; top: 10px; left: 50%; z-index: 70; display: flex; align-items: center; gap: 10px; width: min(358px, calc(100vw - 24px)); padding: 11px 12px; visibility: hidden; transform: translate(-50%, -140%); transition: transform .3s ease-in, visibility 0s .3s; }
 .en-cadre .alerte-ios { top: 52px; }
 .alerte-ios.visible { visibility: visible; transform: translate(-50%, 0); transition: transform .38s cubic-bezier(.2, .9, .3, 1.05), visibility 0s; }
-.alerte-ios i { width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; background: var(--accent); color: #fff; font: 700 13px "Inter", sans-serif; }
-.alerte-ios b { display: block; font-weight: 600; }
+.alerte-ios i { flex: none; display: grid; place-items: center; width: 34px; height: 34px; font-style: normal; }
+.alerte-ios b { display: block; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

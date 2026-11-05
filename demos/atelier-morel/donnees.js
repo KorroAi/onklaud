@@ -10,8 +10,8 @@
     const j = (n) => O.jour(n, L);
     return {
       equipe: [
-        { id: "julien", nom: "Julien", c: "#0e6b5c" }, { id: "thomas", nom: "Thomas", c: "#2f5fd0" },
-        { id: "sarah", nom: "Sarah", c: "#e8890c" }, { id: "karim", nom: "Karim", c: "#d64563" }
+        { id: "julien", nom: "Julien", c: "#1f6a8f" }, { id: "thomas", nom: "Thomas", c: "#c99b00" },
+        { id: "sarah", nom: "Sarah", c: "#7d8a92" }, { id: "karim", nom: "Karim", c: "#c02d19" }
       ],
       clients: [
         { id: "martin", nom: "Mme Martin", tel: "06 00 00 00 11", email: "martin@exemple.fr", adresse: "12 rue des Lilas, Lyon" },

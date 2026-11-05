@@ -1,0 +1,3 @@
+Polices des démonstrations, toutes sous licence SIL Open Font License 1.1 (https://openfontlicense.org) :
+Barlow et Barlow Condensed (Jeremy Tribby), Alfa Slab One (JM Solé), Work Sans (Wei Huang), Courier Prime (Quote-Unquote Apps),
+Bodoni Moda (Owen Earl), EB Garamond (Georg Duffner, Octavio Pardo), Jost (Owen Earl), Caveat (Impallari Type).
