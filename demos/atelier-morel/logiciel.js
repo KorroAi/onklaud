@@ -39,7 +39,7 @@
     const d = m.d;
     const bas = d.stocks.filter((s) => s.q <= s.seuil);
     $("#panneau").innerHTML = '<section><h2>Aujourd’hui</h2>' + d.taches.slice(0, 5).map((t) => '<button class="tache ' + (t.fait ? "fait" : "") + '" data-tache="' + t.id + '"><i></i><span>' + esc(t.t) + "<small>" + esc(t.n) + "</small></span></button>").join("") + "</section>" +
-      '<section class="auto"><h2>Fait automatiquement</h2>' + (d.journal.length ? d.journal.slice(0, 7).map((j) => '<p class="' + j.type + '"><svg viewBox="0 0 24 24"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg><span>' + esc(j.texte) + "<small>" + esc(j.h) + "</small></span></p>").join("") : '<span class="vide">Les actions automatiques s’afficheront ici.</span>') + "</section>" +
+      '<section class="auto"><h2>Fait automatiquement</h2>' + (d.journal.length ? d.journal.slice(0, 7).map((j) => '<p class="' + j.type + (ui.vus && !ui.vus.has(j.id) ? " neuf" : "") + '"><svg viewBox="0 0 24 24"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg><span>' + esc(j.texte) + "<small>" + esc(j.h) + "</small></span></p>").join("") : '<span class="vide">Les actions automatiques s’afficheront ici.</span>') + "</section>" +
       (bas.length ? '<section><button class="bouton calme petit" data-vue="stocks">' + bas.length + " article(s) à recommander</button></section>" : "");
   };
 
@@ -287,6 +287,7 @@
   const rendre = () => {
     const c = $(".corps"), haut = c ? c.scrollTop : 0;
     menu(); panneau();
+    ui.vus = new Set(m.d.journal.map((j) => j.id));
     $("#principal").innerHTML = VUES[ui.vue]();
     const n = $(".corps"); if (n) n.scrollTop = haut;
   };

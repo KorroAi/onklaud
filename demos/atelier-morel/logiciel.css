@@ -102,7 +102,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .tache.fait i { background: var(--accent); box-shadow: none; }
 .tache.fait span { color: #a0a6b4; text-decoration: line-through; }
 .tache small { display: block; color: var(--doux); font-size: 11.5px; }
-.auto p { display: flex; gap: 9px; padding: 7px 0; color: var(--texte); animation: entree .35s ease-out; }
+.auto p { display: flex; gap: 9px; padding: 7px 0; color: var(--texte); }
+.auto p.neuf { animation: entree .35s ease-out; }
 .auto svg { flex: none; width: 15px; height: 15px; margin-top: 2px; color: var(--accent); stroke-width: 2.4; }
 .auto small { display: block; color: #a0a6b4; font-size: 11px; }
 .auto p.signe { margin: 0 -8px; padding: 7px 8px; border-radius: 8px; background: #e6f4f1; color: #0b5247; font-weight: 550; }

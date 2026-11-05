@@ -134,7 +134,7 @@
   /* ---------- Essai direct : signer un devis sur la page ---------- */
   const sig = $("#essai-sig");
   if (sig) {
-    const ok = $("#essai-ok"), etapes = $$("#essai-etapes li");
+    const ok = $("#essai-ok"), etapes = $$("#essai-etapes li"), indice = $("#essai-indice");
     const ctx = sig.getContext("2d");
     const preparer = () => {
       const r = sig.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
@@ -144,11 +144,11 @@
     };
     let actif = false, fini = false;
     const pt = (e) => { const b = sig.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
-    sig.addEventListener("pointerdown", (e) => { if (fini) return; actif = true; try { sig.setPointerCapture(e.pointerId); } catch (_) { /* simulé */ } ctx.beginPath(); ctx.moveTo(...pt(e)); });
+    sig.addEventListener("pointerdown", (e) => { if (fini) return; actif = true; indice.hidden = true; try { sig.setPointerCapture(e.pointerId); } catch (_) { /* simulé */ } ctx.beginPath(); ctx.moveTo(...pt(e)); });
     sig.addEventListener("pointermove", (e) => { if (!actif) return; ctx.lineTo(...pt(e)); ctx.stroke(); ok.disabled = false; });
     sig.addEventListener("pointerup", () => { actif = false; });
     $("#essai-efface").addEventListener("click", () => {
-      fini = false; preparer(); etapes.forEach((l) => l.classList.remove("fait")); $("#essai-fin").hidden = true;
+      fini = false; preparer(); indice.hidden = false; etapes.forEach((l) => l.classList.remove("fait")); $("#essai-fin").hidden = true;
     });
     ok.addEventListener("click", () => {
       fini = true; ok.disabled = true;
@@ -261,7 +261,7 @@
   if (cta && observe) {
     const vus = new Set();
     const maj = () => {
-      const montrer = !vus.has("haut") && !vus.has("contact") && !vus.has("pied") && !(nav && nav.classList.contains("ouverte"));
+      const montrer = !vus.has("haut") && !vus.has("essai") && !vus.has("contact") && !vus.has("pied") && !(nav && nav.classList.contains("ouverte"));
       cta.classList.toggle("visible", montrer);
       cta.setAttribute("aria-hidden", String(!montrer));
       cta.tabIndex = montrer ? 0 : -1;
@@ -272,7 +272,7 @@
       entrees.forEach((en) => { const k = en.target.dataset.cta; if (en.isIntersecting) vus.add(k); else vus.delete(k); });
       maj();
     });
-    [["haut", $("#haut")], ["contact", $("#contact")], ["pied", $(".pied")]].forEach(([k, el]) => {
+    [["haut", $("#haut")], ["essai", $("#essai")], ["contact", $("#contact")], ["pied", $(".pied")]].forEach(([k, el]) => {
       if (el) { el.dataset.cta = k; io.observe(el); }
     });
     if (boutonMenu) boutonMenu.addEventListener("click", maj);

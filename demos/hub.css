@@ -1,5 +1,5 @@
 /* Page qui réunit les démos. */
-.hub-tete { padding: clamp(56px, 8vw, 96px) 0 clamp(60px, 7vw, 88px); background: var(--nuit); color: #c5d0e6; text-align: center; }
+.hub-tete { padding: clamp(48px, 6vw, 72px) 0 clamp(48px, 6vw, 72px); background: var(--nuit); color: #c5d0e6; text-align: center; }
 .hub-tete h1 { max-width: 15em; margin: 0 auto; font-family: var(--police-titres); font-size: clamp(2.4rem, 3.4vw + 1.1rem, 4.2rem); line-height: 1.05; font-weight: 790; letter-spacing: -.045em; word-spacing: .05em; color: #fff; }
 .hub-tete p { max-width: 36em; margin: 22px auto 0; font-size: 1.15rem; }
 .hub-nom { padding: clamp(36px, 5vw, 56px) 0; background: var(--orange-clair); }
@@ -13,13 +13,13 @@
 .demo { display: grid; gap: 24px clamp(32px, 5vw, 72px); align-items: center; }
 .demo + .demo { margin-top: clamp(56px, 7vw, 96px); }
 @media (min-width: 900px) { .demo { grid-template-columns: 1.25fr 1fr; } .demo:nth-child(even) > .demo-image { order: 2; } }
-.demo-image { display: block; border-radius: 22px; overflow: hidden; background: var(--bleu); }
+.demo-image { position: relative; display: block; border-radius: 22px; overflow: hidden; background: var(--bleu); }
 .demo-image img, .demo-image video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; background: var(--nuit); }
 .demo .type { display: inline-flex; padding: 6px 12px; border-radius: 99px; background: var(--orange-clair); color: var(--orange-texte); font-size: 14px; font-weight: 700; }
 .demo h2 { margin-top: 14px; font-family: var(--police-titres); font-size: clamp(1.9rem, 1.6vw + 1.2rem, 2.7rem); line-height: 1.08; font-weight: 790; letter-spacing: -.04em; color: var(--encre); }
-.demo p { margin-top: 12px; }
+.demo p { margin-top: 12px; text-wrap: pretty; }
 .liens { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 22px; }
 .hub-suite { padding: clamp(64px, 8vw, 104px) 0; background: var(--nuit); color: #c9d4ea; text-align: center; }
-.hub-suite h2 { font-family: var(--police-titres); font-size: clamp(2rem, 2.4vw + 1rem, 3.1rem); line-height: 1.1; font-weight: 770; letter-spacing: -.035em; color: #fff; }
+.hub-suite h2 { text-wrap: balance; font-family: var(--police-titres); font-size: clamp(2rem, 2.4vw + 1rem, 3.1rem); line-height: 1.1; font-weight: 770; letter-spacing: -.035em; color: #fff; }
 .hub-suite p { margin: 14px auto 0; max-width: 32em; font-size: 1.12rem; }
 .hub-suite .bouton { margin-top: 28px; }

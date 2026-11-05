@@ -30,13 +30,13 @@
   <section class="hub-tete">
     <div class="cadre">
       <h1>Ne nous croyez pas sur parole. Essayez.</h1>
-      <p>Ces démos fonctionnent vraiment. Ouvrez-les, cliquez, signez, commandez&nbsp;: chaque action arrive en direct de l’autre côté. Les entreprises sont fictives et vos essais restent sur votre appareil.</p>
+      <p>Chaque démo montre deux côtés&nbsp;: ce que voit votre client, et ce que vous voyez. Les entreprises sont fictives et vos essais restent sur votre appareil.</p>
     </div>
   </section>
   <section class="hub-nom">
     <div class="cadre">
       <form action="duo.html" method="get" id="a-mon-nom">
-        <div><h2>Voyez-la à votre nom.</h2><p>Tapez le nom de votre entreprise&nbsp;: la démo s’affiche aussitôt pour vous. Onklaud ne conserve pas ce nom.</p></div>
+        <div><h2>Une démo à votre nom</h2><p>Tapez le nom de votre entreprise. Onklaud ne le conserve pas.</p></div>
         <label>Votre entreprise<input name="nom" maxlength="40" required autocomplete="organization" placeholder="Ex. Plomberie Durand"></label>
         <label>Votre activité<select name="d"><option value="atelier">Artisan, bâtiment, services</option><option value="boulangerie">Commerce de bouche</option><option value="lucie">Restaurant</option><option value="fidelite">Beauté, coiffure, bien-être</option></select></label>
         <button class="bouton">Voir ma démo</button>
@@ -46,31 +46,32 @@
   <section class="hub-liste">
     <div class="cadre">
       <article class="demo">
-        <div class="demo-image"><video controls playsinline preload="none" poster="captures/atelier.jpg" aria-label="Film : un devis signé sur téléphone, le logiciel réagit"><source src="../assets/films/devis-signe.mp4" type="video/mp4"></video></div>
-        <div><span class="type">Logiciel de gestion et application client</span><h2>Atelier Morel</h2><p>Planning, chantiers, devis, factures et stocks. Quand le client signe son devis sur son téléphone, le chantier et la facture d’acompte se créent tout seuls.</p>
-        <div class="liens"><a class="bouton" href="duo.html?d=atelier">Voir les deux écrans</a><a class="lien" href="atelier-morel/">Le logiciel</a><a class="lien" href="atelier-morel/chantier.html">L’application du client</a></div></div>
+        <div class="demo-image"><video controls playsinline preload="none" data-lecteur="Lire le film" poster="captures/atelier.jpg" aria-label="Film : un devis signé sur téléphone, le logiciel réagit"><source src="../assets/films/devis-signe.mp4" type="video/mp4"></video></div>
+        <div><span class="type">Logiciel de gestion et application client</span><h2>Atelier Morel</h2><p>Le client signe son devis sur son téléphone. Le chantier et la facture d’acompte se créent tout seuls.</p>
+        <div class="liens"><a class="bouton" href="duo.html?d=atelier">Essayer cette démo</a></div></div>
       </article>
       <article class="demo">
-        <div class="demo-image"><video controls playsinline preload="none" poster="captures/lucie.jpg" aria-label="Film : une table réservée en ligne arrive dans le carnet"><source src="../assets/films/reservation.mp4" type="video/mp4"></video></div>
-        <div><span class="type">Site internet avec réservation</span><h2>Maison Lucie</h2><p>Un vrai site de restaurant. Le visiteur choisit une table disponible, la réservation arrive dans le carnet, et les créneaux pleins se ferment seuls.</p>
-        <div class="liens"><a class="bouton" href="duo.html?d=lucie">Voir les deux écrans</a><a class="lien" href="maison-lucie/">Le site</a><a class="lien" href="maison-lucie/carnet.html">Le carnet du restaurant</a></div></div>
+        <div class="demo-image"><video controls playsinline preload="none" data-lecteur="Lire le film" poster="captures/lucie.jpg" aria-label="Film : une table réservée en ligne arrive dans le carnet"><source src="../assets/films/reservation.mp4" type="video/mp4"></video></div>
+        <div><span class="type">Site internet avec réservation</span><h2>Maison Lucie</h2><p>Le client choisit une table libre. La réservation arrive dans le carnet, et les créneaux pleins se ferment seuls.</p>
+        <div class="liens"><a class="bouton" href="duo.html?d=lucie">Essayer cette démo</a></div></div>
       </article>
       <article class="demo">
-        <div class="demo-image"><video controls playsinline preload="none" poster="captures/boulangerie.jpg" aria-label="Film : une commande passée sur téléphone arrive au comptoir"><source src="../assets/films/commande.mp4" type="video/mp4"></video></div>
-        <div><span class="type">Application de commande</span><h2>Boulangerie des Halles</h2><p>Le client commande la veille et choisit son heure. Au comptoir, la liste de production se calcule seule, et le client est prévenu quand c’est prêt.</p>
-        <div class="liens"><a class="bouton" href="duo.html?d=boulangerie">Voir les deux écrans</a><a class="lien" href="boulangerie/">L’application</a><a class="lien" href="boulangerie/comptoir.html">Le comptoir</a></div></div>
+        <div class="demo-image"><video controls playsinline preload="none" data-lecteur="Lire le film" poster="captures/boulangerie.jpg" aria-label="Film : une commande passée sur téléphone arrive au comptoir"><source src="../assets/films/commande.mp4" type="video/mp4"></video></div>
+        <div><span class="type">Application de commande</span><h2>Boulangerie des Halles</h2><p>Le client commande la veille et choisit son heure. La liste de production se calcule seule, et il est prévenu quand tout est prêt.</p>
+        <div class="liens"><a class="bouton" href="duo.html?d=boulangerie">Essayer cette démo</a></div></div>
       </article>
       <article class="demo">
-        <div class="demo-image"><video controls playsinline preload="none" poster="captures/belle-rive.jpg" aria-label="Film : un tampon ajouté en caisse apparaît sur la carte de fidélité"><source src="../assets/films/fidelite.mp4" type="video/mp4"></video></div>
-        <div><span class="type">Application de fidélité et réservation</span><h2>Institut Belle Rive</h2><p>La carte de fidélité tient dans le téléphone. L’institut ajoute un tampon depuis la caisse, et la cliente le voit apparaître aussitôt.</p>
-        <div class="liens"><a class="bouton" href="duo.html?d=fidelite">Voir les deux écrans</a><a class="lien" href="belle-rive/">L’application</a><a class="lien" href="belle-rive/caisse.html">La caisse</a></div></div>
+        <div class="demo-image"><video controls playsinline preload="none" data-lecteur="Lire le film" poster="captures/belle-rive.jpg" aria-label="Film : un tampon ajouté en caisse apparaît sur la carte de fidélité"><source src="../assets/films/fidelite.mp4" type="video/mp4"></video></div>
+        <div><span class="type">Application de fidélité et réservation</span><h2>Institut Belle Rive</h2><p>L’institut ajoute un tampon depuis la caisse. La cliente le voit aussitôt sur sa carte de fidélité.</p>
+        <div class="liens"><a class="bouton" href="duo.html?d=fidelite">Essayer cette démo</a></div></div>
       </article>
     </div>
   </section>
   <section class="hub-suite">
-    <div class="cadre"><h2>La même chose, à votre nom.</h2><p>Chaque démo se transforme en outil pour votre entreprise, avec vos services, vos prix et vos clients.</p><a class="bouton" href="../#contact">Parler de mon projet</a></div>
+    <div class="cadre"><h2>La même chose pour votre entreprise.</h2><p>Avec vos services, vos prix et vos clients.</p><a class="bouton" href="../#contact">Parler de mon projet</a></div>
   </section>
 </main>
 <footer class="pied"><div class="cadre"><div class="grille"><a class="logo" href="../" aria-label="Onklaud, page d’accueil"><i aria-hidden="true"><svg viewBox="0 0 30 24"><path d="M3 13.5c2.6 1.8 4.4 4.3 6 7.5C13 12 19.5 5.5 27.5 2.5" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span aria-hidden="true">onklaud</span></a><nav aria-label="Pied de page"><a href="../">Accueil</a><a href="../#contact">Parler de mon projet</a><a href="../mentions-legales.html">Mentions légales</a></nav></div><p class="legal">Atelier Morel, Maison Lucie, Boulangerie des Halles et Institut Belle Rive sont des entreprises fictives créées pour ces démonstrations.</p></div></footer>
+<script src="../assets/js/lecteur.js"></script>
 </body>
 </html>
