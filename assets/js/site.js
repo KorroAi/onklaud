@@ -166,7 +166,12 @@
     const confirmation = $("#confirmation"), copie = $("#copie");
     const envoyer = $('button[type="submit"]', formulaire), libelleBouton = envoyer.innerHTML;
     const email = $("#f-email"), telephone = $("#f-tel");
-    let message = "";
+    let message = "", voie = "";
+    const wa = String(reglages.whatsapp || "").replace(/\D/g, ""), parWa = $("#par-whatsapp");
+    if (wa && parWa) {
+      parWa.hidden = false;
+      parWa.addEventListener("click", () => { voie = "whatsapp"; formulaire.requestSubmit ? formulaire.requestSubmit() : formulaire.dispatchEvent(new Event("submit", { cancelable: true })); });
+    }
     [email, telephone].forEach((c) => c.addEventListener("input", () => email.setCustomValidity("")));
 
     const confirmer = (etat) => {
@@ -193,6 +198,7 @@
 
     formulaire.addEventListener("submit", async (e) => {
       e.preventDefault();
+      const parWhatsapp = voie === "whatsapp"; voie = "";
       if (!formulaire.checkValidity()) { formulaire.reportValidity(); return; }
       const f = new FormData(formulaire);
       const v = (k) => String(f.get(k) || "").trim();
@@ -214,6 +220,11 @@
         "En quelques mots : " + v("phrase")
       ].join("\n");
       message = "À : " + reglages.email + "\nObjet : " + objet + "\n\n" + corps;
+      if (parWhatsapp) {
+        suivre("Projet envoyé", { sujet: libelle, voie: "whatsapp" });
+        window.location.href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(corps);
+        return;
+      }
 
       envoyer.disabled = true;
       envoyer.textContent = "Envoi en cours…";

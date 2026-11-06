@@ -39,7 +39,7 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 .discret { color: var(--gris); }
 .a-completer { color: #a33a1c; font-style: italic; }
 
-.heros h1, .entete h2, .texte-ex h3, .conviction p.grand, .contact h2, .titre-1, .titre-2 { font-family: var(--police-titres); word-spacing: .05em; }
+.heros h1, .heros .relais, .entete h2, .texte-ex h3, .conviction p.grand, .contact h2, .titre-1, .titre-2 { font-family: var(--police-titres); word-spacing: .05em; }
 .entete h2, .texte-ex h3, .contact h2 { text-wrap: balance; }
 .essai p, .entete p, .texte-ex p, .creation p, .quoi, .demande .petit, .faq p, .texte-c, .prix-bloc span, .chapeau, .etape p { text-wrap: pretty; }
 .insecable { white-space: nowrap; }
@@ -90,7 +90,8 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 .heros .cadre { position: relative; }
 .heros .texte { text-align: center; max-width: 1060px; margin: 0 auto; }
 .heros h1 { font-size: clamp(2.5rem, 3.6vw + 1.1rem, 4.3rem); line-height: 1.05; text-wrap: balance; font-weight: 790; letter-spacing: -.022em; color: #fff; }
-.heros .quoi { margin: 22px auto 0; max-width: 44em; text-wrap: balance; font-size: clamp(1.12rem, .45vw + 1.02rem, 1.3rem); }
+.heros .relais { margin: 16px auto 0; max-width: 40em; color: #fff; font-size: clamp(1.2rem, .7vw + 1.05rem, 1.5rem); line-height: 1.3; font-weight: 600; text-wrap: balance; }
+.heros .quoi { margin: 14px auto 0; max-width: 44em; text-wrap: balance; font-size: clamp(1.12rem, .45vw + 1.02rem, 1.3rem); }
 .heros .actions { margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 .heros .bouton-calme { background: rgba(255, 255, 255, .08); color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22); }
 .heros .bouton-calme:hover { background: rgba(255, 255, 255, .14); }
@@ -117,13 +118,19 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 .entete p { margin-top: 14px; font-size: 1.18rem; color: var(--gris); }
 
 /* Tout ce que nous créons */
-.creations { margin-top: 44px; display: grid; gap: 16px; }
-@media (min-width: 700px) { .creations { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1100px) { .creations { grid-template-columns: repeat(3, 1fr); } }
-.creation { display: flex; flex-direction: column; align-items: flex-start; padding: 24px 26px; border-radius: 20px; background: var(--blanc); box-shadow: inset 0 0 0 1px var(--filet), 0 1px 2px rgba(16, 28, 56, .05); }
+.creations { margin-top: 44px; display: grid; gap: 20px; }
+@media (min-width: 760px) { .creations { grid-template-columns: repeat(2, 1fr); } }
+.creation { display: flex; flex-direction: column; overflow: hidden; border-radius: 20px; background: var(--blanc); box-shadow: inset 0 0 0 1px var(--filet), 0 1px 2px rgba(16, 28, 56, .05); }
 .creation .ic-c { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: var(--orange-clair); }
 .creation .ic-c svg { width: 24px; height: 24px; fill: none; stroke: var(--orange-fonce); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
-.creation h3 { margin-top: 16px; font-size: 1.15rem; font-weight: 750; letter-spacing: -.02em; color: var(--encre); }
+.scene-c { display: block; aspect-ratio: 16 / 10; overflow: hidden; }
+.scene-c img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+.scene-c:hover img { transform: scale(1.015); }
+/* Le bas de cette capture est vide : le contenu est recentré, le fond reprend sa couleur. */
+.c-auto .scene-c { background: #1530d7; }
+.c-auto .scene-c img, .c-auto .scene-c:hover img { transform: translateY(19%); }
+.corps-c { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding: 22px 26px 24px; }
+.creation h3 { font-size: 1.3rem; font-weight: 750; letter-spacing: -.02em; color: var(--encre); }
 .creation p { margin: 6px 0 auto; font-size: 16px; }
 .autre { margin-top: 26px; text-align: center; font-size: 1.08rem; }
 
@@ -186,6 +193,7 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 @media (max-width: 560px) { .mon-nom .bouton { width: 100%; } }
 
 .creation .lien { display: inline-block; margin-top: 14px; font-size: 15.5px; }
+.liens-c { display: flex; flex-wrap: wrap; gap: 0 22px; }
 .contact .qui { display: flex; align-items: center; gap: 12px; margin-top: 26px; }
 .avatar-q { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--bleu); font-weight: 780; letter-spacing: -.02em; }
 .contact .qui .direct { margin-top: 0; }
@@ -211,7 +219,9 @@ code { font-size: .9em; padding: 2px 6px; border-radius: 6px; background: var(--
 .prix-appel .tva { display: block; margin-top: 4px; font-size: 14px; color: #a9b7d2; }
 
 /* Questions */
-.faq { margin: 36px auto 0; max-width: 800px; }
+.faq { margin: 36px auto 0; max-width: 1000px; display: grid; gap: clamp(28px, 4vw, 40px); }
+.faq-groupe h3 { margin-bottom: 8px; font-size: 1.2rem; font-weight: 750; letter-spacing: -.02em; color: var(--encre); }
+@media (min-width: 860px) { .faq-groupe { display: grid; grid-template-columns: 220px 1fr; gap: 28px; } .faq-groupe h3 { margin: 18px 0 0; } }
 .faq details { border-bottom: 1px solid var(--filet); }
 .faq details:first-child { border-top: 1px solid var(--filet); }
 .faq summary { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 0; cursor: pointer; list-style: none; font-weight: 650; font-size: 1.1rem; color: var(--encre); }
@@ -304,4 +314,37 @@ form.demande { background: var(--blanc); border-radius: 22px; padding: clamp(22p
   .monte { opacity: 1; transform: none; animation: none; }
   * { transition: none !important; }
   html { scroll-behavior: auto; }
+}
+
+/* Métiers, engagements, envois */
+.metiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-top: 24px; }
+.metiers a { display: block; padding: 14px 16px; border-radius: 12px; background: var(--blanc); box-shadow: inset 0 0 0 1px var(--filet); color: var(--encre); text-decoration: none; }
+.metiers a:hover { background: var(--orange-clair); }
+.metiers b { display: block; font-weight: 700; }
+.metiers span { font-size: 14.5px; color: #5a6275; }
+@media (max-width: 640px) { .metiers { grid-template-columns: 1fr 1fr; } .metiers a:last-child { grid-column: 1 / -1; } .metiers a { padding: 12px 14px; } .metiers span { display: none; } }
+.engagements { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 28px; }
+.engagements article { padding: 18px 20px; border-radius: 14px; background: #f3f5f9; }
+.engagements h3 { font-size: 1.08rem; font-weight: 700; color: var(--encre); }
+.engagements p { margin-top: 6px; }
+.envois { display: flex; flex-wrap: wrap; gap: 10px; }
+.envois .bouton { flex: 1 1 200px; }
+
+/* Téléphone : page plus courte, le formulaire arrive plus vite */
+@media (max-width: 640px) {
+  .section { padding: 48px 0; }
+  .creations { margin-top: 28px; gap: 16px; }
+  .corps-c { padding: 16px 18px 18px; }
+  .creation p { font-size: 15.5px; }
+  .autre { margin-top: 18px; font-size: 1rem; }
+  .engagements { gap: 10px; margin-top: 20px; }
+  .engagements article { padding: 14px 16px; }
+  .engagements p { font-size: 15.5px; line-height: 1.5; }
+  .note-demos { margin-top: 22px; }
+  .prix-grille { margin-top: 28px; gap: 14px; }
+  .prix-bloc { padding: 22px 20px; }
+  .prix-bloc ul { gap: 8px; font-size: 15.5px; }
+  .contact { gap: 28px; padding: 24px 18px; border-radius: 24px; }
+  .faq summary { gap: 14px; padding: 15px 0; font-size: 1rem; line-height: 1.4; }
+  .faq details p { padding: 0 0 18px; font-size: 16px; }
 }

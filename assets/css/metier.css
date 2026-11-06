@@ -1,0 +1,30 @@
+/* Pages par métier. */
+.m-tete { padding: clamp(48px, 7vw, 88px) 0; background: var(--m-c); color: var(--m-t); }
+.m-tete .cadre { display: grid; gap: 28px clamp(32px, 5vw, 64px); align-items: center; }
+@media (min-width: 900px) { .m-tete .cadre { grid-template-columns: 1fr 1.2fr; } }
+.m-tete h1 { font-family: var(--police-titres); font-size: clamp(2.2rem, 2.6vw + 1.2rem, 3.5rem); line-height: 1.06; font-weight: 790; letter-spacing: -.03em; color: inherit; text-wrap: balance; }
+.m-tete p { margin-top: 14px; font-size: 1.15rem; line-height: 1.45; }
+.m-tete .bouton { margin-top: 22px; }
+.m-tete img { display: block; width: 100%; height: auto; border-radius: 14px; }
+.m-duo { padding: clamp(48px, 6vw, 80px) 0; }
+.m-duo h2, .m-liste h2, .m-faq h2 { font-family: var(--police-titres); font-size: clamp(1.8rem, 1.5vw + 1.2rem, 2.5rem); line-height: 1.1; font-weight: 790; letter-spacing: -.03em; color: var(--encre); }
+.m-grille { display: grid; gap: 14px; margin-top: 24px; }
+@media (min-width: 760px) { .m-grille { grid-template-columns: repeat(3, 1fr); } }
+.m-grille article { padding: 18px 20px; border-radius: 14px; background: #f3f5f9; }
+.m-grille p { color: #566; }
+.m-grille b { display: block; margin-top: 8px; color: var(--encre); font-weight: 650; line-height: 1.4; }
+.m-liste { padding: clamp(48px, 6vw, 80px) 0; background: #f3f5f9; }
+.m-liste .cadre { display: grid; gap: 24px clamp(32px, 5vw, 64px); align-items: center; }
+@media (min-width: 900px) { .m-liste .cadre { grid-template-columns: 1fr 1fr; } }
+.m-liste ul { display: grid; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
+.m-liste li { padding-left: 22px; background: linear-gradient(#f26a1b, #f26a1b) 0 .7em / 10px 3px no-repeat; }
+.m-liste video { display: block; width: 100%; height: auto; border-radius: 14px; background: #13234a; }
+.m-faq { padding: clamp(48px, 6vw, 80px) 0; }
+.m-faq details { margin-top: 10px; padding: 14px 16px; border-radius: 12px; background: #f3f5f9; }
+.m-faq details:first-of-type { margin-top: 20px; }
+.m-faq summary { font-weight: 650; color: var(--encre); cursor: pointer; }
+.m-faq details p { margin-top: 8px; }
+.m-fin { padding: clamp(48px, 6vw, 80px) 0; background: var(--nuit); color: #c9d4ea; text-align: center; }
+.m-fin h2 { font-family: var(--police-titres); font-size: clamp(1.9rem, 2vw + 1rem, 2.8rem); line-height: 1.1; font-weight: 770; letter-spacing: -.03em; color: #fff; }
+.m-fin p { margin-top: 10px; }
+.m-fin .bouton { margin-top: 22px; }
