@@ -6,6 +6,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const ICONES = {
+    aujourdhui: '<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.600 5.600l1.400 1.400M17 17l1.400 1.400M5.600 18.400L7 17M17 7l1.400-1.400"/>',
     planning: '<rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M8 3v4M16 3v4M4 10h16"/>',
     chantiers: '<path d="M4 20V10l8-6 8 6v10"/><path d="M10 20v-6h4v6"/>',
     devis: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/>',
@@ -13,12 +14,13 @@
     stocks: '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>',
     clients: '<circle cx="9" cy="9" r="3.5"/><path d="M3 20c.6-3.4 3-5 6-5s5.400 1.600 6 5M16 5.500a3.500 3.500 0 010 7M17.500 15c2 .6 3.100 2.400 3.500 5"/>'
   };
-  const SECTIONS = [["planning", "Planning"], ["chantiers", "Chantiers"], ["devis", "Devis"], ["factures", "Factures"], ["stocks", "Stocks"], ["clients", "Clients"]];
+  const SECTIONS = [["aujourdhui", "Affaires"], ["planning", "Planning"], ["chantiers", "Chantiers"], ["devis", "Devis"], ["factures", "Factures"], ["stocks", "Matériel"], ["clients", "Clients"]];
+  const mobile = () => window.matchMedia("(max-width: 820px)").matches;
   const CATALOGUE = [["Main-d’œuvre", "jour", 420], ["Carrelage grès cérame, fourni posé", "m²", 78], ["Peinture, deux couches", "m²", 24], ["Déplacement", "forfait", 45]];
-  const COULEURS = { julien: ["#d5e4ec", "#12394d"], thomas: ["#ffe88a", "#3d3000"], sarah: ["#dcdad2", "#22272b"], karim: ["#f6d3ca", "#6e1a0c"] };
+  const COULEURS = { julien: ["#e8f0fe", "#1a3f8f"], thomas: ["#fdf3d8", "#6b4e00"], sarah: ["#eef0f2", "#3a424a"], karim: ["#fdeae6", "#8a2a18"] };
   const JOURS = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven."];
   const H0 = 8, PX_H = 76;
-  const ui = { vue: new URLSearchParams(location.search).get("vue") || "planning", lundi: O.lundi(), masques: {} };
+  const ui = { vue: new URLSearchParams(location.search).get("vue") || "aujourdhui", lundi: O.lundi(A.reference()), jour: O.iso(A.reference()), masques: {} };
   const client = (id) => m.d.clients.find((c) => c.id === id) || { nom: "" };
   const ttc = (x) => A.totalHT(x) * (1 + A.TVA);
 
@@ -30,21 +32,56 @@
 
   /* ---------- Menu et panneau ---------- */
   const menu = () => {
-    const d = m.d, retard = d.factures.filter((f) => !f.payee && f.echeance < O.jour()).length, bas = d.stocks.filter((s) => s.q <= s.seuil).length;
-    const em = { factures: retard, stocks: bas };
-    $("#menu").innerHTML = SECTIONS.map(([k, t]) => '<button class="lien" data-vue="' + k + '" aria-current="' + (ui.vue === k) + '"><svg viewBox="0 0 24 24">' + ICONES[k] + "</svg>" + t + (em[k] ? "<em>" + em[k] + "</em>" : "") + "</button>").join("");
+    const d = m.d, b = A.bilan(d), bas = d.stocks.filter((s) => s.q <= s.seuil && !s.commande).length, act = A.aFaire(d).length;
+    const em = { aujourdhui: act, factures: b.nbRetard, stocks: bas };
+    $("#menu").innerHTML = SECTIONS.map(([k, t]) => '<button class="lien" data-vue="' + k + '" aria-current="' + (ui.vue === k) + '"><svg viewBox="0 0 24 24">' + ICONES[k] + "</svg><span>" + t + "</span>" + (em[k] ? "<em>" + em[k] + "</em>" : "") + "</button>").join("");
     $("#equipe").innerHTML = d.equipe.map((e) => '<button class="membre" data-membre="' + e.id + '" aria-pressed="' + !ui.masques[e.id] + '"><i style="background:' + e.c + '"></i>' + e.nom + "</button>").join("");
   };
+  const journal = (n) => m.d.journal.length ? m.d.journal.slice(0, n).map((j) => '<p class="' + j.type + (ui.vus && !ui.vus.has(j.id) ? " neuf" : "") + '"><svg viewBox="0 0 24 24"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg><span>' + esc(j.texte) + "<small>" + esc(j.h) + "</small></span></p>").join("") : '<span class="vide">Les actions automatiques s’afficheront ici.</span>';
   const panneau = () => {
-    const d = m.d;
-    const bas = d.stocks.filter((s) => s.q <= s.seuil);
-    $("#panneau").innerHTML = '<section><h2>Aujourd’hui</h2>' + d.taches.slice(0, 5).map((t) => '<button class="tache ' + (t.fait ? "fait" : "") + '" data-tache="' + t.id + '"><i></i><span>' + esc(t.t) + "<small>" + esc(t.n) + "</small></span></button>").join("") + "</section>" +
-      '<section class="auto"><h2>Fait automatiquement</h2>' + (d.journal.length ? d.journal.slice(0, 7).map((j) => '<p class="' + j.type + (ui.vus && !ui.vus.has(j.id) ? " neuf" : "") + '"><svg viewBox="0 0 24 24"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg><span>' + esc(j.texte) + "<small>" + esc(j.h) + "</small></span></p>").join("") : '<span class="vide">Les actions automatiques s’afficheront ici.</span>') + "</section>" +
-      (bas.length ? '<section><button class="bouton calme petit" data-vue="stocks">' + bas.length + " article(s) à recommander</button></section>" : "");
+    $("#panneau").innerHTML = '<section class="auto"><h2>Fait pour vous</h2><p class="note">Ce que le logiciel a fait à votre place aujourd’hui.</p>' + journal(9) + "</section>";
+  };
+
+  /* Encaissements des huit dernières semaines et position des équipes sur la carte */
+  const graphiques = () => {
+    const d = m.d, sem = d.histo.concat([d.factures.filter((f) => f.payee && f.payeeLe && A.age(f.payeeLe) <= 7).reduce((t, f) => t + f.ttc, 0)]);
+    const max = Math.max(...sem), jour = O.iso(A.reference());
+    const barres = sem.map((v, i) => '<div title="' + O.eur(v, 0) + '"><i style="height:' + Math.round(v / max * 100) + '%"></i>' + (i === sem.length - 1 ? "Sem." : "S-" + (sem.length - 1 - i)) + "</div>").join("");
+    const lieux = { rossi: [66, 92, "M. Rossi"], martin: [186, 58, "Mme Martin"], durand: [262, 112, "Mme Durand"], leroy: [116, 34, "M. Leroy"] };
+    const vus = {};
+    const pins = d.interventions.filter((i) => i.jour === jour).map((i) => { const e = d.equipe.find((x) => x.id === i.qui) || d.equipe[0], l = lieux[i.client]; if (!l) return ""; const n = vus[i.client] = (vus[i.client] || 0) + 1, y = l[1] + (n - 1) * 19; return '<circle cx="' + l[0] + '" cy="' + y + '" r="7" fill="' + e.c + '" stroke="#fff" stroke-width="2"/><text x="' + (l[0] + 11) + '" y="' + (y + 4) + '">' + e.nom + "</text>"; }).join("");
+    return '<div class="vue-g"><section class="panneau-g"><h2>Encaissements par semaine</h2><div class="barres-g">' + barres + '</div></section><section class="panneau-g"><h2>Vos équipes aujourd’hui</h2><svg class="carte-l" viewBox="0 0 340 150" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Carte des interventions du jour"><rect width="340" height="150" fill="#eef3ef"/><path d="M110 0c-14 40 12 60 6 92s-22 34-18 58h18c-4-24 14-30 20-60s-20-52-8-90z" fill="#bcd9ea"/><path d="M226 0c-16 46 24 72 8 150h18c14-78-24-104-8-150z" fill="#bcd9ea"/><path d="M0 44h340M0 104h340M60 0v150M170 0v150M300 0v150M0 150L340 10" stroke="#fff" stroke-width="3" fill="none"/>' + pins + "</svg></section></div>";
+  };
+
+  /* ---------- Affaires : le parcours de l'argent, de gauche à droite ---------- */
+  const aujourdhui = () => {
+    const d = m.d, b = A.bilan(d), l = A.aFaire(d), jour = O.iso(A.reference());
+    const signes = d.devis.filter((x) => x.statut === "envoye"), dus = d.factures.filter((f) => !f.payee), payes = d.factures.filter((f) => f.payee);
+    const carteD = (x) => { const n = A.age(x.date), rel = l.find((a) => a.type === "devis" && a.id === x.id); return '<article class="dossier action devis"><div class="ligne-d"><b>' + esc(client(x.client).nom) + '</b><span class="som">' + O.eur(A.totalTTC(x), 0) + "</span></div><small>" + esc(x.objet) + '</small><div class="pied-d"><span class="age">' + n + " j sans réponse" + "</span>" + (rel ? '<button class="bouton calme petit" data-faire="devis:' + x.id + '">Relancer</button>' : '<span class="fait-d">Relancé</span>') + "</div></article>"; };
+    const carteF = (f) => { const r = f.echeance < O.jour(); return '<article class="dossier action ' + (r ? "urgent" : "") + '"><div class="ligne-d"><b>' + esc(client(f.client).nom) + '</b><span class="som">' + O.eur(f.ttc, 0) + "</span></div><small>" + esc(f.objet) + '</small><div class="pied-d"><span class="age">' + (r ? A.age(f.echeance) + " j de retard" : "Échéance " + O.dateCourte(f.echeance)) + "</span>" + (r && !f.relance ? '<button class="bouton calme petit" data-faire="facture:' + f.id + '">Relancer</button>' : f.relance ? '<span class="fait-d">Relancée</span>' : "") + "</div></article>"; };
+    const carteP = (f) => '<article class="dossier paye"><div class="ligne-d"><b>' + esc(client(f.client).nom) + '</b><span class="som">' + O.eur(f.ttc, 0) + "</span></div><small>" + esc(f.objet) + "</small></article>";
+    const carteC = (c) => { const n = c.etapes.filter((e) => e.e === "fait").length; return '<button class="dossier chantier-m" data-vue="chantiers"><b>' + esc(c.titre) + "</b><small>" + esc(client(c.client).nom) + '</small><span class="mini">' + c.etapes.map((e) => '<i class="' + e.e + '"></i>').join("") + "</span><small>" + n + " sur " + c.etapes.length + " étapes</small></button>"; };
+    const col = (t, nb, html, c) => '<section class="etape-p ' + c + '"><header><h2>' + t + "</h2><span>" + nb + "</span></header>" + (html || '<p class="vide-p">Aucun dossier.</p>') + "</section>";
+    const autres = l.filter((a) => a.type === "stock" || a.type === "tache");
+    const date = O.dateLongue(jour).replace(/^./, (x) => x.toUpperCase());
+    const n = l.filter((a) => a.type === "devis" || a.type === "facture").length;
+    return '<header class="haut"><h1>Affaires</h1><span class="sem">' + date + '</span></header><div class="corps"><div class="page affaires">' +
+      '<dl class="resume"><div class="fort"><dt>À récupérer</dt><dd id="a-recuperer">' + O.eur(b.recuperer, 0) + "</dd><span>" + (n ? n + (n > 1 ? " relances prêtes à envoyer" : " relance prête à envoyer") : "Tout est relancé") + "</span></div><div><dt>Devis à signer</dt><dd>" + O.eur(b.devis, 0) + "</dd><span>" + b.nbDevis + " en attente</span></div><div><dt>À encaisser</dt><dd>" + O.eur(b.impaye, 0) + "</dd><span>" + (b.nbRetard ? b.nbRetard + " en retard" : "Aucun retard") + '</span></div><div><dt>Encaissé sur 30 jours</dt><dd id="encaisse">' + O.eur(b.encaisse, 0) + "</dd><span>" + payes.length + " règlements</span></div></dl>" +
+      graphiques() +
+      '<div class="pipeline">' + col("À signer", signes.length, signes.map(carteD).join(""), "e1") + col("À encaisser", dus.length, dus.map(carteF).join(""), "e2") + col("En chantier", d.chantiers.length, d.chantiers.map(carteC).join(""), "e4") + col("Encaissé", payes.length, payes.slice(0, 4).map(carteP).join(""), "e3") + "</div>" +
+      (autres.length ? '<ul class="aussi">' + autres.map((a) => '<li class="action"><div><b>' + esc(a.titre) + "</b><small>" + esc(a.detail) + '</small></div><button class="bouton calme petit" data-faire="' + a.type + ":" + a.id + '">' + a.bouton + "</button></li>").join("") + "</ul>" : "") +
+      '<nav class="liens-plus" aria-label="Autres sections"><button data-vue="stocks">Matériel</button><button data-vue="clients">Clients</button></nav></div></div>';
   };
 
   /* ---------- Planning ---------- */
+  const planningMobile = () => {
+    const d = m.d, jours = [0, 1, 2, 3, 4].map((i) => O.jour(i, ui.lundi));
+    if (!jours.includes(ui.jour)) ui.jour = jours[0];
+    const l = d.interventions.filter((i) => i.jour === ui.jour).sort((a, b) => a.debut - b.debut);
+    return '<header class="haut"><h1>Planning</h1><div class="droite-haut"><button class="bouton" data-action="nouvelle-intervention" aria-label="Nouvelle intervention"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></header><div class="corps"><div class="page"><div class="puces-jours">' + jours.map((j, i) => '<button data-choisir-jour="' + j + '" aria-pressed="' + (j === ui.jour) + '"><small>' + JOURS[i] + "</small><b>" + Number(j.slice(8)) + "</b></button>").join("") + '</div><ul class="sorties grand">' + (l.map((i) => { const e = d.equipe.find((x) => x.id === i.qui) || d.equipe[0]; return '<li><button class="ev-l" data-ev-l="' + i.id + '"><time>' + O.heure(i.debut) + '</time><i style="background:' + e.c + '"></i><div><b>' + esc(i.titre) + "</b><small>" + e.nom + ", " + esc(client(i.client).nom) + "</small></div></button></li>"; }).join("") || '<li class="vide">Aucune intervention ce jour.</li>') + "</ul></div></div>";
+  };
   const planning = () => {
+    if (mobile()) return planningMobile();
     const d = m.d, jours = [0, 1, 2, 3, 4].map((i) => O.jour(i, ui.lundi)), auj = O.jour();
     const ven = jours[4];
     const heures = Array.from({ length: 10 }, (_, i) => "<span>" + String(H0 + i) + ":00</span>").join("");
@@ -74,18 +111,23 @@
   /* ---------- Chantiers ---------- */
   const chantiers = () => '<header class="haut"><h1>Chantiers</h1><span class="sem">' + m.d.chantiers.length + ' en cours</span><div class="droite-haut"><a class="bouton calme" href="chantier.html" target="_blank" rel="noopener">Voir l’application du client</a></div></header><div class="corps"><div class="page"><div class="cartes">' +
     m.d.chantiers.map((c) => {
-      const f = c.etapes.filter((e) => e.e === "fait").length, p = Math.round(f / c.etapes.length * 100);
-      return '<article class="carte"><h2>' + esc(c.titre) + "</h2><small>" + esc(client(c.client).nom) + " · " + esc(c.adresse) + '</small><div class="progres"><i style="width:' + p + '%"></i></div>' +
-        c.etapes.map((e, i) => '<button class="etape ' + e.e + '" data-etape="' + c.id + ":" + i + '"><i></i>' + esc(e.t) + "</button>").join("") +
-        (c.photos.length ? '<div class="vignettes">' + c.photos.slice(-4).map((p2) => '<img src="' + esc(p2) + '" alt="Photo du chantier">').join("") + "</div>" : "") +
-        '<div class="discussion">' + c.messages.slice(-2).map((x) => '<div class="bulle ' + (x.de === "client" ? "client" : "") + '"><small>' + esc(x.nom) + " · " + esc(x.h) + "</small>" + esc(x.texte) + "</div>").join("") +
+      const f = c.etapes.filter((e) => e.e === "fait").length, encours = c.etapes.find((e) => e.e === "encours");
+      return '<article class="carte chantier"><div class="tete-c">' + (c.photos.length ? '<img src="' + esc(c.photos[c.photos.length - 1]) + '" alt="Dernière photo du chantier">' : "") + "<div><h2>" + esc(c.titre) + "</h2><small>" + esc(client(c.client).nom) + ", " + esc(c.adresse) + "</small><p>" + f + " sur " + c.etapes.length + " étapes" + (encours ? ", " + esc(encours.t.toLowerCase()) + " en cours" : "") + '</p></div></div><div class="segments-c" aria-hidden="true">' + c.etapes.map((e) => '<i class="' + e.e + '"></i>').join("") + "</div>" +
+        '<p class="consigne-c">Cochez une étape : le client est prévenu sur son téléphone.</p>' +
+        c.etapes.map((e, i) => '<button class="etape ' + e.e + '" data-etape="' + c.id + ":" + i + '" aria-pressed="' + (e.e === "fait") + '"><i></i>' + esc(e.t) + "</button>").join("") +
+        '<label class="photo-c">Ajouter une photo pour le client<input type="file" accept="image/*" data-photo="' + c.id + '" hidden></label>' +
+        '<div class="discussion">' + c.messages.slice(-2).map((x) => '<div class="bulle ' + (x.de === "client" ? "client" : "") + '"><small>' + esc(x.nom) + ", " + esc(x.h) + "</small>" + esc(x.texte) + "</div>").join("") +
         '<form class="reponse" data-reponse="' + c.id + '"><input name="t" placeholder="Écrire au client" aria-label="Écrire au client" autocomplete="off"><button class="bouton petit">Envoyer</button></form></div></article>';
     }).join("") + "</div></div></div>";
 
   /* ---------- Devis ---------- */
   const STATUT_D = { brouillon: ["Brouillon", "b-gris"], envoye: ["En attente", "b-ambre"], signe: ["Signé", "b-vert"], refuse: ["Refusé", "b-rose"] };
-  const devis = () => '<header class="haut"><h1>Devis</h1><div class="droite-haut"><button class="bouton" data-action="nouveau-devis"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nouveau devis</button></div></header><div class="corps"><div class="page"><table class="tableau"><thead><tr><th>Numéro</th><th>Client</th><th class="cache-mobile">Objet</th><th class="n">TTC</th><th>État</th></tr></thead><tbody>' +
-    m.d.devis.map((x) => { const s = STATUT_D[x.statut]; return '<tr data-devis="' + x.id + '"><td><b>' + x.num + "</b><small>" + O.dateCourte(x.date) + "</small></td><td>" + esc(client(x.client).nom) + '</td><td class="cache-mobile">' + esc(x.objet) + '</td><td class="n">' + O.eur(ttc(x)) + '</td><td><span class="badge ' + s[1] + '">' + s[0] + "</span></td></tr>"; }).join("") + "</tbody></table></div></div>";
+  const depuis = (iso) => { const n = A.age(iso); return n === 0 ? "aujourd’hui" : n === 1 ? "hier" : "il y a " + n + " jours"; };
+  const devis = () => {
+    const b = A.bilan(m.d), signes = m.d.devis.filter((x) => x.statut === "signe");
+    return '<header class="haut"><h1>Devis</h1><div class="droite-haut"><button class="bouton" data-action="nouveau-devis"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>Nouveau devis</span></button></div></header><div class="corps"><div class="page"><dl class="resume"><div><dt>En attente de signature</dt><dd>' + O.eur(b.devis, 0) + "</dd></div><div><dt>Signés</dt><dd>" + O.eur(signes.reduce((t, x) => t + A.totalTTC(x), 0), 0) + '</dd></div></dl><table class="tableau"><thead><tr><th>Numéro</th><th>Client</th><th class="cache-mobile">Objet</th><th class="n">TTC</th><th>État</th></tr></thead><tbody>' +
+      m.d.devis.map((x) => { const s = STATUT_D[x.statut]; return '<tr data-devis="' + x.id + '"><td><b>' + x.num + "</b><small>" + (x.statut === "envoye" ? "Envoyé " + depuis(x.date) : O.dateCourte(x.date)) + "</small></td><td>" + esc(client(x.client).nom) + '</td><td class="cache-mobile">' + esc(x.objet) + '</td><td class="n">' + O.eur(ttc(x), 0) + '</td><td><span class="badge ' + s[1] + '">' + (x.relance && x.statut === "envoye" ? "Relancé" : s[0]) + "</span></td></tr>"; }).join("") + "</tbody></table></div></div>";
+  };
 
   const fenetreDevis = (id) => {
     const ex = m.d.devis.find((x) => x.id === id);
@@ -131,17 +173,43 @@
 
   /* ---------- Factures, stocks, clients ---------- */
   const factures = () => {
-    const d = m.d, du = d.factures.filter((f) => !f.payee).reduce((t, f) => t + f.ttc, 0);
-    return '<header class="haut"><h1>Factures</h1><span class="sem">' + O.eur(du) + ' à encaisser</span></header><div class="corps"><div class="page"><table class="tableau"><thead><tr><th>Numéro</th><th>Client</th><th class="cache-mobile">Objet</th><th class="n">TTC</th><th>État</th><th></th></tr></thead><tbody>' +
+    const d = m.d, b = A.bilan(d);
+    return '<header class="haut"><h1>Factures</h1></header><div class="corps"><div class="page"><dl class="resume"><div><dt>À encaisser</dt><dd>' + O.eur(b.impaye, 0) + "</dd></div><div><dt>Encaissé sur 30 jours</dt><dd>" + O.eur(b.encaisse, 0) + '</dd></div></dl><table class="tableau"><thead><tr><th>Numéro</th><th>Client</th><th class="cache-mobile">Objet</th><th class="n">TTC</th><th>État</th><th class="cache-mobile"></th></tr></thead><tbody>' +
       d.factures.map((f) => {
         const r = !f.payee && f.echeance < O.jour();
-        return '<tr data-facture="' + f.id + '"><td><b>' + f.num + "</b><small>Échéance " + O.dateCourte(f.echeance) + "</small></td><td>" + esc(client(f.client).nom) + '</td><td class="cache-mobile">' + esc(f.objet) + '</td><td class="n">' + O.eur(f.ttc) + '</td><td><span class="badge ' + (f.payee ? "b-vert" : r ? "b-rose" : "b-ambre") + '">' + (f.payee ? "Payée" : r ? "En retard" : "À payer") + "</span></td><td>" + (f.payee ? "" : '<button class="bouton calme petit" data-payer="' + f.id + '">Marquer payée</button>') + "</td></tr>";
+        return '<tr data-facture="' + f.id + '"><td><b>' + f.num + "</b><small>" + (f.payee ? "Réglée" : "Échéance " + O.dateCourte(f.echeance)) + "</small></td><td>" + esc(client(f.client).nom) + '</td><td class="cache-mobile">' + esc(f.objet) + '</td><td class="n">' + O.eur(f.ttc, 0) + '</td><td><span class="badge ' + (f.payee ? "b-vert" : r ? "b-rose" : "b-ambre") + '">' + (f.payee ? "Payée" : f.relance ? "Relancée" : r ? "En retard" : "À payer") + '</span></td><td class="cache-mobile">' + (f.payee ? "" : '<button class="bouton calme petit" data-payer="' + f.id + '">Marquer payée</button>') + "</td></tr>";
       }).join("") + "</tbody></table></div></div>";
   };
-  const stocks = () => '<header class="haut"><h1>Stocks</h1></header><div class="corps"><div class="page"><div class="cartes">' +
-    m.d.stocks.map((s) => { const bas = s.q <= s.seuil; return '<article class="carte stock"><div><h2>' + esc(s.nom) + "</h2><small>" + esc(s.f) + " · seuil " + s.seuil + " " + s.u + '</small>' + (bas ? '<span class="badge b-ambre" style="margin-top:6px">Commande préparée</span>' : "") + '</div><div class="compteur"><button data-stock="' + s.id + ':-1" aria-label="Retirer">−</button><b>' + s.q + '</b><button data-stock="' + s.id + ':1" aria-label="Ajouter">+</button></div></article>'; }).join("") + "</div></div></div>";
-  const clients = () => '<header class="haut"><h1>Clients</h1><div class="droite-haut"><button class="bouton" data-action="nouveau-client"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nouveau client</button></div></header><div class="corps"><div class="page"><table class="tableau"><thead><tr><th>Nom</th><th class="cache-mobile">Adresse</th><th>Téléphone</th><th class="n">Devis</th></tr></thead><tbody>' +
-    m.d.clients.map((c) => "<tr><td><b>" + esc(c.nom) + "</b><small>" + esc(c.email) + '</small></td><td class="cache-mobile">' + esc(c.adresse) + "</td><td>" + esc(c.tel) + '</td><td class="n">' + m.d.devis.filter((x) => x.client === c.id).length + "</td></tr>").join("") + "</tbody></table></div></div>";
+  const stocks = () => '<header class="haut"><h1>Matériel</h1></header><div class="corps"><div class="page"><div class="cartes stocks">' +
+    m.d.stocks.map((s) => {
+      const bas = s.q <= s.seuil;
+      return '<article class="carte stock ' + (bas ? "bas" : "") + '"><div class="info-s"><h2>' + esc(s.nom) + "</h2><small>" + esc(s.f) + ", seuil de " + s.seuil + " " + s.u + "</small>" + (bas ? (s.commande ? '<span class="badge b-vert">Commande envoyée</span>' : '<span class="badge b-ambre">Commande préparée</span>') : "") + '</div><div class="compteur"><button data-stock="' + s.id + ':-1" aria-label="Retirer">−</button><b>' + s.q + '</b><button data-stock="' + s.id + ':1" aria-label="Ajouter">+</button></div>' + (bas && !s.commande ? '<button class="bouton plein" data-faire="stock:' + s.id + '">Commander chez ' + esc(s.f) + "</button>" : "") + "</article>";
+    }).join("") + "</div></div></div>";
+  const clients = () => '<header class="haut"><h1>Clients</h1><div class="droite-haut"><button class="bouton" data-action="nouveau-client"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>Nouveau client</span></button></div></header><div class="corps"><div class="page"><table class="tableau"><thead><tr><th>Nom</th><th class="cache-mobile">Adresse</th><th>Téléphone</th><th class="n">Signé</th></tr></thead><tbody>' +
+    m.d.clients.map((c) => "<tr><td><b>" + esc(c.nom) + "</b><small>" + esc(c.email) + '</small></td><td class="cache-mobile">' + esc(c.adresse) + '</td><td><a href="tel:' + esc((c.tel || "").replace(/\s/g, "")) + '">' + esc(c.tel) + '</a></td><td class="n">' + O.eur(m.d.devis.filter((x) => x.client === c.id && x.statut === "signe").reduce((t, x) => t + A.totalTTC(x), 0), 0) + "</td></tr>").join("") + "</tbody></table></div></div>";
+
+  /* ---------- Relances : le message est écrit, il reste à l'envoyer ---------- */
+  const fenetreRelance = (type, id) => {
+    const x = type === "devis" ? m.d.devis.find((y) => y.id === id) : m.d.factures.find((y) => y.id === id);
+    const c = client(x.client), nom = c.nom;
+    const texte = type === "devis"
+      ? "Bonjour " + nom + ",\n\nVous avez reçu notre devis " + x.num + " pour « " + x.objet + " ». Avez-vous pu le consulter ? Vous pouvez le signer directement depuis votre téléphone.\n\nCordialement,\n" + A.MARQUE
+      : "Bonjour " + nom + ",\n\nSauf erreur de notre part, la facture " + x.num + " de " + O.eur(x.ttc, 0).replace(/\u00a0/g, " ") + " n’est pas réglée. Pouvez-vous nous confirmer sa date de règlement ?\n\nCordialement,\n" + A.MARQUE;
+    ouvrir('<form class="fenetre" role="dialog" aria-modal="true" aria-label="Relance"><h2>Relancer ' + esc(nom) + '</h2><p class="chapo">Message rédigé par le logiciel. Vous pouvez le modifier.</p><label>Message<textarea class="champ" name="t" rows="8">' + esc(texte) + '</textarea></label><div class="boutons"><button type="button" class="bouton calme" data-action="fermer">Annuler</button><button class="bouton">Envoyer la relance</button></div></form>');
+    const f = $("#voile form");
+    f.addEventListener("click", (e) => { if (e.target.dataset.action === "fermer") fermer(); });
+    f.addEventListener("submit", (e) => {
+      e.preventDefault();
+      m.maj((d) => {
+        const y = (type === "devis" ? d.devis : d.factures).find((z) => z.id === id);
+        y.relance = O.jour();
+        d.journal.unshift({ id: O.id(), h: O.maintenant(), texte: "Relance envoyée à " + nom + " : " + y.num, type: "relance" });
+        const ch = d.chantiers.find((z) => z.client === x.client);
+        if (ch) ch.messages.push({ de: "pro", nom: A.MARQUE, h: "à l’instant", texte: type === "devis" ? "Votre devis " + y.num + " attend votre signature." : "La facture " + y.num + " reste à régler." });
+      });
+      fermer(); toast("Relance envoyée à " + nom);
+    });
+  };
 
   /* ---------- Fenêtre d'intervention ---------- */
   let focusAvant = null;
@@ -174,16 +242,18 @@
       '</tbody></table><div class="tot"><p><span>Total HT</span><span>' + O.eur(ht) + "</span></p><p><span>TVA 10 %</span><span>" + O.eur(ht * A.TVA) + "</span></p><p><span>Total TTC</span><span>" + O.eur(ht * (1 + A.TVA)) + "</span></p></div>" + extra + '<p class="pied">Document de démonstration Onklaud.</p></article>';
     window.print();
   };
+  const payer = (id) => { m.maj((d) => { const f = d.factures.find((x) => x.id === id); f.payee = true; f.payeeLe = O.jour(); }); toast("Facture marquée payée"); };
   const fenetreFacture = (id) => {
     const f = m.d.factures.find((x) => x.id === id), c = client(f.client), retard = !f.payee && f.echeance < O.jour();
     const corps = "Bonjour " + c.nom + ",\n\nSauf erreur de notre part, la facture " + f.num + " de " + O.eur(f.ttc).replace(/\u00a0/g, " ") + " n’est pas réglée. Pouvez-vous nous confirmer sa date de règlement ?\n\nMerci,\n" + A.MARQUE;
     ouvrir('<div class="fenetre" role="dialog" aria-modal="true" aria-label="Facture"><h2>Facture ' + f.num + '</h2><p><b>' + esc(c.nom) + "</b>, " + esc(f.objet) + '</p><p style="margin-top:6px">' + O.eur(f.ttc) + " TTC, échéance " + O.dateCourte(f.echeance) + ".</p>" + (retard ? '<label>Relance préparée<textarea class="champ" rows="6" readonly>' + esc(corps) + "</textarea></label>" : "") +
-      '<div class="boutons"><button class="bouton calme" data-action="fermer">Fermer</button><button class="bouton calme" data-action="imprimer-f">Imprimer</button>' + (retard ? '<a class="bouton calme" href="mailto:' + esc(c.email) + "?subject=" + encodeURIComponent("Facture " + f.num) + "&body=" + encodeURIComponent(corps) + '">Envoyer la relance</a>' : "") + (f.payee ? "" : '<button class="bouton" data-action="payee">Marquer payée</button>') + "</div></div>");
+      '<div class="boutons"><button class="bouton calme" data-action="fermer">Fermer</button><button class="bouton calme" data-action="imprimer-f">Imprimer</button>' + (retard && !f.relance ? '<button class="bouton calme" data-action="relancer">Envoyer la relance</button>' : "") + (f.payee ? "" : '<button class="bouton" data-action="payee">Marquer payée</button>') + "</div></div>");
     $("#voile").onclick = (e) => {
       const a = (e.target.closest("button") || {}).dataset; if (!a) return;
       if (a.action === "fermer") fermer();
       if (a.action === "imprimer-f") imprimerPiece("Facture", f.num, c, [{ d: f.objet, q: 1, pu: Math.round(f.ttc / (1 + A.TVA) * 100) / 100 }], f.date, f.payee ? "<p>Facture acquittée.</p>" : "<p>À régler avant le " + O.dateCourte(f.echeance) + ".</p>");
-      if (a.action === "payee") { m.maj((d) => { d.factures.find((x) => x.id === id).payee = true; }); fermer(); }
+      if (a.action === "relancer") { fermer(); fenetreRelance("facture", id); }
+      if (a.action === "payee") { payer(id); fermer(); }
     };
   };
   const fenetreClient = () => {
@@ -251,17 +321,24 @@
     const ev = e.target.closest(".ev");
     if (ev && !prise && !ui.finGlisse) { fenetreIntervention(ev.dataset.ev); return; }
     ui.finGlisse = false;
-    const b = e.target.closest("[data-vue],[data-membre],[data-tache],[data-semaine],[data-action],[data-etape],[data-payer],[data-stock],tr[data-devis],tr[data-facture]");
+    const b = e.target.closest("[data-vue],[data-membre],[data-faire],[data-choisir-jour],[data-ev-l],[data-semaine],[data-action],[data-etape],[data-payer],[data-stock],tr[data-devis],tr[data-facture]");
     if (!b || b.closest("#voile")) return;
     const ds = b.dataset;
     if (ds.vue) { ui.vue = ds.vue; rendre(); }
     else if (ds.membre) { ui.masques[ds.membre] = !ui.masques[ds.membre]; rendre(); }
-    else if (ds.tache) m.maj((d) => { const t = d.taches.find((x) => x.id === ds.tache); t.fait = !t.fait; });
+    else if (ds.faire) {
+      const [t, id] = ds.faire.split(":");
+      if (t === "devis" || t === "facture") fenetreRelance(t, id);
+      if (t === "tache") m.maj((d) => { d.taches.find((x) => x.id === id).fait = true; });
+      if (t === "stock") { m.maj((d) => { const s = d.stocks.find((x) => x.id === id); s.commande = true; d.journal.unshift({ id: O.id(), h: O.maintenant(), texte: s.nom + " commandé chez " + s.f, type: "stock" }); }); toast("Commande envoyée"); }
+    }
+    else if (ds.choisirJour) { ui.jour = ds.choisirJour; rendre(); }
+    else if (ds.evL) fenetreIntervention(ds.evL);
     else if (ds.semaine !== undefined) { ui.lundi = ds.semaine === "0" ? O.lundi() : new Date(ui.lundi.getTime() + ds.semaine * 7 * 864e5); rendre(); }
     else if (ds.action === "nouvelle-intervention") fenetreIntervention();
     else if (ds.action === "nouveau-devis") fenetreDevis();
     else if (ds.action === "nouveau-client") fenetreClient();
-    else if (ds.payer) { e.stopPropagation(); m.maj((d) => { d.factures.find((f) => f.id === ds.payer).payee = true; }); }
+    else if (ds.payer) { e.stopPropagation(); payer(ds.payer); }
     else if (ds.facture) fenetreFacture(ds.facture);
     else if (ds.devis) fenetreDevis(ds.devis);
     else if (ds.etape) {
@@ -281,9 +358,16 @@
     const t = f.t.value.trim(); if (!t) return;
     m.maj((d) => { d.chantiers.find((c) => c.id === f.dataset.reponse).messages.push({ de: "pro", nom: A.MARQUE, h: O.maintenant(), texte: t }); });
   });
+  document.addEventListener("change", async (e) => {
+    const id = e.target.dataset && e.target.dataset.photo; if (!id || !e.target.files[0]) return;
+    const p = await O.photo(e.target.files[0]);
+    const ok = m.maj((d) => { const c = d.chantiers.find((x) => x.id === id); c.photos.push(p); c.messages.push({ de: "pro", nom: A.MARQUE, h: O.maintenant(), texte: "Voici une nouvelle photo de votre chantier.", photo: p }); });
+    toast(ok ? "Photo envoyée au client" : "Le stockage de ce navigateur est plein");
+  });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#voile").hidden) fermer(); });
+  window.matchMedia("(max-width: 820px)").addEventListener("change", () => rendre());
 
-  const VUES = { planning, chantiers, devis, factures, stocks, clients };
+  const VUES = { aujourdhui, planning, chantiers, devis, factures, stocks, clients };
   const rendre = () => {
     const c = $(".corps"), haut = c ? c.scrollTop : 0;
     menu(); panneau();
@@ -297,7 +381,7 @@
     if (dern && dern.id !== ui.dernier) { if (ui.dernier !== undefined && dern.type === "signe") toast(dern.texte); ui.dernier = dern.id; }
   });
   ui.dernier = (m.d.journal[0] || {}).id;
-  window.bandeauDemo(m, "../", "ouvrez un devis, déplacez une intervention dans le planning, baissez un stock, ou signez un devis depuis <a href=\"chantier.html\" target=\"_blank\" rel=\"noopener\">l’application du client</a>.");
+  window.bandeauDemo(m, "../", "envoyez une relance, puis signez le devis depuis <a href=\"chantier.html\" target=\"_blank\" rel=\"noopener\">le fil du client</a> : le dossier avance ici, de colonne en colonne.");
   rendre();
   window.demoAtelier = { m, ui, rendre };
 })();

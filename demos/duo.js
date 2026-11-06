@@ -2,10 +2,10 @@
 (function () {
   "use strict";
   const DEMOS = {
-    atelier: { cle: "atelier-morel", pro: "atelier-morel/?cadre=1", client: "atelier-morel/chantier.html?cadre=1", consigne: "Sur le téléphone, ouvrez <b>Documents</b> et signez le devis. Regardez le logiciel.", mobile: "Ouvrez <b>Documents</b> et signez le devis." },
-    boulangerie: { cle: "boulangerie", pro: "boulangerie/comptoir.html?cadre=1", client: "boulangerie/?cadre=1", consigne: "Passez une commande sur le téléphone. Elle arrive au comptoir.", mobile: "Passez une commande, puis regardez le comptoir." },
-    lucie: { cle: "maison-lucie", pro: "maison-lucie/carnet.html?cadre=1", client: "maison-lucie/?cadre=1", consigne: "Réservez une table. Elle apparaît dans le carnet du restaurant.", mobile: "Réservez une table, puis regardez le carnet." },
-    fidelite: { cle: "belle-rive", pro: "belle-rive/caisse.html?cadre=1", client: "belle-rive/?cadre=1", consigne: "Ajoutez un tampon à Camille depuis la caisse. Regardez sa carte.", mobile: "Voici la carte de fidélité de Camille. Le tampon s’ajoute depuis la caisse." }
+    atelier: { cle: "atelier-morel", pro: "atelier-morel/?cadre=1", client: "atelier-morel/chantier.html?cadre=1", consigne: "Dans le fil du client, signez le devis puis réglez l’acompte. Le dossier avance de colonne en colonne.", mobile: "Signez le devis dans le fil, puis réglez l’acompte." },
+    boulangerie: { cle: "boulangerie", pro: "boulangerie/comptoir.html?cadre=1", client: "boulangerie/?cadre=1", consigne: "Commandez sur le téléphone. La production de demain se recalcule aussitôt.", mobile: "Passez une commande, puis regardez la production." },
+    lucie: { cle: "maison-lucie", pro: "maison-lucie/carnet.html?cadre=1", client: "maison-lucie/?cadre=1", consigne: "Demandez confirmation aux tables, puis proposez la table libérée à la liste d’attente.", mobile: "Réservez une table, puis regardez le plan de salle." },
+    fidelite: { cle: "belle-rive", pro: "belle-rive/caisse.html?cadre=1", client: "belle-rive/?cadre=1", consigne: "Dans l’agenda, cliquez sur une place vide et proposez-la à Camille. Elle accepte sur son téléphone.", mobile: "Voici l’application de Camille. L’institut lui propose les places vides." }
   };
   const p = new URLSearchParams(location.search);
   const d = DEMOS[p.get("d")] || DEMOS.atelier;

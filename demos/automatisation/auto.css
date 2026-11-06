@@ -1,0 +1,63 @@
+/* Automatisation : grand bleu électrique, blocs blancs, une pastille jaune qui avance. Bricolage Grotesque. */
+@font-face { font-family: "Bricolage"; src: url("../../assets/polices/bricolage-grotesque-latin.woff2") format("woff2"); font-weight: 200 800; font-stretch: 75% 100%; font-display: swap; }
+@font-face { font-family: "Bricolage"; src: url("../../assets/polices/bricolage-grotesque-latin-ext.woff2") format("woff2"); font-weight: 200 800; font-stretch: 75% 100%; unicode-range: U+0100-024F, U+1E00-1EFF, U+20AC; font-display: swap; }
+:root { --accent: #ffd60a; --bleu: #1430d6; --bleu2: #0f25ad; --jaune: #ffd60a; --encre: #0b1440; --gris: #5a6488; --ciel: #cdd6ff; }
+html, body { min-height: 100%; }
+body { background: var(--bleu); color: #fff; font: 400 15px/21px "Bricolage", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+.tete { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; padding: 26px clamp(16px, 3vw, 40px) 18px; }
+.tete p { color: var(--ciel); font-size: 14px; font-weight: 500; }
+.tete h1 { max-width: 15em; font-size: clamp(32px, 4.6vw, 62px); font-weight: 700; font-stretch: 80%; line-height: .98; letter-spacing: -.025em; }
+.compteurs { display: flex; gap: 28px; margin: 0; }
+.compteurs dt { color: var(--ciel); font-size: 13px; line-height: 18px; white-space: nowrap; }
+.compteurs dd { margin: 0; color: var(--jaune); font-size: 44px; font-weight: 700; font-stretch: 80%; line-height: 1; font-variant-numeric: tabular-nums; }
+.scene { display: grid; grid-template-columns: 320px minmax(0, 1fr) 340px; gap: 16px; padding: 0 clamp(16px, 3vw, 40px) 32px; align-items: start; }
+.entree { padding: 16px; border-radius: 16px; background: #fff; color: var(--encre); }
+.entree h2 { font-size: 17px; font-weight: 700; line-height: 22px; }
+textarea { display: block; width: 100%; margin-top: 10px; padding: 11px 12px; border: 1px solid #d5daf0; border-radius: 10px; background: #f6f7fe; color: var(--encre); font: inherit; resize: vertical; }
+.exemples { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.exemples button { height: 30px; padding: 0 11px; border: 0; border-radius: 15px; background: #e8ebfd; color: var(--bleu2); font-size: 13px; font-weight: 600; }
+#lancer { width: 100%; height: 50px; margin-top: 12px; border: 0; border-radius: 12px; background: var(--bleu); color: #fff; font-size: 16px; font-weight: 700; }
+#lancer:disabled { background: #dfe3f7; color: var(--gris); cursor: default; }
+.note { margin-top: 8px; color: var(--gris); font-size: 12.5px; line-height: 17px; }
+.flux { position: relative; }
+.liens { position: absolute; inset: 0; width: 100%; height: 100%; }
+.liens path { fill: none; stroke: #4a60e8; stroke-width: 3; }
+.liens path.on { stroke: var(--jaune); }
+#noeuds { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 112px; gap: 36px 30px; }
+.noeud { display: flex; flex-direction: column; justify-content: center; gap: 4px; min-width: 0; padding: 10px 12px; border-radius: 14px; background: var(--bleu2); box-shadow: inset 0 0 0 1.5px #3a50de; color: var(--ciel); transition: background .25s, color .25s, transform .25s; }
+.noeud:nth-child(1) { grid-area: 1 / 1; } .noeud:nth-child(2) { grid-area: 1 / 2; } .noeud:nth-child(3) { grid-area: 1 / 3; }
+.noeud:nth-child(4) { grid-area: 2 / 3; } .noeud:nth-child(5) { grid-area: 2 / 2; } .noeud:nth-child(6) { grid-area: 2 / 1; }
+.noeud:nth-child(7) { grid-area: 3 / 1; }
+.noeud i { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #2b42d8; color: #fff; font-size: 13px; font-style: normal; font-weight: 700; }
+.noeud b { font-size: 16.5px; font-weight: 700; line-height: 21px; }
+.noeud small { display: block; min-height: 18px; overflow: hidden; font-size: 13px; line-height: 18px; text-overflow: ellipsis; white-space: nowrap; }
+.noeud.actif { background: var(--jaune); box-shadow: 0 0 0 5px rgba(255, 214, 10, .28); color: var(--encre); transform: scale(1.03); }
+.noeud.actif i { background: var(--encre); }
+.noeud.fait { background: #fff; box-shadow: none; color: var(--encre); }
+.noeud.fait i { background: var(--jaune); color: var(--encre); }
+.noeud.fait small { color: var(--gris); }
+.resultat { display: grid; gap: 8px; align-content: start; min-height: 80px; }
+.resultat:empty::before { content: "Le résultat s’affichera ici."; padding: 16px; border-radius: 14px; box-shadow: inset 0 0 0 1.5px #3a50de; color: var(--ciel); }
+.resultat article { padding: 11px 14px; border-radius: 14px; background: #fff; color: var(--encre); animation: entre .35s cubic-bezier(.2, .8, .3, 1) both; }
+.resultat article:nth-child(2) { animation-delay: .08s; }
+.resultat article:nth-child(3) { animation-delay: .16s; }
+.resultat article:nth-child(4) { animation-delay: .24s; }
+@keyframes entre { from { transform: translateY(10px); opacity: 0; } }
+.resultat small { color: var(--gris); font-size: 12.5px; line-height: 17px; }
+.resultat b { display: block; font-size: 20px; font-weight: 700; font-stretch: 85%; line-height: 25px; }
+.resultat p { font-size: 14px; line-height: 19px; }
+.r-devis { background: var(--jaune) !important; }
+.r-devis small { color: var(--encre) !important; }
+.r-sms { background: #e8ebfd !important; }
+@media (max-width: 1180px) { .scene { grid-template-columns: 300px minmax(0, 1fr); } .resultat { grid-column: 1 / -1; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); } }
+@media (max-width: 800px) {
+  .tete { flex-direction: column; align-items: flex-start; gap: 12px; padding-top: 18px; }
+  .en-cadre .tete { padding-top: 56px; }
+  .scene { grid-template-columns: minmax(0, 1fr); }
+  .flux { min-height: 0; }
+  .liens { display: none; }
+  #noeuds { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; gap: 6px; }
+  .noeud:nth-child(n) { grid-area: auto; flex-direction: row; align-items: center; gap: 10px; padding: 9px 12px; }
+  .noeud i { flex: none; }
+  .noeud div { min-width: 0; }
+}

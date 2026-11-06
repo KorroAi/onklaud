@@ -4,16 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Caisse · Institut Belle Rive, démo Onklaud</title>
+<title>Agenda · Institut Belle Rive, démo Onklaud</title>
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../commun/base.css">
 <link rel="stylesheet" href="theme.css">
 </head>
-<body>
-<header class="en-tete"><h1 data-marque>Institut Belle Rive</h1><span id="date"></span></header>
-<main>
-  <h2>Rendez-vous</h2><div id="agenda"></div>
-  <h2>Cartes de fidélité</h2><div id="clientes"></div>
+<body class="institut">
+<header class="en-tete"><h1 data-marque>Institut Belle Rive</h1><div class="jours-i" id="jours"></div></header>
+<section class="kpi-i" id="kpi" aria-label="Résumé de la journée"></section>
+<main class="bureau">
+  <section class="agenda-z" aria-label="Agenda de la journée"><div id="agenda"></div></section>
+  <aside class="cote-i"><section id="remplir"></section><section class="fidele"><h2>Bientôt un soin offert</h2><div id="clientes"></div></section></aside>
 </main>
 <script src="../commun/magasin.js"></script>
 <script src="donnees.js"></script>
@@ -23,26 +24,55 @@
   const O = window.Outils, B = window.BelleRive, esc = O.esc;
   const m = window.Magasin("belle-rive", B.depart);
   const $ = (s) => document.querySelector(s);
+  const ui = { jour: B.reference(), creneau: null };
+  const init = (n) => n.split(" ").map((x) => x[0]).join("");
+
   const rendre = () => {
-    $("#date").textContent = O.dateLongue(O.jour());
-    const rang = (r) => r.jour + String(B.HEURES.indexOf(r.heure)).padStart(2, "0");
-    $("#agenda").innerHTML = m.d.rdv.slice().sort((a, b) => rang(a).localeCompare(rang(b))).map((r) => {
-      const c = m.d.clientes.find((x) => x.id === r.cliente), p = B.PRESTATIONS.find((x) => x.id === r.prestation);
-      return '<div class="rdv"><b>' + r.heure + "</b><span>" + esc(c.nom) + "<small>" + esc(p.nom) + ", " + O.dateCourte(r.jour) + "</small></span></div>";
-    }).join("") || '<p class="vide">Aucun rendez-vous.</p>';
-    $("#clientes").innerHTML = m.d.clientes.map((c) => {
-      const pleine = c.tampons >= B.OBJECTIF;
-      return '<div class="cliente"><span class="rond">' + esc(c.nom.split(" ").map((x) => x[0]).join("")) + "</span><b>" + esc(c.nom) + '</b><span class="compte">' + c.tampons + " tampons sur " + B.OBJECTIF + '</span><div class="barre-f">' + Array.from({ length: B.OBJECTIF }, (_, i) => '<i class="' + (i < c.tampons ? "on" : "") + '"></i>').join("") + "</div>" + (pleine ? '<button class="offert" data-offrir="' + c.id + '">Offrir le soin</button>' : '<button data-tampon="' + c.id + '">Ajouter un tampon</button>') + "</div>";
-    }).join("");
+    const d = m.d, b = B.bilan(d, ui.jour), jours = [B.reference(), B.suivant()];
+    $("#jours").innerHTML = jours.map((j) => '<button data-jour="' + j + '" aria-pressed="' + (j === ui.jour) + '">' + (j === O.jour() ? "Aujourd’hui" : O.dateCourte(j)) + "</button>").join("");
+    $("#kpi").innerHTML = '<dl><div><dt>Prévu aujourd’hui</dt><dd id="prevu">' + O.eur(b.prevu, 0) + "</dd></div><div><dt>Encaissé</dt><dd>" + O.eur(b.encaisse, 0) + "</dd></div><div><dt>Agenda rempli</dt><dd>" + b.taux + ' %</dd></div><div class="' + (b.vides ? "alerte" : "") + '"><dt>' + (b.vides > 1 ? b.vides + " places vides" : b.vides + " place vide") + "</dt><dd>" + O.eur(b.manque, 0) + '</dd></div><div><dt>Récupéré grâce aux offres</dt><dd id="remplis">' + O.eur(b.remplis, 0) + "</dd></div></dl>";
+
+    $("#agenda").innerHTML = '<div class="grille-a"><span class="coin-a"></span>' + B.PRATICIENNES.map((p) => '<b class="colonne"><i>' + p[0] + "</i>" + p + "</b>").join("") + B.HEURES.map((h) => "<time>" + h + "</time>" + B.PRATICIENNES.map((p) => {
+      const r = B.occupe(d, ui.jour, h, p);
+      if (r) {
+        const c = B.client(d, r.cliente), x = B.prestation(r.prestation);
+        return '<div class="rdv s-' + r.prestation + " " + (r.statut === "paye" ? "paye " : "") + (r.rempli ? "rempli" : "") + '"><span><b>' + esc(c.nom) + "</b><small>" + esc(x.nom) + ", " + O.eur(x.prix, 0) + "</small></span>" + (r.statut === "paye" ? "<em>Encaissé</em>" : '<button data-encaisser="' + r.id + '">Encaisser</button>') + "</div>";
+      }
+      const offre = d.offres.find((o) => o.jour === ui.jour && o.heure === h && o.pratic === p);
+      const sel = ui.creneau && ui.creneau.heure === h && ui.creneau.pratic === p;
+      return offre ? '<div class="libre attend">Proposé à ' + esc(B.client(d, offre.cliente).nom.split(" ")[0]) + "</div>" : '<button class="libre" data-libre="' + h + "|" + p + '" aria-pressed="' + !!sel + '"><span>Place vide</span><u>Remplir</u></button>';
+    }).join("")).join("") + "</div>";
+
+    const liste = B.aRevoir(d).filter((c) => !d.offres.some((o) => o.cliente === c.id));
+    const c = ui.creneau;
+    $("#remplir").innerHTML = "<h2>" + (c ? "Proposer " + c.heure + " avec " + c.pratic : "Clientes à faire revenir") + "</h2>" + (c ? "" : '<p class="aide">Cliquez sur une place vide pour la leur proposer.</p>') +
+      (liste.length ? '<ul class="revoir">' + liste.map((x, i) => { const p = B.prestation(x.soin), s = Math.round(B.age(x.dernier) / 7); return '<li><span class="rond v' + (i % 3) + '">' + esc(init(x.nom)) + "</span><span><b>" + esc(x.nom) + "</b><small>" + esc(p.nom) + ", il y a " + s + ' semaines</small></span><button data-inviter="' + x.id + '"' + (c ? "" : " disabled") + ">Proposer</button></li>"; }).join("") + "</ul>" : '<p class="tout-b">Toutes vos clientes sont à jour.</p>');
+
+    $("#clientes").innerHTML = '<ul class="fid">' + d.clientes.slice().sort((p, q) => q.tampons - p.tampons).slice(0, 4).map((x) => {
+      const pleine = x.tampons >= B.OBJECTIF;
+      return '<li class="cliente"><b>' + esc(x.nom) + '</b><span class="compte">' + x.tampons + " sur " + B.OBJECTIF + '</span><div class="barre-f">' + Array.from({ length: B.OBJECTIF }, (_, i) => '<i class="' + (i < x.tampons ? "on" : "") + '"></i>').join("") + "</div>" + (pleine ? '<button class="offert" data-offrir="' + x.id + '">Offrir le soin</button>' : "") + "</li>";
+    }).join("") + "</ul>";
   };
   document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-tampon],[data-offrir]"); if (!b) return;
-    m.maj((d) => { const c = d.clientes.find((x) => x.id === (b.dataset.tampon || b.dataset.offrir)); c.tampons = b.dataset.tampon ? c.tampons + 1 : 0; });
+    const b = e.target.closest("[data-jour],[data-libre],[data-inviter],[data-encaisser],[data-offrir]"); if (!b) return;
+    const ds = b.dataset;
+    if (ds.jour) { ui.jour = ds.jour; ui.creneau = null; rendre(); }
+    if (ds.libre) { const [heure, pratic] = ds.libre.split("|"); ui.creneau = { heure, pratic }; rendre(); }
+    if (ds.inviter && ui.creneau) {
+      const c = ui.creneau, id = O.id();
+      m.maj((d) => { const x = B.client(d, ds.inviter); d.offres.push({ id, cliente: x.id, prestation: x.soin, jour: ui.jour, heure: c.heure, pratic: c.pratic }); });
+      ui.creneau = null; rendre();
+      /* Dans cette démonstration, les autres clientes acceptent après quelques secondes. */
+      if (ds.inviter !== "camille") setTimeout(() => m.maj((d) => { B.accepter(d, id); }), 2200);
+    }
+    if (ds.encaisser) m.maj((d) => { const r = d.rdv.find((x) => x.id === ds.encaisser), c = B.client(d, r.cliente); r.statut = "paye"; c.tampons += 1; c.dernier = O.jour(); });
+    if (ds.offrir) m.maj((d) => { B.client(d, ds.offrir).tampons = 0; });
   });
-  m.surChange(rendre);
-  window.bandeauDemo(m, "../", "ouvrez <a href=\"./\" target=\"_blank\" rel=\"noopener\">l’application de Camille</a>, puis ajoutez-lui un tampon ici.");
+  m.surChange(() => { const n = m.d.rdv.find((r) => !ui.vu.has(r.id)); if (n && [B.reference(), B.suivant()].includes(n.jour)) ui.jour = n.jour; ui.vu = new Set(m.d.rdv.map((r) => r.id)); rendre(); });
+  ui.vu = new Set(m.d.rdv.map((r) => r.id));
+  window.bandeauDemo(m, "../", "cliquez sur un créneau libre et proposez-le à Camille. Elle accepte dans <a href=\"./\" target=\"_blank\" rel=\"noopener\">son application</a>, puis encaissez : son tampon arrive aussitôt. Les réponses des autres clientes sont simulées.");
   rendre();
-  window.demoCaisse = { m, rendre };
+  window.demoCaisse = { m, ui, rendre };
 })();
 </script>
 </body>

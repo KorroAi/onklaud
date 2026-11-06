@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#ffc800">
+<meta name="theme-color" content="#0f3d2e">
 <title>Mon chantier · Atelier Morel, démo Onklaud</title>
 <link rel="manifest" href="chantier.webmanifest">
 <link rel="apple-touch-icon" href="icone-180.png">
@@ -13,13 +13,14 @@
 <link rel="stylesheet" href="../commun/base.css">
 <link rel="stylesheet" href="theme.css">
 </head>
-<body>
+<body class="page-client">
 <div class="appli" id="appli">
   <div class="statut-ios"><span>9:41</span><svg viewBox="0 0 66 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="6" width="3" height="6" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/><rect x="42" y="1" width="20" height="10" rx="3"/><rect x="63" y="4" width="2" height="4" rx="1"/></svg></div>
+  <header class="fil-tete" id="tete"></header>
   <div class="appli-corps" id="corps"></div>
-  <div id="pied"></div>
-  <nav class="onglets-ios" id="onglets" aria-label="Sections"></nav>
+  <form class="saisie" id="saisie"><label class="joindre" aria-label="Ajouter une photo"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.500"/><path d="M9 6l1.500-3h3L15 6"/></svg><input type="file" accept="image/*" id="photo" hidden></label><input name="t" placeholder="Écrire à l’équipe" aria-label="Écrire à l’équipe" autocomplete="off"><button>Envoyer</button></form>
 </div>
+<div class="feuille" id="feuille" hidden></div>
 <div class="alerte-ios" id="alerte" role="status"></div>
 <script src="../commun/magasin.js"></script>
 <script src="donnees.js"></script>
@@ -30,88 +31,79 @@
   const m = window.Magasin("atelier-morel", A.depart, A.automatismes);
   const $ = (s, r = document) => r.querySelector(s);
   const MOI = "martin";
-  const ONGLETS = [
-    ["chantier", "Chantier", '<path d="M4 20V10l8-6 8 6v10"/><path d="M10 20v-6h4v6"/>'],
-    ["photos", "Photos", '<rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.500"/><path d="M9 6l1.500-2h3L15 6"/>'],
-    ["messages", "Messages", '<path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v9a2 2 0 01-2 2H9l-5 4z"/>'],
-    ["documents", "Documents", '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/>']
-  ];
-  const ui = { onglet: new URLSearchParams(location.search).get("onglet") || "chantier", devis: null, chantier: "c-martin" };
-  const ch = () => m.d.chantiers.find((c) => c.id === ui.chantier) || m.d.chantiers.find((c) => c.client === MOI);
-  const mesDevis = () => m.d.devis.filter((x) => x.client === MOI);
+  const ui = { devis: null, chantier: "c-martin" };
+  const ch = () => m.d.chantiers.find((c) => c.id === ui.chantier);
   const COCHE = '<svg viewBox="0 0 24 24"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg>';
-
   const alerte = (titre, texte) => {
     const a = $("#alerte");
     a.innerHTML = "<i>" + esc(O.initiales("AM")) + "</i><div><b>" + esc(titre) + "</b>" + esc(texte) + "</div>";
     a.classList.add("visible");
     clearTimeout(alerte.t); alerte.t = setTimeout(() => a.classList.remove("visible"), 4200);
   };
+  const prochaine = () => {
+    const c = ch(), l = m.d.interventions.filter((i) => i.client === c.client && i.jour >= O.jour()).sort((a, b) => (a.jour + a.debut).localeCompare(b.jour + b.debut))[0];
+    if (!l) return "";
+    const e = m.d.equipe.find((x) => x.id === l.qui) || { nom: "" };
+    return (l.jour === O.jour() ? "Aujourd’hui" : l.jour === O.jour(1) ? "Demain" : O.dateLongue(l.jour).replace(/^./, (x) => x.toUpperCase())) + " à " + O.heure(l.debut) + ", " + e.nom;
+  };
 
-  const tete = (titre, sous) => '<header class="tete"><p class="societe"><span>' + esc(A.MARQUE) + '</span></p><h1 class="grand-titre">' + esc(titre) + '</h1><p class="sous-titre">' + esc(sous) + "</p></header>";
-
-  const vueChantier = () => {
-    const c = ch(), ph = c.photos[c.photos.length - 1], d = c.messages[c.messages.length - 1];
-    const faites = c.etapes.filter((e) => e.e === "fait").length;
-    return tete(c.titre, c.adresse) + '<div class="jauge-c"><b>' + faites + " / " + c.etapes.length + '</b>étapes terminées<div>' + c.etapes.map((e, i) => '<i class="' + (i < faites ? "on" : "") + '"></i>').join("") + "</div></div>" +
-      (ph ? '<figure class="phare"><img src="' + esc(ph) + '" alt="Dernière photo du chantier"><span>Dernière photo</span></figure>' : "") +
-      '<p class="entete-groupe">Avancement</p><div class="groupe">' + c.etapes.map((e, i) => '<div class="cellule"><span class="pastille ' + e.e + '">' + (e.e === "fait" ? COCHE : i + 1) + '</span><div class="texte"><b>' + esc(e.t) + "</b>" + (e.n && e.e === "encours" ? "<small>" + esc(e.n) + "</small>" : "") + '</div><span class="etat ' + e.e + '">' + ({ fait: "Terminé", encours: "En cours", avenir: "À venir" }[e.e]) + "</span></div>").join("") + "</div>" +
-      (d ? '<p class="entete-groupe">Dernier message</p><div class="groupe"><button class="cellule" data-onglet="messages"><span class="avatar">' + esc(d.nom[0]) + '</span><div class="texte"><b>' + esc(d.nom) + "</b><small>" + esc(d.texte) + "</small></div></button></div>" : "");
+  const carteDevis = (x) => {
+    const f = m.d.factures.find((y) => y.devis === x.id);
+    if (x.statut === "envoye") return '<article class="doc"><small>Devis ' + x.num + "</small><b>" + esc(x.objet) + '</b><p class="prix">' + O.eur(A.totalTTC(x), 0) + '</p><button data-devis="' + x.id + '">Lire et signer</button></article>';
+    if (f && !f.payee) return '<article class="doc"><small>Devis signé</small><b>Acompte de 30 % pour réserver votre date</b><p class="prix">' + O.eur(f.ttc, 0) + '</p><button data-action="payer" data-f="' + f.id + '">Régler l’acompte</button><em>Paiement simulé dans cette démonstration : aucune carte n’est demandée.</em></article>';
+    if (f) return '<div class="evt fait">' + COCHE + "<span>Acompte de " + O.eur(f.ttc, 0) + " reçu. Votre date de démarrage arrive ici.</span></div>";
+    return "";
   };
-  const vuePhotos = () => {
-    const c = ch();
-    return tete("Photos", "Partagées par l’équipe et par vous") + '<div class="mosaique-ph">' + c.photos.slice().reverse().map((p) => '<img src="' + esc(p) + '" alt="Photo du chantier">').join("") + '</div><label class="bouton-ios" style="box-sizing:border-box;cursor:pointer">Ajouter une photo<input type="file" accept="image/*" id="photo" hidden></label>';
-  };
-  const vueMessages = () => {
-    const c = ch();
-    return tete("Messages", c.titre) + '<div class="fil" id="fil">' + c.messages.map((x) => '<div class="msg ' + (x.de === "client" ? "moi" : "") + '">' + esc(x.texte) + "<small>" + esc(x.nom) + " · " + esc(x.h) + "</small></div>").join("") + "</div>";
-  };
-  const vueDocuments = () => {
-    if (ui.devis) return vueDevis();
-    const l = mesDevis();
-    return tete("Documents", "Devis et factures") + '<p class="entete-groupe">Devis</p><div class="groupe">' + l.map((x) => '<button class="cellule" data-devis="' + x.id + '"><div class="texte"><b>' + esc(x.objet) + "</b><small>" + x.num + " · " + O.eur(A.totalHT(x) * (1 + A.TVA), 0) + '</small></div><span class="droite" style="color:' + (x.statut === "signe" ? "#1c7c4a" : "#c26a00") + '">' + (x.statut === "signe" ? "Signé" : "À signer") + "</span></button>").join("") + '</div><p class="entete-groupe">Factures</p><div class="groupe">' +
-      (m.d.factures.filter((f) => f.client === MOI).map((f) => '<div class="cellule"><div class="texte"><b>' + esc(f.objet) + "</b><small>" + f.num + '</small></div><span class="droite">' + O.eur(f.ttc, 0) + "</span></div>").join("") || '<div class="cellule"><div class="texte"><small>Aucune facture.</small></div></div>') + "</div>";
-  };
-  const vueDevis = () => {
-    const x = m.d.devis.find((y) => y.id === ui.devis), ht = A.totalHT(x), signe = x.statut === "signe";
-    return '<header class="tete"><p class="societe"><button data-action="retour">‹ Documents</button><span>' + x.num + '</span></p><h1 class="grand-titre">' + esc(x.objet) + '</h1></header><div class="groupe" style="margin-top:16px">' + x.lignes.map((l) => '<div class="cellule"><div class="texte"><b>' + esc(l.d) + "</b><small>" + l.q + " " + esc(l.q > 1 && l.u === "jour" ? "jours" : l.u) + " × " + O.eur(l.pu, 0) + '</small></div><span class="droite">' + O.eur(l.q * l.pu, 0) + "</span></div>").join("") + '<div class="cellule"><div class="texte"><small>TVA 10 %</small></div><span class="droite">' + O.eur(ht * A.TVA, 0) + '</span></div><div class="cellule"><div class="total-d texte" style="display:flex"><span>Total TTC</span><span>' + O.eur(ht * (1 + A.TVA), 0) + "</span></div></div></div>" +
-      (signe ? '<p class="entete-groupe">Signature</p><div class="groupe"><div class="cellule"><span class="pastille fait">' + COCHE + '</span><div class="texte"><b>Devis signé</b><small>' + esc(A.MARQUE) + ' a été prévenu.</small></div></div></div>' :
-        '<p class="entete-groupe">Signez avec le doigt</p><canvas class="signature" id="sig" aria-label="Zone de signature"></canvas><button class="lien-efface" data-action="effacer">Effacer</button><button class="bouton-ios" id="signer" data-action="signer" disabled>Signer le devis</button>');
+  const rendre = () => {
+    const c = ch(), faites = c.etapes.filter((e) => e.e === "fait").length, encours = c.etapes.find((e) => e.e === "encours");
+    $("#tete").innerHTML = '<div class="id-fil"><i>' + esc(O.initiales("AM")) + "</i><div><b>" + esc(A.MARQUE) + "</b><small>" + esc(c.titre) + ", " + esc(c.adresse) + '</small></div></div><div class="suivi"><p class="suivi-l"><b>' + (encours ? esc(encours.t) + " en cours" : "Chantier terminé") + "</b><span>Étape " + Math.min(faites + 1, c.etapes.length) + " sur " + c.etapes.length + '</span></p><div class="barres" aria-hidden="true">' + c.etapes.map((e) => '<i class="' + e.e + '"></i>').join("") + '</div><p class="visite">Prochaine visite : ' + esc(prochaine()) + "</p></div>";
+    const montes = c.etapes.filter((e) => e.e === "fait" && !c.messages.some((x) => x.texte.includes("« " + e.t + " »")));
+    const haut = $("#corps").scrollTop, bas = $("#corps").scrollHeight - haut - $("#corps").clientHeight < 40;
+    $("#corps").innerHTML = '<div class="fil" id="fil">' +
+      montes.map((e) => '<div class="evt fait">' + COCHE + "<span>" + esc(e.t) + " : terminé</span></div>").join("") +
+      c.messages.map((x) => /^L’étape/.test(x.texte) ? '<div class="evt fait">' + COCHE + "<span>" + esc(x.texte.replace("L’étape « ", "").replace(" » est terminée.", "")) + " : terminé</span></div>" : '<div class="msg ' + (x.de === "client" ? "moi" : "") + '">' + (x.photo ? '<img src="' + esc(x.photo) + '" alt="Photo du chantier"><span class="texte-m">' + esc(x.texte) + "<small>" + esc(x.nom) + ", " + esc(x.h) + "</small></span>" : esc(x.texte) + "<small>" + esc(x.nom) + ", " + esc(x.h) + "</small>") + "</div>").join("") +
+      m.d.devis.filter((x) => x.client === MOI).map(carteDevis).join("") + "</div>";
+    $("#corps").scrollTop = bas || !haut ? 1e6 : haut;
+    const fe = $("#feuille");
+    if (!ui.devis) { fe.hidden = true; fe.innerHTML = ""; return; }
+    const x = m.d.devis.find((y) => y.id === ui.devis), ht = A.totalHT(x);
+    if (x.statut === "signe") { ui.devis = null; fe.hidden = true; fe.innerHTML = ""; return; }
+    if (!fe.hidden) return;
+    fe.hidden = false;
+    fe.innerHTML = '<div class="feuille-corps"><div class="feuille-haut"><button data-action="retour">Fermer</button><span>' + x.num + '</span></div><h1 class="grand-titre">' + esc(x.objet) + '</h1><ul class="lignes">' + x.lignes.map((l) => "<li><span>" + esc(l.d) + "<small>" + l.q + " " + esc(l.q > 1 && l.u === "jour" ? "jours" : l.u) + " à " + O.eur(l.pu, 0) + "</small></span><b>" + O.eur(l.q * l.pu, 0) + "</b></li>").join("") + "<li><span>TVA 10 %</span><b>" + O.eur(ht * A.TVA, 0) + '</b></li><li class="total-d"><span>Total TTC</span><b>' + O.eur(A.totalTTC(x), 0) + '</b></li></ul><p class="sig-t">Signez avec le doigt</p><canvas class="signature" id="sig" aria-label="Zone de signature"></canvas><button class="lien-efface" data-action="effacer">Effacer</button><button class="bouton-ios" id="signer" data-action="signer" disabled>Signer le devis</button></div>';
+    brancherSignature();
   };
 
   let dessine = false;
   const brancherSignature = () => {
     const c = $("#sig"); if (!c) return;
+    dessine = false; $("#signer").disabled = true;
     const r = c.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
     c.width = r.width * dpr; c.height = r.height * dpr;
-    const x = c.getContext("2d"); x.scale(dpr, dpr); x.lineWidth = 2.6; x.lineCap = "round"; x.lineJoin = "round"; x.strokeStyle = "#22272b";
+    const x = c.getContext("2d"); x.scale(dpr, dpr); x.lineWidth = 2.6; x.lineCap = "round"; x.lineJoin = "round"; x.strokeStyle = "#0f1419";
     let actif = false;
     const pt = (e) => { const b = c.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
-    c.addEventListener("pointerdown", (e) => { actif = true; try { c.setPointerCapture(e.pointerId); } catch (_) { /* pointeur simulé */ } x.beginPath(); x.moveTo(...pt(e)); });
-    c.addEventListener("pointermove", (e) => { if (!actif) return; x.lineTo(...pt(e)); x.stroke(); if (!dessine) { dessine = true; $("#signer").disabled = false; } });
-    c.addEventListener("pointerup", () => { actif = false; });
-  };
-
-  const rendre = () => {
-    const ancien = $("#corps").scrollTop;
-    $("#corps").innerHTML = { chantier: vueChantier, photos: vuePhotos, messages: vueMessages, documents: vueDocuments }[ui.onglet]();
-    $("#pied").innerHTML = ui.onglet === "messages" ? '<form class="saisie" id="saisie"><input name="t" placeholder="Écrire à l’équipe" aria-label="Écrire à l’équipe" autocomplete="off"><button>Envoyer</button></form>' : "";
-    $("#onglets").innerHTML = ONGLETS.map(([k, t, i]) => '<button data-onglet="' + k + '" aria-current="' + (ui.onglet === k) + '"><svg viewBox="0 0 24 24">' + i + "</svg>" + t + "</button>").join("");
-    if (ui.onglet === "messages") $("#corps").scrollTop = 1e6; else $("#corps").scrollTop = ancien;
-    dessine = false; brancherSignature();
+    c.onpointerdown = (e) => { actif = true; try { c.setPointerCapture(e.pointerId); } catch (_) { /* pointeur simulé */ } x.beginPath(); x.moveTo(...pt(e)); };
+    c.onpointermove = (e) => { if (!actif) return; x.lineTo(...pt(e)); x.stroke(); if (!dessine) { dessine = true; $("#signer").disabled = false; } };
+    c.onpointerup = () => { actif = false; };
   };
 
   document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-onglet],[data-devis],[data-action]"); if (!b) return;
+    const b = e.target.closest("[data-devis],[data-action]"); if (!b) return;
     const ds = b.dataset;
-    if (ds.onglet) { ui.onglet = ds.onglet; ui.devis = null; rendre(); $("#corps").scrollTop = 0; }
-    if (ds.devis) { ui.devis = ds.devis; rendre(); $("#corps").scrollTop = 0; }
+    if (ds.devis) { ui.devis = ds.devis; rendre(); }
     if (ds.action === "retour") { ui.devis = null; rendre(); }
-    if (ds.action === "effacer") { rendre(); }
+    if (ds.action === "effacer") { const c = $("#sig"); c.getContext("2d").clearRect(0, 0, c.width, c.height); brancherSignature(); }
+    if (ds.action === "payer") {
+      m.maj((d) => { const f = d.factures.find((y) => y.id === ds.f); f.payee = true; f.payeeLe = O.jour(); });
+      alerte("Acompte réglé", A.MARQUE + " a bien reçu votre paiement.");
+    }
     if (ds.action === "signer") {
-      const sig = $("#sig").toDataURL("image/png");
-      m.maj((d) => { const x = d.devis.find((y) => y.id === ui.devis); x.statut = "signe"; x.signature = sig; x.signeLe = O.jour(); });
+      const sig = $("#sig").toDataURL("image/png"), id = ui.devis;
+      ui.devis = null;
+      m.maj((d) => { const x = d.devis.find((y) => y.id === id); x.statut = "signe"; x.signature = sig; x.signeLe = O.jour(); });
       alerte("Devis signé", A.MARQUE + " a bien reçu votre signature.");
+      $("#corps").scrollTop = 1e6;
     }
   });
   document.addEventListener("submit", (e) => {
@@ -119,24 +111,24 @@
     e.preventDefault();
     const t = e.target.t.value.trim(); if (!t) return;
     m.maj((d) => { d.chantiers.find((c) => c.id === ch().id).messages.push({ de: "client", nom: "Mme Martin", h: O.maintenant(), texte: t }); });
+    e.target.reset(); $("#corps").scrollTop = 1e6;
   });
   document.addEventListener("change", async (e) => {
     if (e.target.id !== "photo" || !e.target.files[0]) return;
     const p = await O.photo(e.target.files[0]);
     const c = () => m.d.chantiers.find((x) => x.id === ch().id);
-    const ok = m.maj(() => { c().photos.push(p); });
-    if (!ok) { m.maj(() => { c().photos.pop(); }); alerte("Photo non enregistrée", "Le stockage de ce navigateur est plein."); }
+    const ok = m.maj(() => { c().photos.push(p); c().messages.push({ de: "client", nom: "Mme Martin", h: O.maintenant(), texte: "Photo ajoutée.", photo: p }); });
+    if (!ok) { m.maj(() => { c().photos.pop(); c().messages.pop(); }); alerte("Photo non enregistrée", "Le stockage de ce navigateur est plein."); }
   });
 
-  let derniersMsg = ch().messages.length, etapesFaites = ch().etapes.filter((x) => x.e === "fait").length;
+  let derniers = ch().messages.length;
   m.surChange(() => {
     const c = ch();
-    const f = c.etapes.filter((x) => x.e === "fait").length;
-    if (c.messages.length > derniersMsg) { const x = c.messages[c.messages.length - 1]; if (x.de === "pro") alerte(x.nom, x.texte); }
-    derniersMsg = c.messages.length; etapesFaites = f;
+    if (c.messages.length > derniers) { const x = c.messages[c.messages.length - 1]; if (x.de === "pro") alerte(x.nom, x.texte); }
+    derniers = c.messages.length;
     rendre();
   });
-  window.bandeauDemo(m, "../", "ouvrez Documents, signez le devis de la terrasse, puis regardez <a href=\"./\" target=\"_blank\" rel=\"noopener\">le logiciel de l’entreprise</a>.");
+  window.bandeauDemo(m, "../", "signez le devis de la terrasse dans le fil, réglez l’acompte, puis regardez <a href=\"./\" target=\"_blank\" rel=\"noopener\">le logiciel de l’entreprise</a>.");
   rendre();
   window.demoChantier = { m, ui, rendre };
 })();

@@ -1,0 +1,97 @@
+/* Maison Lucie : console de service. Liste à gauche, salle à droite, couleurs d'état sobres. */
+.carnet-page { min-height: 100dvh; background: #fff; color: var(--encre); font: 400 14px/20px "Hanken Grotesk", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+.en-tete { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; min-height: 56px; padding: 8px 20px; background: #3a0a14; color: #fff; }
+.en-tete h1 { margin: 0 auto 0 0; font: 500 19px/24px "Bodoni Moda", Georgia, serif; letter-spacing: 0; }
+.jours, .service, .temps { display: flex; gap: 2px; padding: 3px; border-radius: 8px; background: var(--fond); }
+.jours button, .service button, .temps button { height: 30px; padding: 0 11px; border: 0; border-radius: 6px; background: none; color: var(--doux); font-size: 13px; font-weight: 500; white-space: nowrap; }
+.jours [aria-pressed="true"], .service [aria-pressed="true"], .temps [aria-pressed="true"] { background: #fff; box-shadow: 0 1px 3px rgba(31, 26, 24, .12); color: var(--encre); }
+.kpi { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 20px; border-bottom: 1px solid var(--filet); }
+.kpi dl { display: flex; gap: 36px; margin: 0; }
+.kpi dt { color: var(--doux); font-size: 12.5px; line-height: 17px; }
+.kpi dd { margin: 0; font-size: 19px; font-weight: 600; line-height: 25px; font-variant-numeric: tabular-nums; }
+.kpi dd small { color: var(--doux); font-size: 14px; font-weight: 400; }
+.risque-k dd { color: #b35309; }
+.action-k { flex: none; height: 36px; padding: 0 14px; border: 0; border-radius: 7px; background: var(--bordeaux); color: #fff; font-size: 13.5px; font-weight: 600; }
+.action-k:disabled { background: var(--fond); color: var(--doux); cursor: default; }
+.ok-k { color: #1f7a4d; font-size: 13.5px; font-weight: 600; }
+.libere { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 14px; padding: 8px 20px; border-bottom: 1px solid #f3dfb7; background: #fff8ea; animation: glisse .3s ease-out; }
+.libere b { font-weight: 600; }
+.libere button { height: 32px; padding: 0 12px; border: 0; border-radius: 7px; background: var(--bordeaux); color: #fff; font-size: 13px; font-weight: 600; }
+.priv-l { padding: 8px 20px; border-bottom: 1px solid var(--filet); background: var(--fond); }
+.priv-l b { font-weight: 600; }
+@keyframes glisse { from { opacity: 0; } }
+
+.salle { display: grid; grid-template-columns: 372px minmax(0, 1fr); align-items: stretch; }
+.liste-z { order: -1; max-height: calc(100dvh - 176px); overflow-y: auto; padding: 12px 14px; border-right: 1px solid var(--filet); }
+.liste-z h2 { margin: 2px 0 6px; font: 600 13px/18px "Hanken Grotesk", system-ui, sans-serif; text-align: left; letter-spacing: 0; }
+.plan-z { min-width: 0; padding: 12px 20px 20px; background: var(--fond); }
+.barre-p { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 12px; }
+.temps { background: #fff; box-shadow: 0 0 0 1px var(--filet); }
+.temps [aria-pressed="true"] { background: var(--encre); box-shadow: none; color: #fff; }
+.legende { display: flex; gap: 14px; color: var(--doux); font-size: 12.5px; }
+.legende li { display: flex; align-items: center; gap: 5px; }
+.legende li::before { content: ""; width: 10px; height: 10px; border-radius: 3px; }
+.l-conf::before { background: #cfe8da; box-shadow: inset 0 0 0 1px #8fc4a7; }
+.l-risque::before { background: #fbe6bd; box-shadow: inset 0 0 0 1px #e0b460; }
+.l-la::before { background: var(--bordeaux); }
+.plan { position: relative; height: 520px; overflow: hidden; border-radius: 10px; background: #fff; box-shadow: 0 0 0 1px var(--filet); }
+.plan::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 14%; border-left: 1px dashed #d9d0c5; background: #fbfaf7; }
+.zone-t { position: absolute; top: 12px; right: 14px; z-index: 1; color: var(--doux); font-size: 12.5px; }
+.table { position: absolute; z-index: 1; display: grid; place-content: center; width: 92px; height: 58px; padding: 0 4px; border: 0; border-radius: 6px; background: #fff; box-shadow: inset 0 0 0 1px #d9d0c5; color: var(--encre); line-height: 15px; text-align: center; transform: translate(-50%, -50%); margin: 30px 0 0 46px; transition: background .2s; }
+.table.rond { width: 66px; height: 66px; border-radius: 50%; }
+.table.cap6 { width: 124px; height: 62px; }
+.table.cap8 { width: 78px; height: 140px; }
+.table u { position: absolute; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: #efe9e1; text-decoration: none; }
+.table u.pris { background: #b9ada1; }
+.table b { display: block; overflow: hidden; max-width: 84px; font-size: 12.5px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.table small { color: inherit; font-size: 11.5px; opacity: .78; }
+.table.libre { color: var(--doux); }
+.table.conf { background: #dff0e6; box-shadow: inset 0 0 0 1px #8fc4a7; color: #123f2a; }
+.table.risque { background: #fdeccb; box-shadow: inset 0 0 0 1px #e0b460; color: #5c3a05; }
+.table.la { background: var(--bordeaux); box-shadow: none; color: #fff; }
+.table.neuve { animation: pulse 1s ease-out 2; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(109, 20, 38, .18); } }
+
+.attente { margin-bottom: 12px; }
+.attente li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 10px; border-radius: 7px; background: var(--fond); }
+.attente b { display: block; font-size: 13.5px; font-weight: 600; line-height: 18px; }
+.attente small { color: var(--doux); font-size: 12.5px; line-height: 17px; }
+.attente em { color: var(--doux); font-size: 12px; font-style: normal; line-height: 16px; text-align: right; }
+.resa-l { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 6px; align-items: center; padding: 7px 2px; border-top: 1px solid #f1ece5; }
+.resa-l .h { font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.resa-l.neuve, .resa-l.eclair { animation: fond 1.4s ease-out; }
+@keyframes fond { from { background: #fff3da; } }
+.qui b { font-size: 13.5px; font-weight: 600; line-height: 18px; }
+.resa-l.risque .qui b::after { content: ""; display: inline-block; width: 7px; height: 7px; margin-left: 6px; border-radius: 50%; background: #e09a2b; vertical-align: 1px; }
+.qui small { display: block; color: var(--doux); font-size: 12.5px; line-height: 17px; }
+.qui sup { font-size: .7em; line-height: 0; }
+.qui .note { color: #a14a12; }
+.act { display: flex; gap: 3px; }
+.act button { height: 28px; padding: 0 8px; border: 0; border-radius: 6px; background: var(--fond); font-size: 12.5px; font-weight: 500; }
+.act button:first-child { background: var(--encre); color: #fff; }
+.fin { color: var(--bordeaux); font-size: 12.5px; font-weight: 600; }
+.vide { padding: 10px 2px; color: var(--doux); }
+.ajout { display: grid; grid-template-columns: minmax(0, 1fr) 54px 76px; gap: 5px; margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--filet); }
+.ajout input, .ajout select { min-width: 0; height: 34px; padding: 0 8px; border: 1px solid var(--filet); border-radius: 6px; background: #fff; font-size: 13.5px; }
+.ajout input[name="tel"] { grid-column: 1 / 3; }
+.ajout button { height: 34px; padding: 0 10px; border: 0; border-radius: 6px; background: var(--encre); color: #fff; font-size: 13px; font-weight: 600; }
+
+@media (max-width: 1060px) { .salle { grid-template-columns: minmax(0, 1fr); } .liste-z { order: 1; max-height: none; border-right: 0; } .kpi { flex-direction: column; align-items: stretch; } .kpi dl { justify-content: space-between; gap: 12px; } }
+@media (max-width: 680px) {
+  .en-tete { padding: 8px 12px; }
+  .en-tete h1 { flex: 1 1 100%; }
+  .jours { flex: 1; overflow-x: auto; }
+  .kpi { padding: 10px 12px; }
+  .kpi dd { font-size: 16px; }
+  .plan-z { padding: 10px 12px; }
+  .libere, .priv-l { padding-left: 12px; padding-right: 12px; }
+  .temps { max-width: 100%; overflow-x: auto; }
+  .plan { height: 430px; }
+  .table { width: 58px; height: 42px; margin: 21px 0 0 29px; }
+  .table.rond { width: 46px; height: 46px; }
+  .table.cap6 { width: 66px; height: 46px; }
+  .table.cap8 { width: 46px; height: 96px; }
+  .table u { width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; }
+  .table b { max-width: 44px; font-size: 10.5px; }
+  .table small { display: none; }
+}

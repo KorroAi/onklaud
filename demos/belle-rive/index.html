@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#d8eeec">
+<meta name="theme-color" content="#0b3f48">
 <title>Institut Belle Rive · Application, démo Onklaud</title>
 <link rel="manifest" href="appli.webmanifest">
 <link rel="apple-touch-icon" href="icone-180.png">
@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="../commun/base.css">
 <link rel="stylesheet" href="theme.css">
 </head>
-<body>
+<body class="client">
 <div class="appli">
   <div class="statut-ios"><span>9:41</span><svg viewBox="0 0 66 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="6" width="3" height="6" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/><rect x="42" y="1" width="20" height="10" rx="3"/><rect x="63" y="4" width="2" height="4" rx="1"/></svg></div>
   <div class="appli-corps" id="corps"></div>
@@ -31,24 +31,30 @@
   const MOI = "camille";
   const COCHE = '<svg viewBox="0 0 24 24"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg>';
   const CADEAU = '<svg viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M12 9v11M4 13h16M12 9c-2-5-6-4-6-2s3 2 6 2zM12 9c2-5 6-4 6-2s-3 2-6 2z"/></svg>';
-  const ONGLETS = [["fidelite", "Fidélité", '<path d="M12 21s-7.500-4.600-7.500-10.200A4.300 4.300 0 0112 8a4.300 4.300 0 017.500 2.800C19.500 16.400 12 21 12 21z"/>'], ["rdv", "Réserver", '<rect x="4" y="5" width="16" height="15" rx="2.500"/><path d="M8 3v4M16 3v4M4 10h16"/>']];
+  const ONGLETS = [["fidelite", "Accueil", '<path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/>'], ["rdv", "Réserver", '<rect x="4" y="5" width="16" height="15" rx="2.500"/><path d="M8 3v4M16 3v4M4 10h16"/>']];
   const joursDispo = () => { const l = []; for (let i = 1; l.length < 5; i += 1) { const j = O.jour(i); if (new Date(j + "T12:00:00").getDay() !== 0) l.push(j); } return l; };
   const ui = { vue: "fidelite", presta: null, heure: null, jour: joursDispo()[0], tamponsVus: null };
   const moi = () => m.d.clientes.find((c) => c.id === MOI);
   const alerte = (t, x) => { const a = $("#alerte"); a.innerHTML = "<i>" + esc(O.initiales("BR")) + "</i><div><b>" + esc(t) + "</b>" + esc(x) + "</div>"; a.classList.add("visible"); clearTimeout(alerte.t); alerte.t = setTimeout(() => a.classList.remove("visible"), 4200); };
+  const quand = (j) => (j === O.jour() ? "Aujourd’hui" : j === O.jour(1) ? "Demain" : O.dateLongue(j).replace(/^./, (x) => x.toUpperCase()));
 
   const fidelite = () => {
     const c = moi(), reste = B.OBJECTIF - c.tampons, gagne = reste <= 0;
-    const rdv = m.d.rdv.filter((r) => r.cliente === MOI).sort((a, b) => a.jour.localeCompare(b.jour));
+    const rdv = m.d.rdv.filter((r) => r.cliente === MOI && r.statut === "prevu").sort((a, b) => a.jour.localeCompare(b.jour));
+    const offre = m.d.offres.find((o) => o.cliente === MOI);
+    const p = B.prestation(c.soin), semaines = Math.round(B.age(c.dernier) / 7);
     const cases = Array.from({ length: B.OBJECTIF }, (_, i) => '<i class="tampon ' + (i < c.tampons ? "plein " : "") + (i === c.tampons - 1 && ui.neuf ? "neuf" : "") + '" style="--a:' + (i + 1) * 36 + 'deg">' + (i < c.tampons ? COCHE : "") + "</i>").join("") + '<i class="tampon cadeau ' + (gagne ? "gagne" : "") + '" style="--a:0deg">' + CADEAU + "</i>";
-    return '<div class="bonjour"><p>' + esc(O.marque("Institut Belle Rive")) + '</p><h1>Bonjour ' + esc(c.nom.split(" ")[0]) + '</h1></div><div class="carte-fid">' + cases + '<div class="centre"><b>' + c.tampons + "/" + B.OBJECTIF + "</b><p>" + (gagne ? "Votre soin du visage est offert." : reste === 1 ? "Une visite avant votre soin offert." : reste + " visites avant votre soin offert.") + '</p></div></div><p class="titre-z">Prochain rendez-vous</p><div class="groupe">' +
-      (rdv.length ? rdv.map((r) => { const p = B.PRESTATIONS.find((x) => x.id === r.prestation); return '<div class="cellule"><div class="texte"><b>' + O.dateLongue(r.jour).replace(/^./, (l) => l.toUpperCase()) + " à " + r.heure + "</b><small>" + esc(p.nom) + '</small></div><button class="annuler" data-annuler="' + r.id + '">Annuler</button></div>'; }).join("") : '<div class="cellule"><div class="texte"><small>Aucun rendez-vous prévu.</small></div></div>') + '</div><button class="bouton-ios" data-vue="rdv">Réserver un soin</button>';
+    return '<header class="bonjour"><img src="' + p.img + '" alt=""><div><p>' + esc(O.marque("Institut Belle Rive")) + "</p><h1>Bonjour<br>" + esc(c.nom.split(" ")[0]) + "</h1></div></header>" +
+      (offre ? '<section class="offre"><p>Une place vient de se libérer</p><b>' + quand(offre.jour) + " à " + offre.heure + "</b><small>" + esc(B.prestation(offre.prestation).nom) + " avec " + offre.pratic + '</small><div class="choix"><button data-accepter="' + offre.id + '">Accepter</button><button class="non" data-refuser="' + offre.id + '">Non merci</button></div></section>' : "") +
+      '<section class="anneau"><div class="carte-fid">' + cases + '<div class="centre"><b>' + c.tampons + "<small> / " + B.OBJECTIF + "</small></b><p>" + (gagne ? "Soin offert" : (reste === 1 ? "Encore une visite" : "Encore " + reste + " visites")) + "</p></div></div></section>" +
+      (rdv.length ? '<section class="prochain"><h2>Prochain rendez-vous</h2>' + rdv.map((r) => { const x = B.prestation(r.prestation); return '<div class="carte-r"><img src="' + x.img + '" alt=""><div class="texte"><b>' + quand(r.jour) + " à " + r.heure + "</b><small>" + esc(x.nom) + " avec " + r.pratic + '</small></div><button class="annuler" data-annuler="' + r.id + '">Annuler</button></div>'; }).join("") + "</section>" :
+      '<section class="conseil"><div><small>Conseillé pour vous</small><h2>' + esc(p.nom) + "</h2><p>Dernier soin il y a " + semaines + " semaines</p></div><button data-vue=\"rdv\" data-pre=\"" + c.soin + '">Réserver</button></section>');
   };
   const rdv = () => {
-    const pris = m.d.rdv.filter((r) => r.jour === ui.jour).map((r) => r.heure);
+    const pris = (h) => B.PRATICIENNES.every((p) => B.occupe(m.d, ui.jour, h, p));
     const courte = (j) => new Date(j + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" }).replace(".", "");
-    return '<h1 class="grand-titre">Réserver</h1><p class="titre-z">Votre soin</p><div class="groupe">' + B.PRESTATIONS.map((p) => '<button class="cellule prestation" data-p="' + p.id + '" aria-pressed="' + (ui.presta === p.id) + '"><div class="texte"><b>' + esc(p.nom) + "</b><small>" + p.duree + '</small></div><span class="droite">' + O.eur(p.prix, 0) + "</span></button>").join("") + "</div>" +
-      (ui.presta ? '<p class="titre-z">Votre date</p><div class="jours-c">' + joursDispo().map((j) => '<button class="jour-c" data-j="' + j + '" aria-pressed="' + (j === ui.jour) + '">' + courte(j) + "</button>").join("") + '</div><p class="titre-z">Votre heure</p><div class="creneaux">' + B.HEURES.map((h) => '<button class="creneau" data-h="' + h + '" aria-pressed="' + (ui.heure === h) + '"' + (pris.includes(h) ? " disabled" : "") + ">" + h + "</button>").join("") + "</div>" : "") +
+    return '<h1 class="grand-titre">Réserver</h1><p class="titre-z">Votre soin</p><div class="groupe">' + B.PRESTATIONS.map((p) => '<button class="cellule prestation" data-p="' + p.id + '" aria-pressed="' + (ui.presta === p.id) + '"><img src="' + p.img + '" alt=""><div class="texte"><b>' + esc(p.nom) + "</b><small>" + p.duree + '</small></div><span class="droite">' + O.eur(p.prix, 0) + "</span></button>").join("") + "</div>" +
+      (ui.presta ? '<p class="titre-z">Votre date</p><div class="jours-c">' + joursDispo().map((j) => '<button class="jour-c" data-j="' + j + '" aria-pressed="' + (j === ui.jour) + '">' + courte(j) + "</button>").join("") + '</div><p class="titre-z">Votre heure</p><div class="creneaux">' + B.HEURES.map((h) => '<button class="creneau" data-h="' + h + '" aria-pressed="' + (ui.heure === h) + '"' + (pris(h) ? " disabled" : "") + ">" + h + "</button>").join("") + "</div>" : "") +
       (ui.heure ? '<button class="bouton-ios" id="r-valider">Confirmer à ' + ui.heure + "</button>" : "");
   };
   const rendre = () => {
@@ -58,29 +64,35 @@
     $("#corps").scrollTop = h;
   };
   document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-vue],[data-p],[data-j],[data-annuler],[data-h]:not([disabled]),#r-valider"); if (!b) return;
-    if (b.dataset.j) { ui.jour = b.dataset.j; ui.heure = null; }
-    if (b.dataset.annuler) { m.maj((d) => { d.rdv = d.rdv.filter((r) => r.id !== b.dataset.annuler); }); return; }
-    if (b.dataset.vue) { ui.vue = b.dataset.vue; $("#corps").scrollTop = 0; }
-    if (b.dataset.p) { ui.presta = b.dataset.p; ui.heure = null; }
-    if (b.dataset.h) ui.heure = b.dataset.h;
+    const b = e.target.closest("[data-vue],[data-p],[data-j],[data-annuler],[data-accepter],[data-refuser],[data-h]:not([disabled]),#r-valider"); if (!b) return;
+    const ds = b.dataset;
+    if (ds.accepter) { m.maj((d) => { B.accepter(d, ds.accepter); }); alerte("Rendez-vous confirmé", "L’institut a bien reçu votre réponse."); return; }
+    if (ds.refuser) { m.maj((d) => { d.offres = d.offres.filter((o) => o.id !== ds.refuser); }); return; }
+    if (ds.j) { ui.jour = ds.j; ui.heure = null; }
+    if (ds.annuler) { m.maj((d) => { d.rdv = d.rdv.filter((r) => r.id !== ds.annuler); }); return; }
+    if (ds.vue) { ui.vue = ds.vue; $("#corps").scrollTop = 0; }
+    if (ds.pre) ui.presta = ds.pre;
+    if (ds.p) { ui.presta = ds.p; ui.heure = null; }
+    if (ds.h) ui.heure = ds.h;
     if (b.id === "r-valider") {
-      m.maj((d) => { d.rdv.push({ id: O.id(), cliente: MOI, prestation: ui.presta, jour: ui.jour, heure: ui.heure }); });
+      m.maj((d) => { const pratic = B.PRATICIENNES.find((p) => !B.occupe(d, ui.jour, ui.heure, p)); d.rdv.push({ id: O.id(), cliente: MOI, prestation: ui.presta, pratic, jour: ui.jour, heure: ui.heure, statut: "prevu" }); });
       alerte("Rendez-vous confirmé", "Un rappel vous sera envoyé la veille.");
       ui.presta = null; ui.heure = null; ui.vue = "fidelite"; $("#corps").scrollTop = 0;
     }
     rendre();
   });
   ui.tamponsVus = moi().tampons;
+  let offresVues = m.d.offres.filter((o) => o.cliente === MOI).length;
   m.surChange(() => {
-    const t = moi().tampons;
+    const t = moi().tampons, n = m.d.offres.filter((o) => o.cliente === MOI).length;
     ui.neuf = t > ui.tamponsVus;
     if (ui.neuf) { alerte("Merci pour votre visite", t >= B.OBJECTIF ? "Votre soin du visage est offert." : "Un tampon de plus sur votre carte."); }
-    ui.tamponsVus = t;
+    if (n > offresVues) { ui.vue = "fidelite"; alerte("Une place vient de se libérer", "Répondez en un geste dans l’application."); }
+    ui.tamponsVus = t; offresVues = n;
     rendre();
     ui.neuf = false;
   });
-  window.bandeauDemo(m, "../", "ouvrez <a href=\"caisse.html\" target=\"_blank\" rel=\"noopener\">la caisse de l’institut</a> et ajoutez un tampon à Camille. Il apparaît ici.");
+  window.bandeauDemo(m, "../", "ouvrez <a href=\"caisse.html\" target=\"_blank\" rel=\"noopener\">l’agenda de l’institut</a> et proposez un créneau libre à Camille : elle le reçoit ici.");
   rendre();
   window.demoBelleRive = { m, ui, rendre };
 })();

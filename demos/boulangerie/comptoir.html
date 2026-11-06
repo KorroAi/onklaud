@@ -10,11 +10,8 @@
 <link rel="stylesheet" href="theme.css">
 </head>
 <body>
-<header class="en-tete"><h1 data-marque>Boulangerie des Halles</h1><span id="date"></span><div class="chiffre"><b id="total">0 €</b><span>commandé pour demain</span></div></header>
-<main class="grille">
-  <section id="colonne"><div id="commandes"></div></section>
-  <section class="production"><h2>Production de demain</h2><div id="production"></div><button class="imprimer" onclick="window.print()">Imprimer la liste</button></section>
-</main>
+<header class="en-tete"><div class="id"><h1 data-marque>Boulangerie des Halles</h1><span id="date"></span></div><nav class="vues" id="vues" aria-label="Sections"></nav></header>
+<main id="vue"></main>
 <script src="../commun/magasin.js"></script>
 <script src="donnees.js"></script>
 <script>
@@ -23,31 +20,56 @@
   const O = window.Outils, B = window.Boulangerie, esc = O.esc;
   const m = window.Magasin("boulangerie", B.depart);
   const $ = (s) => document.querySelector(s);
+  const ui = { vue: "production" };
   const SUIVANT = { afaire: "prepa", prepa: "prete", prete: "retiree" };
   const BOUTON = { afaire: "Commencer", prepa: "Prête, prévenir le client", prete: "Remise au client" };
-  const COLONNES = [["À préparer", ["afaire"]], ["En préparation", ["prepa"]], ["Prêtes", ["prete", "retiree"]]];
+  const ETAT = { afaire: "À préparer", prepa: "En préparation", prete: "Prête", retiree: "Remise" };
   const ORDRE = (a, b) => B.CRENEAUX.indexOf(a.heure) - B.CRENEAUX.indexOf(b.heure) || a.num - b.num;
-  const texte = (l) => Object.entries(l).map(([k, q]) => q + " × " + (B.PRODUITS.find((p) => p.id === k) || { nom: k }).nom.toLowerCase()).join(", ");
+  const texte = (l) => Object.entries(l).map(([k, q]) => B.designer(k, q)).join(", ");
   const vues = new Set(m.d.commandes.map((c) => c.id));
+
+  const pas = (attr, id, q, nom) => '<span class="pas"><button data-' + attr + '="' + id + ':-1" aria-label="Une pièce de moins, ' + esc(nom) + '">−</button><b>' + q + '</b><button data-' + attr + '="' + id + ':1" aria-label="Une pièce de plus, ' + esc(nom) + '">+</button></span>';
+  const vignette = (p) => '<span class="img"><img src="' + p.img + '" alt="" style="object-position:' + p.pos + ";transform:scale(" + p.zoom + ");transform-origin:" + p.pos + '"></span>';
+  const vProduction = () => {
+    const l = B.production(m.d), b = B.bilan(m.d), cmd = m.d.commandes.slice().sort(ORDRE);
+    const kg = b.farine.toLocaleString("fr-FR", { maximumFractionDigits: 1 }).replace(/\u202f/g, "\u00a0");
+    const carte = (c) => '<article class="commande ' + c.etat + " " + (vues.has(c.id) ? "" : "neuve") + '" data-id="' + c.id + '"><span class="h">' + c.heure + "</span><div><b>" + esc(c.nom) + " <i>N° " + c.num + "</i></b><small>" + esc(texte(c.lignes)) + "</small></div>" + (BOUTON[c.etat] ? '<button class="' + (c.etat === "prete" ? "calme" : "") + '" data-etat="' + c.id + '">' + BOUTON[c.etat] + "</button>" : '<span class="remise">Remise</span>') + "</article>";
+    return '<div class="titre-v chiffres"><div><h2>Production de demain</h2><p>' + b.pieces + " pièces, " + kg + ' kg de farine. ' + b.evite + ' pièces de moins que votre habitude.</p></div><div class="vendu"><small>Déjà vendu</small><b id="total">' + O.eur(b.vendu) + "</b></div></div>" +
+      '<div class="grille"><section class="bloc"><table id="production"><thead><tr><th>Produit</th><th class="n">Commandé</th><th class="n">Vitrine prévue</th><th class="n">Habitude</th><th class="n">À fabriquer</th><th class="n">Au four</th></tr></thead><tbody>' +
+      l.map((x) => '<tr><th scope="row"><span class="nom-p">' + vignette(x.p) + esc(x.p.nom) + '</span></th><td class="n">' + x.commande + '</td><td class="n">' + x.vitrine + '</td><td class="n gris">' + x.p.habitude + '</td><td class="n">' + pas("ajust", x.p.id, x.a_faire, x.p.nom) + '</td><td class="n gris">' + x.p.four + "</td></tr>").join("") +
+      '</tbody></table><div class="pied-t"><p>Vitrine prévue : moyenne des ventes des quatre derniers jours identiques.</p><button class="calme" onclick="window.print()">Imprimer la feuille</button></div></section>' +
+      '<section class="bloc retraits"><h3>Retraits <span>' + cmd.length + '</span></h3><div id="commandes">' + cmd.map(carte).join("") + "</div></section></div>";
+  };
+  const vInvendus = () => {
+    const o = m.d.offre, d = m.d;
+    if (o) {
+      const reste = Object.entries(o.lots).filter(([, q]) => q > 0);
+      return '<div class="titre-v chiffres"><div><h2>Invendus du soir</h2><p>' + d.reserves + (d.reserves > 1 ? " pièces réservées" : " pièce réservée") + ' par vos clients.</p></div><div class="vendu"><small>Récupéré ce soir</small><b id="sauve">' + O.eur(d.sauve) + '</b></div></div><section class="bloc etroit">' + (reste.length ? '<ul class="invendus">' + reste.map(([k, q]) => "<li>" + vignette(B.produit(k)) + "<span>" + esc(B.produit(k).nom) + "<small>Encore disponible</small></span><b>" + q + "</b></li>").join("") + "</ul>" : '<p class="tout-parti">Tous les invendus ont trouvé preneur.</p>') + "</section>";
+    }
+    const inv = d.invendus, n = Object.values(inv).reduce((a, b) => a + b, 0), valeur = Object.entries(inv).reduce((t, [k, q]) => t + q * B.prixSoir(B.produit(k)), 0);
+    return '<div class="titre-v chiffres"><div><h2>Invendus du soir</h2><p>Indiquez ce qu’il reste. Vos clients reçoivent une notification et réservent à ' + Math.round(B.REMISE * 100) + ' % de réduction.</p></div></div><section class="bloc etroit"><ul class="invendus">' +
+      B.PRODUITS.map((p) => "<li>" + vignette(p) + "<span>" + esc(p.nom) + "<small>" + O.eur(p.prix) + " devient " + O.eur(B.prixSoir(p)) + "</small></span>" + pas("inv", p.id, inv[p.id] || 0, p.nom) + "</li>").join("") +
+      '</ul><button class="publier" data-action="publier"' + (n ? "" : " disabled") + ">Proposer " + n + " pièces, soit " + O.eur(valeur) + "</button></section>";
+  };
   const rendre = () => {
-    const l = m.d.commandes.slice().sort(ORDRE);
-    $("#date").textContent = O.dateLongue(O.jour(1));
-    $("#total").textContent = O.eur(l.reduce((t, c) => t + B.total(c.lignes), 0));
-    const carte = (c) => '<article class="commande ' + (c.etat === "prete" || c.etat === "retiree" ? "prete " : "") + (vues.has(c.id) ? "" : "neuve") + '" data-id="' + c.id + '"><span class="h">' + c.heure + "</span><b>N° " + c.num + ", " + esc(c.nom) + "</b><small>" + esc(texte(c.lignes)) + "</small>" + (BOUTON[c.etat] ? '<button class="' + (c.etat === "prete" ? "calme" : "") + '" data-etat="' + c.id + '">' + BOUTON[c.etat] + "</button>" : '<span class="remise">Remise au client</span>') + "</article>";
-    $("#commandes").innerHTML = COLONNES.map(([t, etats]) => { const x = l.filter((c) => etats.includes(c.etat)); return '<section class="colonne"><h2>' + t + " <span>" + x.length + "</span></h2>" + (x.map(carte).join("") || '<p class="vide-c">Aucune commande.</p>') + "</section>"; }).join("");
-    l.forEach((c) => vues.add(c.id));
-    const tot = {};
-    l.forEach((c) => Object.entries(c.lignes).forEach(([k, q]) => { tot[k] = (tot[k] || 0) + q; }));
-    $("#production").innerHTML = B.PRODUITS.filter((p) => tot[p.id]).map((p) => '<div class="ligne"><span>' + esc(p.nom) + "</span><b>" + tot[p.id] + "</b></div>").join("");
+    $("#date").textContent = O.dateLongue(O.jour(1)).replace(/^./, (x) => x.toUpperCase());
+    $("#vues").innerHTML = [["production", "Production"], ["soir", "Invendus"]].map(([k, t]) => '<button data-vue="' + k + '" aria-current="' + (ui.vue === k) + '">' + t + "</button>").join("");
+    $("#vue").innerHTML = ui.vue === "production" ? vProduction() : vInvendus();
+    m.d.commandes.forEach((c) => vues.add(c.id));
   };
   document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-etat]"); if (!b) return;
-    m.maj((d) => { const c = d.commandes.find((x) => x.id === b.dataset.etat); c.etat = SUIVANT[c.etat]; });
+    const b = e.target.closest("[data-etat],[data-vue],[data-ajust],[data-inv],[data-action]"); if (!b) return;
+    const ds = b.dataset;
+    if (ds.vue) { ui.vue = ds.vue; rendre(); }
+    if (ds.etat) m.maj((d) => { const c = d.commandes.find((x) => x.id === ds.etat); c.etat = SUIVANT[c.etat]; });
+    if (ds.ajust) { const [k, n] = ds.ajust.split(":"); m.maj((d) => { d.ajust[k] = (d.ajust[k] || 0) + Number(n); }); }
+    if (ds.inv) { const [k, n] = ds.inv.split(":"); m.maj((d) => { d.invendus[k] = Math.max(0, (d.invendus[k] || 0) + Number(n)); }); }
+    if (ds.action === "publier") m.maj((d) => { d.offre = { lots: { ...d.invendus } }; d.sauve = 0; d.reserves = 0; });
   });
   m.surChange(rendre);
-  window.bandeauDemo(m, "../", "ouvrez <a href=\"./\" target=\"_blank\" rel=\"noopener\">l’application client</a> et passez commande. Cliquez ensuite sur « Commencer », puis « Prête ».");
+  window.bandeauDemo(m, "../", "passez commande depuis <a href=\"./\" target=\"_blank\" rel=\"noopener\">l’application client</a> : la feuille de production change. Ouvrez ensuite « Invendus du soir ».");
   rendre();
-  window.demoComptoir = { m, rendre };
+  window.demoComptoir = { m, ui, rendre };
 })();
 </script>
 </body>

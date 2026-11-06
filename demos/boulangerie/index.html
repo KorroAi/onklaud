@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#d9bb90">
+<meta name="theme-color" content="#ffb81c">
 <title>Commander · Boulangerie des Halles, démo Onklaud</title>
 <link rel="manifest" href="appli.webmanifest">
 <link rel="apple-touch-icon" href="icone-180.png">
@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="../commun/base.css">
 <link rel="stylesheet" href="theme.css">
 </head>
-<body>
+<body class="client">
 <div class="appli">
   <div class="statut-ios"><span>9:41</span><svg viewBox="0 0 66 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="6" width="3" height="6" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/><rect x="42" y="1" width="20" height="10" rx="3"/><rect x="63" y="4" width="2" height="4" rx="1"/></svg></div>
   <div class="appli-corps" id="corps"></div>
@@ -30,57 +30,82 @@
   const m = window.Magasin("boulangerie", B.depart);
   const $ = (s) => document.querySelector(s);
   const ui = { vue: "commander", panier: {}, creneau: B.CRENEAUX[0] };
-  const ONGLETS = [["commander", "Commander", '<path d="M6 6h15l-1.500 8.500H7.500z"/><path d="M6 6L5 3H2M9 20h.01M18 20h.01"/>'], ["retraits", "Mes retraits", '<rect x="4" y="5" width="16" height="15" rx="2.500"/><path d="M8 3v4M16 3v4M4 10h16"/>']];
+  const ONGLETS = [
+    ["commander", "Commander", '<path d="M3 11l1.500 9h15L21 11M2 11h20M8 11l3-7M16 11l-3-7"/>'],
+    ["soir", "Ce soir", '<path d="M20 14.500A8 8 0 019.500 4 8 8 0 1020 14.500z"/>'],
+    ["retraits", "Retraits", '<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/>']
+  ];
+  const image = (p) => '<span class="img"><img src="' + p.img + '" alt="" style="object-position:' + p.pos + ";transform:scale(" + p.zoom + ");transform-origin:" + p.pos + '"></span>';
   const nbArticles = () => Object.values(ui.panier).reduce((a, b) => a + b, 0);
   const alerte = (t, x) => { const a = $("#alerte"); a.innerHTML = "<i>" + esc(O.initiales("BH")) + "</i><div><b>" + esc(t) + "</b>" + esc(x) + "</div>"; a.classList.add("visible"); clearTimeout(alerte.t); alerte.t = setTimeout(() => a.classList.remove("visible"), 4200); };
-
-  const commander = () => '<header class="enseigne"><h1 class="marque-b">' + esc(O.marque("Boulangerie des Halles")) + '</h1><small>Commandez aujourd’hui, retirez demain.</small></header><div class="produits">' +
-    B.PRODUITS.map((p) => {
-      const q = ui.panier[p.id] || 0;
-      return '<div class="produit"><span class="img"><img src="' + p.img + '" alt="" style="object-position:' + p.pos + ";transform:scale(" + p.zoom + ");transform-origin:" + p.pos + '"></span><div class="inf"><b>' + esc(p.nom) + "</b><small>" + esc(p.d) + '</small><span class="prix">' + O.eur(p.prix) + '</span></div><div class="actions-p">' +
-        (q ? '<span class="qte"><button class="rond clair" data-moins="' + p.id + '" aria-label="Retirer">−</button>' + q + '<button class="rond" data-plus="' + p.id + '" aria-label="Ajouter">+</button></span>' : '<button class="ajout" data-plus="' + p.id + '" aria-label="Ajouter ' + esc(p.nom) + '">Ajouter</button>') + "</div></div>";
-    }).join("") + "</div>";
-  const valider = () => '<div class="nav-ios"><button data-vue="commander">‹ Retour à la commande</button></div><h1 class="grand-titre">Votre retrait</h1><p class="sous-titre">Demain, ' + O.dateLongue(O.jour(1)).replace(/^\S+ /, "") + '</p><p class="entete-groupe">Heure de retrait</p><div class="creneaux">' + B.CRENEAUX.map((c) => '<button data-creneau="' + c + '" aria-pressed="' + (c === ui.creneau) + '">' + c + "</button>").join("") + '</div><p class="entete-groupe">Votre prénom</p><div class="groupe"><input class="champ-ios" id="f-prenom" autocomplete="given-name" aria-label="Votre prénom" placeholder="Prénom"></div><p class="entete-groupe">Votre commande</p><div class="groupe">' +
-    Object.entries(ui.panier).map(([k, q]) => { const p = B.PRODUITS.find((x) => x.id === k); return '<div class="cellule"><div class="texte"><b>' + q + " × " + esc(p.nom) + '</b></div><span class="droite">' + O.eur(q * p.prix) + "</span></div>"; }).join("") + '<div class="cellule"><div class="texte"><b style="font-weight:600">Total, à régler au retrait</b></div><span class="droite" style="color:#2b1a0f;font-weight:600">' + O.eur(B.total(ui.panier)) + '</span></div></div><button class="bouton-ios" id="valider">Valider ma commande</button>';
+  const lignes = (l) => Object.entries(l).map(([k, q]) => B.designer(k, q)).join(", ");
+  const commander = () => {
+    const carte = (p) => {
+      const q = ui.panier[p.id] || 0, reste = B.restant(m.d, p) - q;
+      return '<li class="produit"><div class="vignette">' + image(p) + (reste <= 9 ? '<em class="rare">' + (reste > 0 ? "Plus que " + reste : "Complet") + "</em>" : "") +
+        (q ? '<span class="qte"><button data-moins="' + p.id + '" aria-label="Retirer ' + esc(p.nom) + '">−</button><b>' + q + '</b><button data-plus="' + p.id + '" aria-label="Ajouter ' + esc(p.nom) + '"' + (reste <= 0 ? " disabled" : "") + ">+</button></span>" : '<button class="ajout" data-plus="' + p.id + '" aria-label="Ajouter ' + esc(p.nom) + '"' + (reste <= 0 ? " disabled" : "") + ">+</button>") + '</div><div class="inf"><b>' + esc(p.nom) + '</b><span class="prix">' + O.eur(p.prix) + "</span></div></li>";
+    };
+    return '<header class="enseigne"><p class="marque-b">' + esc(O.marque("Boulangerie des Halles")) + '</p><h1>Votre pain vous attend demain matin.</h1><p class="delai">Commandez avant 20 h, retirez dès 7 h 30, sans file.</p><img src="../commun/photos/croissant-seul.jpg" alt=""></header>' +
+      '<button class="habitude" data-habitude="1"><span><b>Votre commande habituelle</b><small>' + esc(lignes(B.HABITUDE)) + "</small></span><strong>" + O.eur(B.total(B.HABITUDE)) + "</strong></button>" +
+      '<ul class="produits">' + B.PRODUITS.map(carte).join("") + "</ul>";
+  };
+  const valider = () => '<div class="nav-ios"><button data-vue="commander">Retour</button></div><h1 class="grand-titre">Votre retrait</h1><p class="sous-titre">' + esc(O.dateLongue(O.jour(1)).replace(/^./, (x) => x.toUpperCase())) + '</p><p class="entete-groupe">Heure de retrait</p><div class="creneaux">' + B.CRENEAUX.map((c) => '<button data-creneau="' + c + '" aria-pressed="' + (c === ui.creneau) + '">' + c + "</button>").join("") + '</div><p class="entete-groupe">Votre prénom</p><div class="groupe"><input class="champ-ios" id="f-prenom" autocomplete="given-name" aria-label="Votre prénom" placeholder="Prénom"></div><p class="entete-groupe">Votre commande</p><div class="groupe">' +
+    Object.entries(ui.panier).map(([k, q]) => { const p = B.produit(k); return '<div class="cellule"><div class="texte"><b>' + q + " × " + esc(p.nom) + '</b></div><span class="droite">' + O.eur(q * p.prix) + "</span></div>"; }).join("") + '<div class="cellule total"><div class="texte"><b>Total, à régler au retrait</b></div><span class="droite">' + O.eur(B.total(ui.panier)) + '</span></div></div><button class="bouton-ios" id="valider">Valider ma commande</button>';
+  const soir = () => {
+    const o = m.d.offre;
+    if (!o || !Object.values(o.lots).some((q) => q > 0)) return '<header class="tete-p"><h1 class="grand-titre">Ce soir</h1><p class="sous-titre">Les produits du jour, à prix réduit, avant la fermeture.</p></header><div class="vide-p"><b>' + (o ? "Tout a été réservé." : "Aucune offre pour le moment.") + "</b><p>" + (o ? "Merci. Nous fabriquerons de nouveau demain." : "La boulangerie publie ici ses invendus vers 18 h, à " + Math.round(B.REMISE * 100) + " % de réduction. Vous recevez une notification.") + "</p></div>";
+    return '<header class="tete-p"><h1 class="grand-titre">Ce soir</h1><p class="sous-titre">' + Math.round(B.REMISE * 100) + ' % de réduction, à retirer avant 19 h 30.</p></header><ul class="lots">' +
+      Object.entries(o.lots).filter(([, q]) => q > 0).map(([k, q]) => { const p = B.produit(k); return '<li>' + image(p) + '<div><b>' + esc(p.nom) + "</b><small>" + q + (q > 1 ? " disponibles" : " disponible") + "</small><span><s>" + O.eur(p.prix) + "</s> " + O.eur(B.prixSoir(p)) + '</span></div><button data-lot="' + k + '">Réserver</button></li>'; }).join("") + "</ul>";
+  };
   const retraits = () => {
     const l = m.d.commandes.filter((c) => m.d.mes.includes(c.id));
-    return '<h1 class="grand-titre">Mes retraits</h1>' + (l.length ? l.map((c) => {
+    return '<header class="tete-p"><h1 class="grand-titre">Mes retraits</h1></header>' + (l.length ? l.map((c) => {
       const n = { afaire: 1, prepa: 2, prete: 3, retiree: 3 }[c.etat];
       const t = { afaire: "Commande reçue", prepa: "En préparation", prete: "Votre commande est prête", retiree: "Commande retirée" }[c.etat];
-      return '<div class="suivi"><b>' + t + "</b><small>Retrait demain à " + c.heure + ", " + O.eur(B.total(c.lignes)) + '</small><div class="etapes-c">' + [1, 2, 3].map((i) => '<i class="' + (i <= n ? "on" : "") + '"></i>').join("") + '</div><p class="code">N° ' + c.num + "</p></div>";
-    }).join("") : '<p class="sous-titre">Vos commandes apparaîtront ici.</p>');
+      return '<article class="ticket"><div class="num"><small>Numéro</small><b>' + c.num + '</b></div><div class="det"><b>' + t + "</b><p>Demain à " + c.heure + "</p><small>" + esc(lignes(c.lignes)) + ", " + O.eur(B.total(c.lignes)) + '</small></div><ol class="etapes-c">' + ["Reçue", "En préparation", "Prête"].map((x, i) => '<li class="' + (i < n ? "on" : "") + '">' + x + "</li>").join("") + "</ol></article>";
+    }).join("") : '<div class="vide-p"><b>Aucune commande en cours.</b><p>Votre numéro de retrait s’affichera ici.</p></div>');
   };
 
   const rendre = () => {
     const h = $("#corps").scrollTop;
-    $("#corps").innerHTML = { commander, valider, retraits }[ui.vue]();
+    $("#corps").innerHTML = { commander, valider, retraits, soir }[ui.vue]();
     const n = nbArticles();
-    $("#barre-panier").innerHTML = ui.vue === "commander" && n ? '<div class="panier"><div>' + n + (n > 1 ? " articles" : " article") + "<small>" + O.eur(B.total(ui.panier)) + ', retrait demain</small></div><button data-vue="valider">Continuer</button></div>' : "";
-    $("#onglets").innerHTML = ONGLETS.map(([k, t, i]) => '<button data-vue="' + k + '" aria-current="' + (ui.vue === k || (ui.vue === "valider" && k === "commander")) + '"><svg viewBox="0 0 24 24">' + i + "</svg>" + t + "</button>").join("");
+    $("#barre-panier").innerHTML = ui.vue === "commander" && n ? '<div class="panier"><button data-vue="valider"><span class="nb-p">' + n + (n > 1 ? " articles" : " article") + "</span><span>Voir ma commande</span><span>" + O.eur(B.total(ui.panier)) + "</span></button></div>" : "";
+    const dispo = m.d.offre && Object.values(m.d.offre.lots).some((q) => q > 0);
+    $("#onglets").innerHTML = ONGLETS.map(([k, t, i]) => '<button data-vue="' + k + '" aria-current="' + (ui.vue === k || (ui.vue === "valider" && k === "commander")) + '"><svg viewBox="0 0 24 24">' + i + "</svg>" + t + (k === "soir" && dispo ? "<em></em>" : "") + "</button>").join("");
     $("#corps").scrollTop = h;
   };
   document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-plus],[data-moins],[data-vue],[data-creneau],#valider"); if (!b) return;
+    const b = e.target.closest("[data-plus],[data-moins],[data-vue],[data-creneau],[data-habitude],[data-lot],#valider"); if (!b || b.disabled) return;
     const ds = b.dataset;
     if (ds.plus) ui.panier[ds.plus] = (ui.panier[ds.plus] || 0) + 1;
     if (ds.moins) { ui.panier[ds.moins] -= 1; if (ui.panier[ds.moins] <= 0) delete ui.panier[ds.moins]; }
+    if (ds.habitude) { ui.panier = { ...B.HABITUDE }; }
     if (ds.vue) { ui.vue = ds.vue; $("#corps").scrollTop = 0; }
+    if (ds.lot) {
+      const p = B.produit(ds.lot);
+      m.maj((d) => { d.offre.lots[ds.lot] -= 1; d.sauve += B.prixSoir(p); d.reserves += 1; });
+      alerte("Réservé pour ce soir", p.nom + ", à retirer avant 19 h 30.");
+      return;
+    }
     if (ds.creneau) { const p = $("#f-prenom").value; ui.creneau = ds.creneau; rendre(); $("#f-prenom").value = p; return; }
     if (b.id === "valider") {
       const nom = $("#f-prenom").value.trim(); if (!nom) { $("#f-prenom").focus(); return; }
-      let id;
-      m.maj((d) => { const num = d.prochainNum++; id = "c" + num; d.commandes.push({ id, num, nom, heure: ui.creneau, lignes: { ...ui.panier }, etat: "afaire", jour: O.jour(1) }); d.mes.push(id); });
+      m.maj((d) => { const num = d.prochainNum++, id = "c" + num; d.commandes.push({ id, num, nom, heure: ui.creneau, lignes: { ...ui.panier }, etat: "afaire", jour: O.jour(1) }); d.mes.push(id); });
       ui.panier = {}; ui.vue = "retraits";
       alerte("Commande reçue", "La boulangerie prépare votre commande pour demain.");
     }
     rendre();
   });
   const etats = {};
+  let offreVue = !!m.d.offre;
   m.surChange(() => {
     m.d.commandes.filter((c) => m.d.mes.includes(c.id)).forEach((c) => { if (c.etat === "prete" && etats[c.id] !== "prete") alerte("Votre commande est prête", "Numéro " + c.num + ", à retirer à " + c.heure + "."); etats[c.id] = c.etat; });
+    if (m.d.offre && !offreVue) alerte("Ce soir à " + Math.round(B.REMISE * 100) + " % de réduction", "La boulangerie vient de publier ses produits du jour.");
+    offreVue = !!m.d.offre;
     rendre();
   });
-  window.bandeauDemo(m, "../", "passez une commande, puis ouvrez <a href=\"comptoir.html\" target=\"_blank\" rel=\"noopener\">l’écran du comptoir</a>.");
+  window.bandeauDemo(m, "../", "passez commande dans la boutique, puis ouvrez <a href=\"comptoir.html\" target=\"_blank\" rel=\"noopener\">l’écran du boulanger</a> : la production de demain se recalcule.");
   rendre();
   window.demoBoulangerie = { m, ui, rendre };
 })();

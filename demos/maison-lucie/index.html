@@ -4,24 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#5e1020">
+<meta name="theme-color" content="#3a0a14">
 <title>Maison Lucie · Bistrot de saison, démo Onklaud</title>
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../commun/base.css">
 <link rel="stylesheet" href="theme.css">
 </head>
 <body>
-<nav class="nav" aria-label="Navigation"><span class="marque" data-marque>Maison Lucie</span><a class="lien-s" href="#carte">La carte</a><a class="lien-s" href="#lieu">Le lieu</a><a class="lien-s" href="#privatiser">Privatiser</a><a class="reserver" href="#resa">Réserver</a></nav>
+<nav class="nav" aria-label="Navigation"><span class="marque" data-marque>Maison Lucie</span><span class="liens-n"><a class="lien-s" href="#carte">La carte</a><a class="lien-s" href="#lieu">Le lieu</a><a class="lien-s" href="#privatiser">Privatiser</a></span><a class="reserver" href="#resa">Réserver</a></nav>
 <header class="accueil">
-  <p class="sur">Bistrot de saison, à Lyon</p>
-  <h1>Une cuisine du marché, à deux pas des quais.</h1>
-  <div class="resa" id="resa"></div>
-  <div class="infos"><p><b>Aujourd’hui</b><span class="ouvert" id="ouvert"></span></p><p><b>Adresse</b>Quai Saint-Antoine</p><p><b>Terrasse</b>Face à la Saône</p></div>
+  <img class="plein" src="../commun/photos/resto-salle.jpg" alt="La salle de Maison Lucie, le soir">
+  <div class="titre-l"><p class="sur">Bistrot de saison, Lyon 5<sup>e</sup></p><h1>Maison Lucie</h1><p class="chapo">Une cuisine du marché, face à la Saône.</p><p class="infos"><span class="ouvert" id="ouvert"></span><span>Quai Saint-Antoine</span></p></div>
+  <div class="carton"><h2>Réserver une table</h2><div class="resa" id="resa"></div></div>
 </header>
-<img class="bandeau-photo" src="../commun/photos/resto-table.jpg" alt="Une assiette de saison sur une table dressée">
 <main>
   <section class="s" id="carte">
-    <h2>La carte de la semaine</h2>
+    <h2>La carte</h2>
     <div class="carte">
       <div><h3>Pour commencer</h3><div class="plat"><b>Œuf parfait, champignons</b><span>12 €</span><small>Crème de noisette, pain grillé</small></div><div class="plat"><b>Truite fumée maison</b><span>14 €</span><small>Betterave, raifort doux</small></div><div class="plat"><b>Velouté de courge</b><span>9 €</span><small>Châtaignes, huile de sauge</small></div></div>
       <div><h3>Pour suivre</h3><div class="plat"><b>Saumon mi-cuit</b><span>24 €</span><small>Herbes du marché, jus citronné</small></div><div class="plat"><b>Paleron confit</b><span>26 €</span><small>Purée fumée, carottes rôties</small></div><div class="plat"><b>Risotto de saison</b><span>21 €</span><small>Parmesan, légumes du jour</small></div></div>
@@ -29,11 +27,11 @@
     </div>
   </section>
   <section class="s" id="lieu">
-    <h2>Une salle chaleureuse, une terrasse sur la Saône.</h2>
+    <h2>Le lieu</h2>
     <div class="lieu"><img src="../commun/photos/resto-salle.jpg" alt="La salle du restaurant" loading="lazy"><img src="../commun/photos/resto-cafe.jpg" alt="Le comptoir" loading="lazy"><img src="../commun/photos/resto-plats.jpg" alt="Assiettes du jour" loading="lazy"></div>
   </section>
   <section class="s" id="privatiser"><div class="bas">
-    <h2>Privatisez la maison.</h2><p>Déjeuner d’équipe, anniversaire ou repas de famille : nous composons le menu avec vous.</p>
+    <h2>Privatiser la maison</h2><p>Déjeuner d’équipe, anniversaire ou repas de famille : nous composons le menu avec vous.</p>
     <form class="priv" id="priv"><label>Votre nom<input name="nom" required autocomplete="name"></label><label>Téléphone<input name="tel" type="tel" required autocomplete="tel"></label><label>Nombre de personnes<input name="pers" type="number" min="8" max="60" value="20" required></label><label>Date souhaitée<input name="jour" type="date" required></label><button type="submit" class="valider">Envoyer ma demande</button><p class="merci" id="merci" role="status" hidden>Merci, votre demande est transmise. Nous vous rappelons pour composer le menu.</p></form>
   </div></section>
   <section class="s horaires"><div class="bas">
@@ -49,41 +47,57 @@
   const O = window.Outils, L = window.MaisonLucie, esc = O.esc;
   const m = window.Magasin("maison-lucie", L.depart);
   const $ = (s, r = document) => r.querySelector(s);
-  const jours = () => L.joursOuverts(7);
-  const prochain = jours().find((j) => j > O.jour()) || jours()[0];
-  const ui = { jour: prochain, pers: 2, heure: null, fait: null };
+  const jours = () => L.joursOuverts(6);
+  const ui = { jour: jours()[0], pers: 2, heure: null, attente: false, fait: null };
   const h = new Date().getHours();
   $("#ouvert").textContent = !L.ouvert(O.jour()) ? "Fermé aujourd’hui" : h < 23 ? "Ouvert jusqu’à 23:00" : "Fermé ce soir";
-  const passe = (j, h) => j === O.jour() && Number(h.slice(0, 2)) + Number(h.slice(3)) / 60 <= new Date().getHours() + new Date().getMinutes() / 60;
-  const creneaux = (s) => s.map((h) => {
-    const libre = L.CAPACITE - L.occupes(m.d, ui.jour, h) >= ui.pers && !passe(ui.jour, h);
-    return '<button type="button" class="creneau" data-h="' + h + '" aria-pressed="' + (ui.heure === h) + '"' + (libre ? "" : " disabled") + ">" + h + "</button>";
+  const passe = (j, x) => j === O.jour() && L.minutes(x) <= new Date().getHours() * 60 + new Date().getMinutes();
+  const nomJour = (j) => j === O.jour() ? "Aujourd’hui" : j === O.jour(1) ? "Demain" : new Date(j + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" }).replace(".", "");
+  const creneaux = (l) => l.map((x) => {
+    const fini = passe(ui.jour, x), libre = !fini && L.tableLibre(m.d, ui.jour, x, ui.pers);
+    return '<button type="button" class="creneau ' + (libre ? "" : "complet") + '" data-h="' + x + '" data-complet="' + (libre ? "" : "1") + '" aria-pressed="' + (ui.heure === x) + '"' + (fini ? " disabled" : "") + ">" + x + (libre || fini ? "" : "<small>Complet</small>") + "</button>";
   }).join("");
+  const lue = (q) => (q > 1 ? q + " personnes" : "1 personne");
   const rendre = () => {
     const z = $("#resa");
     if (ui.fait) {
-      z.innerHTML = '<div class="ok-resa"><b>Votre table est confirmée, ' + esc(ui.fait.nom) + ".</b><p>" + O.dateLongue(ui.fait.jour) + " à " + ui.fait.heure + ", " + ui.fait.pers + (ui.fait.pers > 1 ? " personnes" : " personne") + '. Un rappel vous sera envoyé la veille.</p><button type="button" data-action="encore">Faire une autre réservation</button></div>';
+      const r = m.d.resas.find((x) => x.id === ui.fait.id), at = m.d.attente.find((x) => x.id === ui.fait.id);
+      if (at) {
+        const dispo = at.etat === "proposee";
+        z.innerHTML = '<div class="ok-resa"><b>' + (dispo ? "Une table s’est libérée, " : "Vous êtes sur la liste d’attente, ") + esc(at.nom) + ".</b><p>" + O.dateLongue(at.jour) + " à " + at.heure + ", " + lue(at.pers) + ".</p>" + (dispo ? '<button type="button" class="valider" data-action="accepter">Accepter cette table</button>' : "<p>Nous vous prévenons par SMS dès qu’une table se libère.</p>") + "</div>";
+        return;
+      }
+      if (r && r.etat === "annulee") { z.innerHTML = '<div class="ok-resa"><b>Votre réservation est annulée.</b><p>Merci de nous avoir prévenus : votre table est aussitôt proposée à d’autres clients.</p><button type="button" class="lien-r" data-action="encore">Faire une autre réservation</button></div>'; return; }
+      z.innerHTML = '<div class="ok-resa"><b>Votre table est réservée, ' + esc(ui.fait.nom) + ".</b><p>" + O.dateLongue(ui.fait.jour) + " à " + ui.fait.heure + ", " + lue(ui.fait.pers) + '.</p><div class="sms"><small>Message reçu la veille</small><p>' + esc(O.marque("Maison Lucie")) + " : nous vous attendons demain à " + ui.fait.heure + ". Merci de confirmer votre venue.</p><div>" + (r && r.conf ? '<span class="confirme">Venue confirmée</span>' : '<button type="button" data-action="confirmer">Je confirme</button>') + '<button type="button" class="second" data-action="desister">Je ne viens plus</button></div></div><button type="button" class="lien-r" data-action="encore">Faire une autre réservation</button></div>';
       return;
     }
-    const nom = $("#r-nom", z), tel = $("#r-tel", z), vNom = nom ? nom.value : "", vTel = tel ? tel.value : "";
-    z.innerHTML = '<div class="ligne"><label>Date<select id="r-jour">' + jours().map((j) => '<option value="' + j + '"' + (j === ui.jour ? " selected" : "") + ">" + (j === O.jour() ? "Aujourd’hui" : j === O.jour(1) ? "Demain" : O.dateLongue(j)) + '</option>').join("") + '</select></label><label>Personnes<select id="r-pers">' + [1, 2, 3, 4, 5, 6, 7, 8].map((n) => '<option value="' + n + '"' + (n === ui.pers ? " selected" : "") + ">" + n + (n > 1 ? " personnes" : " personne") + "</option>").join("") + '</select></label></div><p class="etiq">Midi</p><div class="creneaux">' + creneaux(L.SERVICES.midi) + '</div><p class="etiq">Soir</p><div class="creneaux">' + creneaux(L.SERVICES.soir) + "</div>" +
-      (ui.heure ? '<div class="ligne" style="margin-top:12px"><label>Nom<input id="r-nom" autocomplete="name" value="' + esc(vNom) + '"></label><label>Téléphone<input id="r-tel" type="tel" autocomplete="tel" value="' + esc(vTel) + '"></label></div><button type="button" class="valider" id="r-valider">Confirmer la table de ' + ui.heure + "</button>" : "");
+    const nom = $("#r-nom", z), tel = $("#r-tel", z), note = $("#r-note", z), vNom = nom ? nom.value : "", vTel = tel ? tel.value : "", vNote = note ? note.value : "";
+    z.innerHTML = '<div class="ligne-r"><span class="etiq">Convives</span><div class="pas-r"><button type="button" data-pers="-1" aria-label="Une personne de moins">−</button><b id="r-pers">' + lue(ui.pers) + '</b><button type="button" data-pers="1" aria-label="Une personne de plus">+</button></div></div><div class="jours-r" role="group" aria-label="Date">' + jours().map((j) => '<button type="button" data-j="' + j + '" aria-pressed="' + (j === ui.jour) + '">' + nomJour(j) + "</button>").join("") + '</div><p class="etiq">Déjeuner</p><div class="creneaux">' + creneaux(L.SERVICES.midi) + '</div><p class="etiq">Dîner</p><div class="creneaux">' + creneaux(L.SERVICES.soir) + "</div>" +
+      (ui.heure ? (ui.attente ? '<p class="info-c">Ce service est complet. Inscrivez-vous sur la liste d’attente : si une table se libère, elle vous est proposée.</p>' : "") + '<div class="ligne" style="margin-top:12px"><label>Nom<input id="r-nom" autocomplete="name" value="' + esc(vNom) + '"></label><label>Téléphone<input id="r-tel" type="tel" autocomplete="tel" value="' + esc(vTel) + '"></label></div>' + (ui.attente ? "" : '<label class="note-r">Allergie, anniversaire, précision<input id="r-note" value="' + esc(vNote) + '"></label>') + '<button type="button" class="valider" id="r-valider">' + (ui.attente ? "Rejoindre la liste d’attente de " : "Réserver la table de ") + ui.heure + "</button>" : "");
   };
-  document.addEventListener("change", (e) => {
-    if (e.target.id === "r-jour") { ui.jour = e.target.value; ui.heure = null; rendre(); }
-    if (e.target.id === "r-pers") { ui.pers = Number(e.target.value); ui.heure = null; rendre(); }
-  });
   document.addEventListener("click", (e) => {
     const c = e.target.closest(".creneau:not([disabled])");
-    if (c) { ui.heure = c.dataset.h; rendre(); return; }
-    if (e.target.dataset.action === "encore") { ui.fait = null; ui.heure = null; rendre(); return; }
-    if (e.target.id === "r-valider") {
+    if (c) { ui.heure = c.dataset.h; ui.attente = !!c.dataset.complet; rendre(); return; }
+    const b = e.target.closest("[data-pers],[data-j],[data-action],#r-valider"); if (!b) return;
+    if (b.dataset.pers) { ui.pers = Math.max(1, Math.min(8, ui.pers + Number(b.dataset.pers))); ui.heure = null; rendre(); return; }
+    if (b.dataset.j) { ui.jour = b.dataset.j; ui.heure = null; rendre(); return; }
+    const a = b.dataset.action;
+    if (a === "encore") { ui.fait = null; ui.heure = null; rendre(); return; }
+    if (a === "confirmer") { m.maj((d) => { d.resas.find((r) => r.id === ui.fait.id).conf = true; }); return; }
+    if (a === "desister") { m.maj((d) => { d.resas.find((r) => r.id === ui.fait.id).etat = "annulee"; }); return; }
+    if (a === "accepter") { const id = ui.fait.id; m.maj((d) => { L.accepter(d, id); }); const r = m.d.resas.find((x) => x.id === id); ui.fait = r; rendre(); return; }
+    if (b.id === "r-valider") {
       const nom = $("#r-nom").value.trim(), tel = $("#r-tel").value.trim();
       if (!nom) { $("#r-nom").focus(); return; }
       if (!tel) { $("#r-tel").focus(); return; }
-      const r = { id: O.id(), jour: ui.jour, heure: ui.heure, nom, pers: ui.pers, tel, etat: "attendue", source: "site" };
-      ui.fait = r;
-      m.maj((d) => { d.resas.push(r); });
+      if (ui.attente) {
+        const at = { id: O.id(), jour: ui.jour, heure: ui.heure, nom, pers: ui.pers, tel, etat: "attend", source: "site" };
+        ui.fait = at; m.maj((d) => { d.attente.push(at); });
+      } else {
+        const t = L.tableLibre(m.d, ui.jour, ui.heure, ui.pers);
+        const r = { id: O.id(), jour: ui.jour, heure: ui.heure, nom, pers: ui.pers, tel, etat: "attendue", conf: false, source: "site", visites: 1, note: $("#r-note").value.trim(), table: t ? t.n : 0 };
+        ui.fait = r; m.maj((d) => { d.resas.push(r); });
+      }
     }
   });
   if (O.perso) $("#pied-l").textContent = "Aperçu préparé par Onklaud. Textes, carte et photos d’exemple, à remplacer par les vôtres.";
@@ -94,7 +108,7 @@
     e.target.reset(); $("#merci").hidden = false;
   });
   m.surChange(rendre);
-  window.bandeauDemo(m, "../", "réservez une table, puis ouvrez <a href=\"carnet.html\" target=\"_blank\" rel=\"noopener\">le carnet du restaurant</a>.");
+  window.bandeauDemo(m, "../", "réservez une table, puis ouvrez <a href=\"carnet.html\" target=\"_blank\" rel=\"noopener\">le plan de salle du restaurant</a> : votre table y apparaît.");
   rendre();
   window.demoLucie = { m, ui, rendre };
 })();

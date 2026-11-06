@@ -4,16 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Carnet de réservations · Maison Lucie, démo Onklaud</title>
+<title>Plan de salle · Maison Lucie, démo Onklaud</title>
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../commun/base.css">
 <link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="carnet.css">
 </head>
 <body class="carnet-page">
-<header class="en-tete"><h1><span data-marque>Maison Lucie</span>, carnet</h1><div class="jours" id="jours"></div></header>
+<header class="en-tete"><h1 data-marque>Maison Lucie</h1><div class="jours" id="jours"></div><div class="service" id="service"></div></header>
+<section class="kpi" id="kpi" aria-label="Résumé du service"></section>
+<div id="alerte-table"></div>
 <div id="demandes"></div>
-<main id="carnet"></main>
-<form class="ajout" id="ajout" aria-label="Ajouter une réservation prise par téléphone"><input name="nom" required placeholder="Nom du client" aria-label="Nom"><input name="pers" type="number" min="1" max="14" value="2" aria-label="Couverts"><select name="heure" id="ajout-h" aria-label="Heure"></select><input name="tel" type="tel" placeholder="Téléphone" aria-label="Téléphone"><button>Ajouter</button></form>
+<main class="salle">
+  <section class="plan-z"><div class="barre-p"><div class="temps" id="temps" role="group" aria-label="Voir la salle à une heure précise"></div><ul class="legende"><li class="l-conf">Confirmée</li><li class="l-risque">À confirmer</li><li class="l-la">Installée</li></ul></div><div class="plan" id="plan"></div></section>
+  <aside class="liste-z"><div id="attente"></div><h2>Réservations</h2><div id="carnet"></div>
+    <form class="ajout" id="ajout" aria-label="Ajouter une réservation prise par téléphone"><input name="nom" required placeholder="Nom du client" aria-label="Nom"><input name="pers" type="number" min="1" max="8" value="2" aria-label="Couverts"><select name="heure" id="ajout-h" aria-label="Heure"></select><input name="tel" type="tel" placeholder="Téléphone" aria-label="Téléphone"><button>Ajouter</button></form>
+  </aside>
+</main>
 <script src="../commun/magasin.js"></script>
 <script src="donnees.js"></script>
 <script>
@@ -22,43 +29,84 @@
   const O = window.Outils, L = window.MaisonLucie, esc = O.esc;
   const m = window.Magasin("maison-lucie", L.depart);
   const $ = (s) => document.querySelector(s);
-  const ui = { jour: L.joursOuverts(7).find((j) => j > O.jour()), vus: new Set(m.d.resas.map((r) => r.id)) };
-  const bloc = (titre, heures) => {
-    const l = m.d.resas.filter((r) => r.jour === ui.jour && heures.includes(r.heure) && r.etat !== "annulee").sort((a, b) => a.heure.localeCompare(b.heure));
-    const pers = l.reduce((t, r) => t + r.pers, 0), cap = L.CAPACITE * heures.length;
-    return '<section class="service"><h2>' + titre + '</h2><div class="jauge"><div><i style="width:' + Math.min(100, pers / cap * 100) + '%"></i></div>' + pers + " couverts sur " + cap + "</div>" + (l.map((r) => {
-      const n = !ui.vus.has(r.id);
-      return '<div class="resa-l ' + (r.etat === "arrivee" ? "arrivee " : "") + (n ? "neuve" : "") + '"><b>' + r.heure + '</b><span class="qui">' + esc(r.nom) + " <small>" + r.pers + (r.pers > 1 ? " personnes" : " personne") + (r.source === "site" ? ", en ligne" : "") + "</small></span>" + (r.etat === "arrivee" ? "<span>Arrivée</span>" : '<span class="act"><button data-arrivee="' + r.id + '">Arrivée</button><button data-annuler="' + r.id + '" aria-label="Annuler la réservation de ' + esc(r.nom) + '">Annuler</button></span>') + "</div>";
-    }).join("") || '<p class="vide">Aucune réservation pour ce service.</p>') + "</section>";
-  };
+  const prem = L.joursOuverts(7)[0];
+  const ui = { jour: prem, service: "soir", heure: null, vus: new Set(m.d.resas.map((r) => r.id)), attend: false };
+  /* Les chaises autour de la table : celles qui sont occupées sont pleines. */
+  const chaises = (t, pris) => Array.from({ length: t.cap }, (_, i) => {
+    let x, y;
+    if (t.rond) { const a = (i / t.cap) * 6.283 - 1.57; x = 50 + Math.cos(a) * 62; y = 50 + Math.sin(a) * 62; }
+    else { const parCote = Math.ceil(t.cap / 2), rang = Math.floor(i / 2); x = (rang + .5) / parCote * 100; y = i % 2 ? 118 : -18; if (t.cap > 6) { const c = t.cap / 2; x = i % 2 ? 122 : -22; y = (rang + .5) / c * 100; } }
+    return '<u class="' + (i < pris ? "pris" : "") + '" style="left:' + x.toFixed(1) + "%;top:" + y.toFixed(1) + '%"></u>';
+  }).join("");
+  const pl = (n, s) => n + " " + s + (n > 1 ? "s" : "");
+
+  const statut = (r) => r.etat === "arrivee" ? "la" : r.conf ? "conf" : "risque";
   const rendre = () => {
-    const js = L.joursOuverts(4);
+    const js = L.joursOuverts(4), heures = L.SERVICES[ui.service], d = m.d, b = L.bilan(d, ui.jour, ui.service);
     const nomJ = (j) => (j === O.jour() ? "Aujourd’hui" : j === O.jour(1) ? "Demain" : O.dateCourte(j));
     $("#jours").innerHTML = js.map((j) => '<button data-jour="' + j + '" aria-pressed="' + (j === ui.jour) + '">' + nomJ(j) + "</button>").join("");
-    $("#demandes").innerHTML = m.d.privatisations.map((p) => '<p class="priv-l"><b>Demande de privatisation</b> : ' + esc(p.nom) + ", " + esc(p.pers) + " personnes, le " + O.dateCourte(p.jour) + ", " + esc(p.tel) + "</p>").join("");
+    $("#service").innerHTML = [["midi", "Midi"], ["soir", "Soir"]].map(([k, t]) => '<button data-service="' + k + '" aria-pressed="' + (ui.service === k) + '">' + t + "</button>").join("");
+    const l = L.actives(d, ui.jour).filter((r) => L.service(r.heure) === ui.service).sort((x, y) => x.heure.localeCompare(y.heure));
+    const attente = d.attente.filter((a) => a.jour === ui.jour && L.service(a.heure) === ui.service);
+
+    $("#kpi").innerHTML = '<dl><div><dt>Couverts</dt><dd id="couverts">' + b.couverts + "<small> / " + b.places + '</small></dd></div><div><dt>À confirmer</dt><dd>' + pl(b.aConfirmer, "table") + '</dd></div><div class="' + (b.risque ? "risque-k" : "") + '"><dt>Chiffre à risque</dt><dd>' + O.eur(b.risque, 0) + "</dd></div><div><dt>Récupérés</dt><dd>" + pl(d.sauves, "couvert") + "</dd></div></dl>" +
+      (b.aConfirmer ? '<button class="action-k" data-action="demander"' + (ui.attend ? " disabled" : "") + ">" + (ui.attend ? "Messages envoyés" : "Demander confirmation") + "</button>" : '<span class="ok-k">Salle confirmée</span>');
+
+    const libre = attente.find((a) => a.etat === "attend" && L.tableLibre(d, a.jour, a.heure, a.pers));
+    $("#alerte-table").innerHTML = libre ? '<div class="libere"><p><b>Une table s’est libérée à ' + libre.heure + ".</b> " + esc(libre.nom) + ", " + pl(libre.pers, "personne") + ', attend sur la liste.</p><button data-proposer="' + libre.id + '">Proposer la table</button></div>' : "";
+    $("#demandes").innerHTML = d.privatisations.map((p) => '<p class="priv-l"><b>Demande de privatisation</b> : ' + esc(p.nom) + ", " + esc(p.pers) + " personnes, le " + O.dateCourte(p.jour) + ", " + esc(p.tel) + ", soit environ " + O.eur(Number(p.pers) * L.TICKET, 0) + "</p>").join("");
+
+    const presente = (r) => !ui.heure || (L.minutes(r.heure) <= L.minutes(ui.heure) && L.minutes(ui.heure) - L.minutes(r.heure) < L.DUREE);
+    $("#plan").innerHTML = '<span class="zone-t">Terrasse</span>' + L.TABLES.map((t) => {
+      const r = l.filter((x) => x.table === t.n && presente(x)), u = r[0], st = u ? statut(u) : "libre";
+      return '<button class="table ' + st + (t.rond ? " rond" : "") + " cap" + t.cap + (u && !ui.vus.has(u.id) ? " neuve" : "") + '" style="left:' + t.x + "%;top:" + t.y + '%" data-table="' + t.n + '" aria-label="Table ' + t.n + (u ? ", " + esc(u.nom) + " à " + u.heure : ", libre") + '">' + chaises(t, u ? u.pers : 0) + (u ? "<b>" + esc(u.nom) + "</b><small>" + u.heure + "</small>" : "<small>Table " + t.n + "</small>") + "</button>";
+    }).join("");
+    $("#temps").innerHTML = '<button data-heure="" aria-pressed="' + !ui.heure + '">Tout le service</button>' + heures.map((h) => '<button data-heure="' + h + '" aria-pressed="' + (ui.heure === h) + '">' + h + "</button>").join("");
+
+    $("#attente").innerHTML = attente.length ? '<h2>Liste d’attente</h2><ul class="attente">' + attente.map((a) => "<li><span><b>" + esc(a.nom) + "</b><small>" + a.heure + ", " + pl(a.pers, "personne") + "</small></span><em>" + (a.etat === "proposee" ? "Table proposée, en attente de réponse" : "Aucune table libre") + "</em></li>").join("") + "</ul>" : "";
+
+    $("#carnet").innerHTML = l.map((r) => {
+      const n = !ui.vus.has(r.id);
+      return '<div class="resa-l ' + statut(r) + (n ? " neuve" : "") + '" data-r="' + r.table + '"><b class="h">' + r.heure + '</b><span class="qui"><b>' + esc(r.nom) + "</b> <small>" + pl(r.pers, "personne") + ", table " + r.table + (r.source !== "téléphone" ? ", " + (r.source === "site" ? "en ligne" : r.source) : "") + (r.visites > 1 ? ", " + r.visites + "<sup>e</sup> visite" : "") + "</small>" + (r.note ? '<small class="note">' + esc(r.note) + "</small>" : "") + "</span>" + (r.etat === "arrivee" ? '<span class="fin">Installée</span>' : '<span class="act"><button data-arrivee="' + r.id + '">Installer</button><button data-annuler="' + r.id + '" aria-label="Annuler la réservation de ' + esc(r.nom) + '">Annuler</button></span>') + "</div>";
+    }).join("") || '<p class="vide">Aucune réservation pour ce service.</p>';
+
     const he = $("#ajout-h"), garde = he.value;
-    he.innerHTML = L.SERVICES.midi.concat(L.SERVICES.soir).map((h) => '<option' + (h === garde ? " selected" : "") + ">" + h + "</option>").join("");
-    $("#carnet").innerHTML = bloc("Midi", L.SERVICES.midi) + bloc("Soir", L.SERVICES.soir);
+    he.innerHTML = heures.map((h) => "<option" + (h === garde ? " selected" : "") + ">" + h + "</option>").join("");
     m.d.resas.forEach((r) => ui.vus.add(r.id));
   };
   document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-jour],[data-arrivee],[data-annuler]"); if (!b) return;
-    if (b.dataset.annuler) m.maj((d) => { d.resas.find((r) => r.id === b.dataset.annuler).etat = "annulee"; });
-    if (b.dataset.jour) { ui.jour = b.dataset.jour; rendre(); }
-    if (b.dataset.arrivee) m.maj((d) => { d.resas.find((r) => r.id === b.dataset.arrivee).etat = "arrivee"; });
+    const b = e.target.closest("[data-jour],[data-service],[data-heure],[data-arrivee],[data-annuler],[data-proposer],[data-action],[data-table]"); if (!b) return;
+    const ds = b.dataset;
+    if (ds.heure !== undefined) { ui.heure = ds.heure || null; rendre(); return; }
+    if (ds.table) { const li = document.querySelector('.resa-l[data-r="' + ds.table + '"]'); if (li) { li.scrollIntoView({ block: "center", behavior: "smooth" }); li.classList.remove("eclair"); void li.offsetWidth; li.classList.add("eclair"); } return; }
+    if (ds.annuler) m.maj((d) => { d.resas.find((r) => r.id === ds.annuler).etat = "annulee"; });
+    if (ds.jour) { ui.jour = ds.jour; rendre(); }
+    if (ds.service) { ui.service = ds.service; ui.heure = null; rendre(); }
+    if (ds.arrivee) m.maj((d) => { d.resas.find((r) => r.id === ds.arrivee).etat = "arrivee"; });
+    if (ds.proposer) {
+      m.maj((d) => { d.attente.find((a) => a.id === ds.proposer).etat = "proposee"; });
+      /* Dans cette démonstration, un client inscrit par téléphone accepte après quelques secondes. */
+      const a = m.d.attente.find((x) => x.id === ds.proposer);
+      if (a && a.source !== "site") setTimeout(() => m.maj((d) => { L.accepter(d, ds.proposer); }), 2200);
+    }
+    if (ds.action === "demander") {
+      ui.attend = true; rendre();
+      /* Réponses simulées : dans la réalité, elles arrivent par SMS. */
+      setTimeout(() => { ui.attend = false; m.maj((d) => { L.actives(d, ui.jour).filter((r) => !r.conf && L.service(r.heure) === ui.service).forEach((r) => { if (r.repond === "non") r.etat = "annulee"; else r.conf = true; }); }); }, 1800);
+    }
   });
   $("#ajout").addEventListener("submit", (e) => {
     e.preventDefault();
-    const v = Object.fromEntries(new FormData(e.target));
-    m.maj((d) => { d.resas.push({ id: O.id(), jour: ui.jour, heure: v.heure, nom: v.nom, pers: Number(v.pers), tel: v.tel, etat: "attendue", source: "téléphone" }); });
+    const v = Object.fromEntries(new FormData(e.target)), pers = Number(v.pers), t = L.tableLibre(m.d, ui.jour, v.heure, pers);
+    m.maj((d) => { if (t) d.resas.push({ id: O.id(), jour: ui.jour, heure: v.heure, nom: v.nom, pers, tel: v.tel, etat: "attendue", conf: true, source: "téléphone", visites: 1, note: "", table: t.n }); else d.attente.push({ id: O.id(), jour: ui.jour, heure: v.heure, nom: v.nom, pers, tel: v.tel, etat: "attend", source: "téléphone" }); });
     e.target.reset();
   });
   m.surChange(() => {
     const neuve = m.d.resas.find((r) => !ui.vus.has(r.id));
-    if (neuve) ui.jour = neuve.jour;
+    if (neuve) { ui.jour = neuve.jour; ui.service = L.service(neuve.heure); }
     rendre();
   });
-  window.bandeauDemo(m, "../", "réservez une table sur <a href=\"./\" target=\"_blank\" rel=\"noopener\">le site du restaurant</a> : elle apparaît ici. Vous pouvez aussi saisir une réservation prise par téléphone.");
+  window.bandeauDemo(m, "../", "demandez confirmation aux tables, puis proposez à la liste d’attente la table libérée. Réponses simulées. Les réservations viennent <a href=\"./\" target=\"_blank\" rel=\"noopener\">du site du restaurant</a>.");
   rendre();
   window.demoLucie = { m, ui, rendre };
 })();
