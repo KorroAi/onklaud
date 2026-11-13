@@ -1,0 +1,17 @@
+/* ================================================================
+   ONKLAUD : pied des outils en version publique
+   Fichier copié par outils/publier.py : modifier ici, pas dans site/.
+   ================================================================ */
+.pied-public {
+  display: grid; gap: 10px; justify-items: center;
+  padding: 26px 16px 40px; text-align: center;
+  font-size: 13.5px; line-height: 1.45; color: var(--gris);
+}
+.pied-public p { margin: 0; max-width: 110ch; }
+.pied-public a { color: var(--stylo); text-underline-offset: 2px; }
+.pied-public a:hover { color: var(--stylo-fonce); }
+.pied-bandeau { padding-top: 12px; border-top: 1px dashed var(--filet-fort); }
+.pied-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 18px; }
+.pied-actions .bouton { font-size: 14px; }
+.pied-public [hidden] { display: none !important; }
+.film .pied-public { display: none !important; }

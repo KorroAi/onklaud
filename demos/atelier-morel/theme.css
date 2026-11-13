@@ -1,0 +1,74 @@
+/* Atelier Morel, application client. Inter, échelle iOS (34, 22, 17, 15, 13), gris neutres, bleu d'action unique. */
+@font-face { font-family: "Inter"; src: url("../../assets/polices/inter-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+:root { --accent: #0f5c45; --action: #0f5c45; --foret: #0f3d2e; --beurre: #ffd24d; --encre: #0f1419; --gris: #5f6b76; --gris2: #8a94a0; --trait: #e6e8eb; --fond: #f5f6f7; --vert: #12804a; --rouge: #c9321f; --ambre: #b26a00; }
+.page-client { background: var(--fond); }
+.appli { height: 100dvh; background: var(--fond); color: var(--encre); font: 400 17px/22px "Inter", system-ui, -apple-system, sans-serif; letter-spacing: -.012em; -webkit-font-smoothing: antialiased; }
+.bandeau-demo ~ .appli { height: calc(100dvh - 70px); }
+.statut-ios { background: var(--foret); color: #fff; }
+
+/* Tête : qui, où en est-on */
+.fil-tete { flex: none; background: var(--foret); color: #fff; }
+.id-fil { display: flex; align-items: center; gap: 10px; padding: 8px 16px; }
+.id-fil i { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--beurre); color: var(--foret); font-size: 13px; font-style: normal; font-weight: 700; letter-spacing: 0; }
+.id-fil b { display: block; font-size: 17px; font-weight: 600; line-height: 20px; }
+.id-fil small { display: block; color: #b9d1c7; font-size: 13px; line-height: 18px; }
+.suivi { padding: 4px 16px 12px; }
+.suivi-l { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 15px; line-height: 20px; }
+.suivi-l b { font-weight: 600; }
+.suivi-l span { color: #b9d1c7; white-space: nowrap; }
+.barres { display: flex; gap: 4px; margin-top: 8px; }
+.barres i { flex: 1; height: 6px; border-radius: 3px; background: #2c5f4e; overflow: hidden; }
+.barres i.fait { background: var(--beurre); }
+.barres i.encours { background: linear-gradient(90deg, var(--beurre) 55%, #2c5f4e 55%); }
+.visite { margin-top: 8px; color: #dbe9e2; font-size: 13px; line-height: 18px; }
+
+/* Le fil */
+.fil { display: flex; flex-direction: column; gap: 6px; padding: 12px 12px 16px; }
+.evt { align-self: center; display: flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 12px; background: #e9f4ee; color: var(--vert); font-size: 13px; font-weight: 500; line-height: 18px; }
+.evt svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.msg { align-self: flex-start; max-width: 78%; overflow: hidden; padding: 8px 12px; border-radius: 18px 18px 18px 6px; background: #fff; box-shadow: 0 0 0 1px rgba(15, 20, 25, .05); }
+.msg:has(img) { padding: 0; }
+.msg img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.msg:has(img) { color: inherit; }
+.msg:has(img) > small, .msg:has(img) { font-size: 16px; }
+.msg.moi { align-self: flex-end; border-radius: 18px 18px 6px 18px; background: var(--action); color: #fff; box-shadow: none; }
+.msg small { display: block; margin-top: 2px; color: var(--gris2); font-size: 12px; line-height: 16px; }
+.msg.moi small { color: #dbe5ff; }
+.texte-m { display: block; padding: 8px 12px 9px; font-size: 16px; line-height: 21px; }
+.msg:not(:has(img)) { font-size: 16px; line-height: 21px; }
+.doc { align-self: stretch; margin-top: 6px; padding: 14px 16px; border-radius: 16px; background: #fff; box-shadow: 0 0 0 1px rgba(15, 20, 25, .06), 0 2px 8px rgba(15, 20, 25, .05); }
+.doc small { color: var(--gris); font-size: 13px; line-height: 18px; }
+.doc b { display: block; font-size: 17px; font-weight: 600; }
+.doc .prix { margin-top: 2px; font-size: 28px; font-weight: 600; line-height: 34px; letter-spacing: -.02em; }
+.doc button { width: 100%; min-height: 50px; margin-top: 10px; border: 0; border-radius: 12px; background: var(--action); color: #fff; font-size: 17px; font-weight: 600; }
+.doc em { display: block; margin-top: 8px; color: var(--gris); font-size: 13px; font-style: normal; line-height: 18px; }
+.saisie { flex: none; display: flex; align-items: center; gap: 8px; padding: 8px 12px calc(env(safe-area-inset-bottom) + 8px); border-top: 1px solid var(--trait); background: #fff; }
+.en-cadre .saisie { padding-bottom: 22px; }
+.joindre { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--fond); color: var(--gris); cursor: pointer; }
+.joindre svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round; }
+.saisie input[name="t"] { flex: 1; min-width: 0; height: 36px; padding: 0 14px; border: 1px solid var(--trait); border-radius: 18px; background: #fff; font-size: 16px; }
+.saisie button { flex: none; height: 36px; padding: 0 14px; border: 0; border-radius: 18px; background: var(--action); color: #fff; font-size: 15px; font-weight: 600; }
+
+/* Feuille du devis : remonte du bas */
+.feuille { position: fixed; inset: 0; z-index: 40; overflow-y: auto; background: #fff; color: var(--encre); font: 400 17px/22px "Inter", system-ui, sans-serif; letter-spacing: -.012em; animation: monte .28s cubic-bezier(.2, .8, .2, 1); }
+@keyframes monte { from { transform: translateY(40px); opacity: 0; } }
+.feuille-corps { max-width: 480px; margin: 0 auto; padding: 8px 16px 24px; }
+.en-cadre .feuille-corps { padding-top: 56px; }
+.feuille-haut { display: flex; justify-content: space-between; align-items: center; min-height: 44px; color: var(--gris); font-size: 15px; }
+.feuille-haut button { padding: 0; border: 0; background: none; color: var(--action); font-size: 17px; }
+.grand-titre { margin-top: 4px; font-size: 28px; font-weight: 700; line-height: 34px; letter-spacing: -.022em; }
+.lignes { margin-top: 12px; border-top: 1px solid var(--trait); }
+.lignes li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--trait); font-size: 15px; line-height: 20px; }
+.lignes small { display: block; color: var(--gris); font-size: 13px; line-height: 18px; }
+.lignes b { font-weight: 500; white-space: nowrap; }
+.total-d { font-size: 17px !important; font-weight: 600; }
+.total-d b { font-weight: 600; }
+.sig-t { margin-top: 18px; color: var(--gris); font-size: 13px; line-height: 18px; }
+.signature { display: block; width: 100%; height: 150px; margin-top: 6px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond); touch-action: none; }
+.lien-efface { display: block; margin: 4px 0 0 auto; padding: 6px 0; border: 0; background: none; color: var(--action); font-size: 15px; }
+.bouton-ios { width: 100%; min-height: 50px; margin-top: 6px; border-radius: 12px; background: var(--action); color: #fff; font-size: 17px; font-weight: 600; }
+.bouton-ios:disabled { background: var(--fond); color: var(--gris2); opacity: 1; }
+.alerte-ios { font-family: "Inter", system-ui, sans-serif; letter-spacing: -.012em; border-radius: 14px; background: rgba(255, 255, 255, .98); color: var(--encre); font-size: 15px; line-height: 20px; box-shadow: 0 8px 30px rgba(15, 20, 25, .16), 0 0 0 1px rgba(15, 20, 25, .05); }
+.alerte-ios i { border-radius: 8px; background: var(--encre); color: #fff; font-size: 12px; font-weight: 600; }
+.alerte-ios b { font-weight: 600; }
+.som, .prix, dd, .n, .droite, .lignes b, .ev-l time { font-variant-numeric: tabular-nums; }

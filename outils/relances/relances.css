@@ -1,0 +1,123 @@
+/* Les devis qui dorment : mise en page */
+
+.page { max-width: 1440px; margin-inline: auto; padding: 16px 16px 40px; display: grid; gap: 18px; }
+@media (min-width: 1000px) {
+  .page { grid-template-columns: 400px minmax(0, 1fr); gap: 24px; padding: 22px 28px 48px; align-items: start; }
+  .colonne-gauche { position: sticky; top: calc(var(--entete) + 18px); }
+}
+.colonne-gauche, .colonne-droite { display: grid; gap: 18px; min-width: 0; }
+/* Téléphone : l'essentiel d'abord (total, à valider, devis), la boucle ensuite */
+@media (max-width: 999px) {
+  .colonne-gauche, .colonne-droite { display: contents; }
+  #carte-total { order: 1; } #bloc-valider { order: 2; } #bloc-devis { order: 3; } #carte-boucle { order: 4; } .carte-journal { order: 5; }
+}
+
+/* ---------- Le total en attente ---------- */
+.total {
+  position: relative; padding: 20px 20px 18px calc(var(--m) + 16px); overflow: hidden;
+  --l: 30px; --m: 26px;
+}
+.total .libelle { font-size: 15px; font-weight: 600; color: var(--gris); }
+.total .chiffre { margin-top: 6px; font-size: clamp(52px, 15vw, 76px); color: var(--encre); white-space: nowrap; }
+.total .sous { margin-top: 8px; font-size: 15.5px; }
+.total .annotation { position: absolute; right: 14px; top: 14px; transform: rotate(-4deg); font-family: var(--main); font-weight: 700; font-size: 24px; line-height: 1; color: var(--stylo); }
+.repartition { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--filet-fort); }
+.repartition div { display: grid; gap: 2px; }
+.repartition dt { font-size: 13px; color: var(--gris); font-weight: 600; }
+.repartition dd { font-size: 19px; font-weight: 700; font-stretch: 85%; font-variant-numeric: tabular-nums; }
+
+/* ---------- La boucle ---------- */
+.boucle { padding: 16px 18px; }
+.boucle-tete { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.aujourdhui { font-family: var(--main); font-weight: 700; font-size: 26px; line-height: 1.05; color: var(--encre); margin-top: 6px; }
+.aujourdhui .simule { font-family: var(--sans); font-size: 12.5px; font-weight: 650; color: var(--marge-texte); margin-left: 6px; vertical-align: .35em; }
+.regles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
+.regle { padding: 8px 9px; border-radius: 6px; background: var(--stylo-voile-2); border: 1px solid var(--stylo-voile); }
+.regle b { display: block; font-size: 17px; font-stretch: 85%; color: var(--stylo); font-variant-numeric: tabular-nums; }
+.regle span { display: block; font-size: 12.5px; line-height: 1.3; color: var(--gris); }
+.simulateur { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--filet-fort); }
+.simulateur .libelle { font-size: 13.5px; color: var(--gris); font-weight: 600; width: 100%; }
+.dernier-passage { margin-top: 8px; font-size: 13.5px; color: var(--gris); }
+
+.carte-journal { padding: 14px 18px 10px; }
+.carte-journal .journal { margin-top: 8px; max-height: 340px; overflow: auto; }
+.journal .j-boucle { color: var(--encre); }
+.journal .j-envoi span::before, .journal .j-reponse span::before { content: ""; display: inline-block; width: 14px; height: 11px; margin-right: 5px; background: var(--coche) no-repeat center / contain; }
+.journal b { font-weight: 650; }
+.journal .nouveau { background: var(--stylo-voile-2); }
+
+/* ---------- À valider ---------- */
+.bloc-tete { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.liste-valider { display: grid; gap: 12px; }
+.brouillon { padding: 14px 16px 14px; border-left: 4px solid var(--stylo); }
+.brouillon.classer { border-left-color: var(--marge); }
+.brouillon-tete { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.brouillon-tete .qui { font-weight: 700; font-size: 17px; font-stretch: 90%; }
+.brouillon-tete .quoi { color: var(--gris); font-size: 14.5px; }
+.brouillon-tete .combien { margin-left: auto; font-weight: 700; font-variant-numeric: tabular-nums; }
+.brouillon-sous { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin-top: 6px; font-size: 13.5px; color: var(--gris); }
+.message {
+  width: 100%; margin-top: 10px; min-height: 150px; padding: 10px 12px;
+  border: 1.5px solid var(--filet); border-radius: 8px; background: var(--feuille);
+  font: 400 15px/1.45 var(--sans); white-space: pre-wrap; resize: vertical;
+}
+.message:focus { border-color: var(--stylo); outline: 3px solid var(--stylo); outline-offset: 0; }
+.message-film { display: grid; min-height: 0; }
+.message-film > span { grid-area: 1 / 1; }
+.message-film .fantome { visibility: hidden; }
+.canaux { display: inline-flex; gap: 4px; }
+.canal {
+  min-height: 34px; padding: 4px 10px; border-radius: 99px; cursor: pointer;
+  border: 1.5px solid var(--filet-fort); background: var(--feuille); font-size: 13.5px; font-weight: 600;
+}
+.canal[aria-pressed="true"] { background: var(--encre); border-color: var(--encre); color: #fff; }
+.brouillon-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+.brouillon-actions .bouton-plein { min-width: 200px; }
+.brouillon-actions .note-envoi { font-size: 13px; color: var(--gris); }
+.fait {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px;
+  padding: 10px 14px; border-radius: 8px; background: var(--feuille); border: 1px solid var(--filet);
+  font-size: 15px;
+}
+.fait::before { content: ""; width: 20px; height: 16px; background: var(--coche) no-repeat center / contain; flex: none; }
+.fait .quand { margin-left: auto; color: var(--gris); font-size: 13.5px; }
+
+/* ---------- Les devis ---------- */
+.bloc-devis { padding: 14px 16px 6px; }
+.filtres { display: flex; flex-wrap: wrap; gap: 6px; }
+.filtre { min-height: 34px; padding: 4px 11px; border-radius: 99px; border: 1.5px solid var(--filet); background: var(--feuille); font-size: 13.5px; font-weight: 600; color: var(--gris); cursor: pointer; }
+.filtre[aria-pressed="true"] { border-color: var(--encre); color: var(--encre); background: var(--blanc); }
+.liste-devis { margin-top: 8px; }
+.devis-ligne {
+  display: grid; gap: 4px 12px; padding: 12px 0; border-top: 1px solid var(--filet);
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.devis-ligne:first-child { border-top: 0; }
+.devis-ligne .qui { font-weight: 650; font-size: 16px; }
+.devis-ligne .qui button { all: unset; cursor: pointer; }
+.devis-ligne .qui button:hover { text-decoration: underline; }
+.devis-ligne .qui button:focus-visible { outline: 3px solid var(--stylo); outline-offset: 2px; }
+.devis-ligne .num { font-size: 13px; color: var(--gris); font-weight: 500; margin-left: 6px; }
+.devis-ligne .objet { font-size: 14.5px; color: var(--gris); }
+.devis-ligne .montant { font-weight: 720; font-stretch: 82%; font-size: 19px; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.devis-ligne .infos { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13.5px; color: var(--gris); }
+.devis-ligne .reponses { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+.devis-ligne.clos .montant { color: var(--gris); text-decoration: line-through; text-decoration-color: var(--stylo); text-decoration-thickness: 2px; }
+.devis-ligne.clos .qui { color: var(--gris); }
+.jours { font-weight: 700; color: var(--encre); font-variant-numeric: tabular-nums; }
+.points { display: inline-flex; gap: 3px; vertical-align: middle; }
+.points i { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--stylo); }
+.points i.plein { background: var(--stylo); }
+.bouton-reponse { min-height: 34px; padding: 4px 11px; font-size: 13.5px; }
+@media (min-width: 1000px) {
+  .devis-ligne { grid-template-columns: minmax(0, 1.5fr) 110px minmax(0, 1.25fr) auto; align-items: center; padding: 11px 0; }
+  .devis-ligne .infos { grid-column: auto; }
+  .devis-ligne .reponses { grid-column: auto; justify-content: flex-end; flex-wrap: nowrap; }
+}
+
+/* ---------- Fenêtres ---------- */
+.formulaire { display: grid; gap: 12px; }
+.formulaire .actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+.exemple-csv { font-family: ui-monospace, Consolas, monospace; font-size: 12.5px; background: var(--papier-2); padding: 8px 10px; border-radius: 6px; overflow-x: auto; white-space: pre; }
+.menu-liste { display: grid; gap: 6px; }
+.menu-liste .bouton { justify-content: flex-start; }

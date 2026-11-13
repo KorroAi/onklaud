@@ -1,0 +1,145 @@
+/* Maison Lucie : site de restaurant gastronomique. Bodoni pour le nom, EB Garamond pour la carte, Hanken Grotesk pour la réservation. Blanc, encre, bordeaux en touche. */
+@font-face { font-family: "Bodoni Moda"; src: url("../../assets/polices/bodoni-moda-var.woff2") format("woff2"); font-weight: 400 900; font-display: swap; }
+@font-face { font-family: "EB Garamond"; src: url("../../assets/polices/eb-garamond-var.woff2") format("woff2"); font-weight: 400 800; font-display: swap; }
+@font-face { font-family: "Hanken Grotesk"; src: url("../../assets/polices/hanken-grotesk-var.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+:root { --accent: #6d1426; --bordeaux: #6d1426; --encre: #1f1a18; --doux: #6e6460; --filet: #e8e2db; --fond: #faf7f3; --ivoire: #fff; }
+html { scroll-padding-top: 64px; }
+html:not(.en-cadre) { scroll-behavior: smooth; }
+body { background: #fff; color: var(--encre); font: 400 18px/27px "EB Garamond", Georgia, serif; -webkit-font-smoothing: antialiased; }
+.ui, .nav, .resa, .priv, .infos { font-family: "Hanken Grotesk", system-ui, sans-serif; }
+
+.nav { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 24px; height: 60px; padding: 0 clamp(16px, 4vw, 48px); background: #3a0a14; color: #fff; font-size: 14px; line-height: 20px; }
+.en-cadre .nav { height: auto; padding-top: 54px; padding-bottom: 8px; }
+.marque { font: 500 20px/24px "Bodoni Moda", Georgia, serif; }
+.liens-n { display: flex; gap: 24px; margin-left: auto; }
+.nav a { color: #fff; text-decoration: none; }
+.nav a:hover { color: #f2dcc8; }
+.nav .reserver { display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 6px; background: #fff; color: #3a0a14; font-weight: 600; }
+.nav .reserver:hover { color: #3a0a14; }
+
+.accueil { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 460px; gap: 32px; align-items: end; min-height: calc(100vh - 60px); padding: clamp(20px, 4vw, 48px); background: #3a0a14; color: #fff; overflow: hidden; }
+.plein { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .62; }
+.titre-l { position: relative; }
+.carton { position: relative; padding: 16px 20px 18px; border-radius: 10px; background: #fff; color: var(--encre); box-shadow: 0 24px 60px rgba(20, 3, 8, .45); }
+.carton h2 { font-size: 24px; line-height: 30px; text-align: left; }
+.sur { color: #f2dcc8; font: 500 14px/20px "Hanken Grotesk", system-ui, sans-serif; }
+.sur sup { font-size: .7em; }
+h1 { margin-top: 6px; font: 400 clamp(64px, 11vw, 168px)/.92 "Bodoni Moda", Georgia, serif; letter-spacing: -.03em; }
+.chapo { margin-top: 12px; font-size: 24px; line-height: 30px; }
+.infos { display: flex; flex-wrap: wrap; gap: 2px 16px; margin-top: 6px; font-size: 14px; line-height: 20px; }
+.ouvert { font-weight: 600; }
+.resa { margin-top: 10px; color: var(--encre); font-size: 15px; line-height: 20px; }
+.resa .ligne { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.resa label { display: block; color: var(--doux); font-size: 13px; font-weight: 500; line-height: 18px; }
+.resa input { width: 100%; height: 42px; margin-top: 3px; padding: 0 11px; border: 1px solid var(--filet); border-radius: 6px; background: #fff; color: var(--encre); font-size: 15px; }
+.note-r { margin-top: 10px; }
+.ligne-r { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.etiq { color: var(--doux); font-size: 13px; font-weight: 500; line-height: 18px; }
+.creneaux + .etiq, .jours-r + .etiq { margin-top: 14px; }
+.pas-r { display: flex; align-items: center; gap: 6px; }
+.pas-r b { min-width: 92px; font-weight: 500; text-align: center; }
+.pas-r button { width: 32px; height: 32px; padding: 0; border: 1px solid var(--filet); border-radius: 50%; background: #fff; font-size: 16px; line-height: 1; }
+.jours-r { display: flex; gap: 6px; margin-top: 12px; overflow-x: auto; scrollbar-width: none; }
+.jours-r button { flex: none; height: 36px; padding: 0 12px; border: 1px solid var(--filet); border-radius: 6px; background: #fff; font-size: 14px; font-weight: 500; white-space: nowrap; }
+.jours-r [aria-pressed="true"] { border-color: var(--encre); background: var(--encre); color: #fff; }
+.creneaux { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 5px; }
+.creneau { height: 42px; padding: 0; border: 0; border-radius: 6px; background: var(--bordeaux); color: #fff; font-size: 14px; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.creneau:hover { background: #561020; }
+.creneau small { display: block; font-size: 10.5px; font-weight: 500; }
+.creneau.complet { background: var(--fond); color: var(--doux); }
+.creneau[aria-pressed="true"] { background: var(--encre); color: #fff; }
+.creneau:disabled { background: none; color: #b5aca6; text-decoration: line-through; cursor: default; }
+.info-c { margin-top: 12px; padding: 9px 11px; border-radius: 6px; background: var(--fond); font-size: 14px; line-height: 19px; }
+.valider { width: 100%; height: 46px; margin-top: 12px; border: 0; border-radius: 6px; background: var(--bordeaux); color: #fff; font: 600 15px/20px "Hanken Grotesk", system-ui, sans-serif; }
+.ok-resa > b { display: block; font: 400 26px/32px "Bodoni Moda", Georgia, serif; }
+.ok-resa > p { margin-top: 4px; color: var(--doux); }
+.sms { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: var(--fond); }
+.sms small { color: var(--doux); font-size: 12.5px; }
+.sms p { margin-top: 2px; line-height: 20px; }
+.sms div { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
+.sms button { height: 36px; padding: 0 13px; border: 0; border-radius: 6px; background: var(--bordeaux); color: #fff; font-size: 14px; font-weight: 600; }
+.sms button.second { background: #fff; box-shadow: inset 0 0 0 1px var(--filet); color: var(--encre); }
+.sms .confirme { color: #1f7a4d; font-weight: 600; }
+.lien-r { margin-top: 12px; padding: 0; border: 0; background: none; color: var(--bordeaux); font-size: 14px; font-weight: 500; }
+
+section.s { padding: clamp(48px, 7vw, 88px) clamp(16px, 4vw, 48px); }
+section h2 { font: 400 clamp(30px, 3vw, 38px)/1.1 "Bodoni Moda", Georgia, serif; letter-spacing: -.01em; text-align: center; }
+#carte { background: var(--fond); }
+.carte { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; max-width: 1040px; margin: 32px auto 0; }
+.carte h3 { padding-bottom: 8px; border-bottom: 1px solid var(--encre); font: 600 13px/18px "Hanken Grotesk", system-ui, sans-serif; }
+.plat { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 12px; padding-top: 14px; }
+.plat b { font-size: 19px; font-weight: 500; line-height: 25px; }
+.plat span { font-size: 18px; line-height: 25px; }
+.plat small { grid-column: 1 / -1; color: var(--doux); font-size: 16px; line-height: 22px; }
+.lieu { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; max-width: 1180px; margin: 28px auto 0; }
+.lieu img { width: 100%; height: 340px; border-radius: 4px; object-fit: cover; }
+#privatiser { background: var(--fond); }
+.bas { max-width: 620px; margin: 0 auto; }
+.bas > p { margin-top: 8px; color: var(--doux); text-align: center; }
+.priv { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; padding: 18px; border-radius: 8px; background: #fff; font-size: 15px; line-height: 20px; }
+.priv label { display: block; color: var(--doux); font-size: 13px; font-weight: 500; }
+.priv input { width: 100%; height: 42px; margin-top: 3px; padding: 0 11px; border: 1px solid var(--filet); border-radius: 6px; font-size: 15px; color: var(--encre); }
+.priv .valider, .priv .merci { grid-column: 1 / -1; margin-top: 2px; }
+.priv .merci { color: #1f7a4d; font-weight: 500; }
+.horaires { padding-top: 28px !important; padding-bottom: 28px !important; }
+.horaires .bas { display: flex; justify-content: center; gap: 40px; font-size: 16px; line-height: 23px; text-align: left; }
+.horaires .bas p { margin: 0; text-align: left; }
+.horaires b { display: block; font-weight: 500; }
+footer { padding: 18px clamp(16px, 4vw, 48px); border-top: 1px solid var(--filet); color: var(--doux); font: 400 13px/18px "Hanken Grotesk", system-ui, sans-serif; text-align: center; }
+@media (max-width: 960px) {
+  .accueil { grid-template-columns: minmax(0, 1fr); gap: 16px; min-height: 0; padding: 150px 14px 14px; }
+  .plein { height: 420px; bottom: auto; opacity: .7; }
+  h1 { font-size: 66px; }
+  .chapo { font-size: 20px; line-height: 26px; }
+  .carton { padding: 14px; }
+  .liens-n { display: none; }
+  .nav .reserver { margin-left: auto; }
+  .carte { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .lieu { grid-template-columns: 1fr 1fr; }
+  .lieu img { height: 180px; }
+  .lieu img:first-child { grid-column: 1 / -1; height: 220px; }
+  .priv { grid-template-columns: 1fr; }
+  .horaires .bas { flex-direction: column; gap: 10px; }
+}
+
+/* ---------- Finition du 14/11/2026 : lisibilité de l'ouverture, carton de réservation, détails ---------- */
+.accueil::after { content: ""; position: absolute; inset: 0; z-index: 0; background: linear-gradient(180deg, rgba(40, 6, 14, .15) 0%, rgba(40, 6, 14, .2) 45%, rgba(24, 3, 8, .82) 100%); pointer-events: none; }
+.plein { opacity: .78; }
+.titre-l, .carton { z-index: 1; }
+.titre-l { animation: leve 1s cubic-bezier(.22, 1, .36, 1) both; }
+.carton { padding: 22px 24px 24px; border-radius: 16px; box-shadow: 0 40px 80px -30px rgba(10, 1, 4, .7), 0 0 0 1px rgba(255, 255, 255, .08); animation: leve 1s .12s cubic-bezier(.22, 1, .36, 1) both; }
+@keyframes leve { from { opacity: 0; transform: translateY(22px); } }
+.carton h2 { font-size: 27px; line-height: 32px; }
+.infos { gap: 4px 20px; margin-top: 10px; }
+.nav { box-shadow: 0 1px 0 rgba(255, 255, 255, .08); }
+.nav .reserver { height: 38px; padding: 0 18px; border-radius: 8px; transition: transform .18s cubic-bezier(.22, 1, .36, 1), box-shadow .2s; }
+.nav .reserver:hover { transform: translateY(-1px); box-shadow: 0 10px 20px -10px rgba(0, 0, 0, .6); }
+.pas-r button { width: 34px; height: 34px; cursor: pointer; transition: background .15s, border-color .15s; }
+.pas-r button:hover { border-color: var(--encre); }
+.jours-r { gap: 7px; margin-top: 14px; }
+.jours-r button { height: 40px; padding: 0 14px; border-radius: 9px; cursor: pointer; transition: border-color .15s, background .15s, color .15s; }
+.jours-r button:hover { border-color: var(--encre); }
+.creneaux { gap: 7px; margin-top: 7px; }
+.creneau { height: 46px; border-radius: 9px; font-size: 15px; cursor: pointer; transition: background .15s, transform .18s cubic-bezier(.22, 1, .36, 1), box-shadow .2s; }
+.creneau:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 18px -10px rgba(109, 20, 38, .8); }
+.creneau.complet { box-shadow: inset 0 0 0 1px var(--filet); }
+.creneau:disabled { box-shadow: none; }
+.resa input, .priv input { height: 46px; border-radius: 9px; transition: border-color .15s, box-shadow .15s; }
+.resa input:focus, .priv input:focus { outline: 0; border-color: var(--bordeaux); box-shadow: 0 0 0 4px rgba(109, 20, 38, .12); }
+.valider { height: 52px; border-radius: 10px; cursor: pointer; box-shadow: 0 14px 26px -14px rgba(109, 20, 38, .9); transition: transform .18s cubic-bezier(.22, 1, .36, 1), background .15s; }
+.valider:hover { transform: translateY(-2px); background: #7d1a2e; }
+.info-c { border-radius: 9px; }
+.carte { gap: 56px; margin-top: 44px; }
+.carte h3 { letter-spacing: .02em; }
+.plat { padding-top: 18px; }
+.lieu { gap: 14px; margin-top: 36px; }
+.lieu img { border-radius: 12px; }
+.priv { padding: 24px; border-radius: 16px; box-shadow: 0 24px 44px -34px rgba(31, 26, 24, .5), 0 0 0 1px var(--filet); }
+@media (max-width: 960px) {
+  .accueil { padding-top: 170px; }
+  .accueil::after { height: 420px; bottom: auto; }
+  .infos { font-size: 13.5px; gap: 2px 14px; }
+  .carton { padding: 18px 16px 18px; border-radius: 14px; }
+  .creneaux { gap: 5px; } .creneau { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { .titre-l, .carton { animation: none; } }

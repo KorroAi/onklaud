@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1430d6">
+<title>Automatisation · Ferrand Plomberie, démo Onklaud</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../commun/base.css">
+<link rel="stylesheet" href="auto.css">
+</head>
+<body>
+<header class="tete"><div><p data-marque>Ferrand Plomberie</p><h1>Une demande arrive. Tout se fait sans vous.</h1></div><dl class="compteurs"><div><dt>Actions automatiques</dt><dd id="c-actions">0</dd></div><div><dt>Durée</dt><dd id="c-duree">0 s</dd></div></dl></header>
+<main class="scene">
+  <section class="entree" aria-label="Demande d’un client">
+    <h2>Écrivez la demande d’un client</h2>
+    <textarea id="message" rows="7" aria-label="Message du client"></textarea>
+    <div class="exemples" id="exemples"></div>
+    <button id="lancer">Lancer l’automatisation</button>
+    <p class="note">Le message est lu sur votre appareil. Rien n’est envoyé.</p>
+  </section>
+  <section class="flux" aria-label="Déroulé de l’automatisation"><svg class="liens" id="liens" aria-hidden="true"></svg><ol id="noeuds"></ol></section>
+  <section class="resultat" aria-label="Résultat" id="resultat"></section>
+</main>
+<script src="../commun/magasin.js"></script>
+<script src="auto.js"></script>
+</body>
+</html>

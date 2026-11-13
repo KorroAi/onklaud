@@ -1,0 +1,11 @@
+{
+  "relances": {
+    "nom": "Relance des devis",
+    "page": "outils/relances/",
+    "exe": "telechargements/onklaud-devis-qui-dorment.exe",
+    "taille_ko": 7561,
+    "date": "2026-10-11",
+    "date_affichee": "11 octobre 2026",
+    "version": "d85919794c80"
+  }
+}

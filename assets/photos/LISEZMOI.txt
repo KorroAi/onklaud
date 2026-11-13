@@ -1,0 +1,16 @@
+PHOTOS DU SITE
+==============
+
+Trois emplacements sont prévus. On ne touche pas à index.html : tout se règle dans reglages.js (CONFIG.photos).
+
+  portrait   format 4:5   section « Diagnostic », à côté du formulaire (votre portrait)
+  commerce   format 4:3   section « Pour qui », bloc commerce de proximité
+  service    format 4:3   section « Pour qui », bloc petite structure de service
+
+Pour ajouter une photo :
+  1. la déposer dans ce dossier (JPG ou WebP, 1600 px de large maximum, moins de 300 Ko) ;
+  2. dans reglages.js, remplir par exemple :
+       portrait: { src: "assets/photos/portrait.jpg", alt: "Description courte de la photo" },
+
+Tant qu'un emplacement est vide, il est masqué : le site reste propre sans photo.
+Conseil : de vraies photos (vous, un vrai commerce avec son accord), jamais de photos de banque d'images.

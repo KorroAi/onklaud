@@ -1,0 +1,161 @@
+/* Institut Belle Rive. Application cliente aérée, carte de fidélité façon portefeuille, agenda professionnel. Marcellus pour les titres, Jost pour le reste, bleu lagon, corail en signal. */
+@font-face { font-family: "Marcellus"; src: url("../../assets/polices/marcellus.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Jost"; src: url("../../assets/polices/jost-var.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+:root { --accent: #0f4f5a; --lagon: #0f4f5a; --ecume: #e9f3f2; --corail: #e4694a; --corail2: #fdeee9; --encre: #16292d; --gris: #5f7175; --gris2: #93a1a4; --trait: #e7ecec; --fond: #f6f8f8; --vert: #1a7a55; }
+body { background: var(--fond); color: var(--encre); font: 400 17px/23px "Jost", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+.appli { background: var(--fond); }
+.statut-ios { background: var(--fond); color: var(--encre); }
+h1, h2 { font-family: "Marcellus", Georgia, serif; font-weight: 400; }
+
+/* Application */
+.client { background: #0b3f48; }
+.client .appli { background: #0b3f48; color: #fff; }
+.client .statut-ios { position: absolute; z-index: 2; left: 0; right: 0; background: none; color: #fff; }
+.appli-corps { padding-bottom: 16px; }
+.bonjour { position: relative; height: 290px; overflow: hidden; }
+.bonjour img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+.bonjour::after { content: ""; position: absolute; inset: 0; background: rgba(11, 63, 72, .38); }
+.bonjour div { position: absolute; z-index: 1; left: 20px; bottom: 16px; }
+.bonjour p { font-size: 15px; line-height: 20px; }
+.bonjour h1 { font-size: 52px; line-height: 54px; }
+.offre { margin: 12px 16px 0; padding: 14px 16px; border-radius: 18px; background: var(--corail); color: #fff; animation: entre .35s cubic-bezier(.2, .8, .3, 1); }
+.offre p { font-size: 14px; font-weight: 500; line-height: 19px; }
+.offre b { display: block; font: 400 26px/32px "Marcellus", Georgia, serif; }
+.offre small { font-size: 14.5px; line-height: 19px; }
+.choix { display: flex; gap: 6px; margin-top: 10px; }
+.choix button { flex: 1; height: 42px; border: 0; border-radius: 21px; background: #fff; color: #a83f26; font-size: 15px; font-weight: 600; }
+.choix .non { background: rgba(255, 255, 255, .22); color: #fff; }
+@keyframes entre { from { transform: translateY(-8px); opacity: 0; } }
+.anneau { padding: 18px 0 12px; }
+.carte-fid { position: relative; width: 236px; height: 236px; margin: 0 auto; }
+.tampon { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 36px; height: 36px; margin: -18px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .34); transform: rotate(var(--a)) translateY(-99px) rotate(calc(var(--a) * -1)); }
+.tampon svg { width: 62%; height: 62%; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.tampon.plein { background: #fff; box-shadow: none; color: var(--lagon); }
+.tampon.neuf { animation: tampon .6s cubic-bezier(.2, 1.4, .4, 1); }
+.tampon.cadeau { background: var(--corail); box-shadow: none; color: #fff; }
+.tampon.cadeau svg { stroke-width: 1.8; }
+.tampon.gagne { box-shadow: 0 0 0 5px rgba(228, 105, 74, .4); }
+@keyframes tampon { from { scale: 1.7; opacity: 0; } }
+.centre { position: absolute; inset: 56px; display: grid; place-content: center; text-align: center; }
+.centre b { font: 400 54px/1 "Marcellus", Georgia, serif; }
+.centre small { font-size: 22px; }
+.centre p { margin-top: 2px; color: #c9e2e4; font-size: 14px; line-height: 18px; }
+.conseil { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 16px; padding: 12px 14px; border-radius: 16px; background: #fff; color: var(--encre); }
+.conseil small { color: var(--gris); font-size: 13px; line-height: 18px; }
+.conseil h2 { font-size: 21px; line-height: 26px; }
+.conseil p { color: var(--gris); font-size: 14px; line-height: 19px; }
+.conseil button { flex: none; height: 40px; padding: 0 16px; border: 0; border-radius: 20px; background: var(--corail); color: #fff; font-size: 15px; font-weight: 500; }
+.prochain { margin: 0 16px; }
+.prochain h2 { margin-bottom: 8px; font-size: 19px; line-height: 25px; }
+.carte-r { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 14px; background: #fff; color: var(--encre); }
+.carte-r img { flex: none; width: 56px; height: 56px; border-radius: 10px; object-fit: cover; }
+.carte-r .texte { flex: 1; min-width: 0; }
+.carte-r b { display: block; font-size: 16px; font-weight: 500; line-height: 21px; }
+.carte-r small { color: var(--gris); font-size: 14px; line-height: 19px; }
+.annuler { padding: 4px; border: 0; background: none; color: var(--gris); font-size: 14px; }
+.grand-titre { padding: 10px 20px 0; font-size: 32px; line-height: 40px; }
+.en-cadre .grand-titre { padding-top: 58px; }
+.titre-z { margin: 16px 20px 6px; color: #c9e2e4; font-size: 13px; font-weight: 500; line-height: 18px; }
+.groupe { margin: 0 16px; border-radius: 14px; background: #fff; color: var(--encre); overflow: hidden; }
+.cellule { min-height: 68px; padding: 8px 14px 8px 8px; }
+.groupe .cellule + .cellule { box-shadow: inset 0 1px 0 var(--trait); }
+.cellule img { flex: none; width: 52px; height: 52px; border-radius: 10px; object-fit: cover; }
+.cellule b { font-size: 16px; font-weight: 500; line-height: 21px; }
+.cellule small { color: var(--gris); font-size: 14px; line-height: 19px; }
+.cellule .droite { font-size: 15px; font-variant-numeric: tabular-nums; }
+.prestation[aria-pressed="true"] { background: var(--ecume); }
+.bouton-ios { width: calc(100% - 32px); min-height: 50px; margin: 16px; border-radius: 25px; background: var(--corail); color: #fff; font-size: 17px; font-weight: 500; }
+.jours-c, .creneaux { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px; }
+.jour-c, .creneau { height: 38px; padding: 0 14px; border: 0; border-radius: 19px; background: #fff; color: var(--encre); font-size: 15px; }
+.jour-c[aria-pressed="true"], .creneau[aria-pressed="true"] { background: var(--corail); color: #fff; }
+.creneau:disabled { background: rgba(255, 255, 255, .2); color: #c9e2e4; text-decoration: line-through; cursor: default; }
+.onglets-ios { padding: 6px 4px calc(env(safe-area-inset-bottom) + 2px); background: #083239; }
+.en-cadre .onglets-ios { padding-bottom: 20px; }
+.onglets-ios button { gap: 2px; min-height: 44px; padding: 0; color: #93b6ba; font-size: 11.5px; line-height: 14px; }
+.onglets-ios svg { width: 24px; height: 24px; stroke-width: 1.6; }
+.onglets-ios [aria-current="true"] { color: #fff; }
+.alerte-ios { border-radius: 14px; background: #fff; color: var(--encre); font-size: 15px; line-height: 20px; box-shadow: 0 8px 30px rgba(22, 41, 45, .18), 0 0 0 1px rgba(22, 41, 45, .05); }
+.alerte-ios i { border-radius: 9px; background: var(--lagon); color: #fff; font-size: 12px; font-weight: 500; }
+.alerte-ios b { font-weight: 500; }
+
+/* Agenda de l'institut */
+.institut { min-height: 100dvh; background: #fff; font-size: 14px; line-height: 20px; }
+.en-tete { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 56px; padding: 0 20px; background: #0b3f48; color: #fff; }
+.en-tete h1 { font-size: 19px; line-height: 24px; }
+.jours-i { display: flex; gap: 2px; padding: 3px; border-radius: 9px; background: #16545f; }
+.jours-i button { height: 30px; padding: 0 12px; border: 0; border-radius: 7px; background: none; color: #c9e2e4; font-size: 13.5px; }
+.jours-i [aria-pressed="true"] { background: #fff; box-shadow: 0 1px 3px rgba(22, 41, 45, .12); color: var(--encre); }
+.kpi-i { padding: 10px 20px; border-bottom: 1px solid var(--trait); }
+.kpi-i dl { display: flex; gap: 40px; margin: 0; }
+.kpi-i dt { color: var(--gris); font-size: 13px; line-height: 18px; }
+.kpi-i dd { margin: 0; font-size: 20px; font-weight: 500; line-height: 26px; font-variant-numeric: tabular-nums; }
+.kpi-i .alerte dd { color: #c04a2c; }
+.bureau { display: grid; grid-template-columns: minmax(0, 1fr) 330px; align-items: stretch; }
+.agenda-z { min-width: 0; padding: 0 20px 20px; }
+.grille-a { display: grid; grid-template-columns: 60px minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: 46px; grid-auto-rows: minmax(74px, auto); gap: 4px 8px; }
+.grille-a > .coin-a, .grille-a > .colonne { position: sticky; top: 0; z-index: 2; height: 46px; background: #fff; }
+.colonne { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
+.colonne i { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--ecume); color: var(--lagon); font-size: 12px; font-style: normal; }
+.grille-a time { padding-top: 6px; color: var(--gris); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.rdv { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 9px 10px 9px 12px; border-left: 3px solid var(--lagon); border-radius: 8px; background: var(--ecume); }
+.rdv.s-visage { border-left-color: #0f4f5a; background: #dcefee; }
+.rdv.s-corps { border-left-color: #b4632a; background: #fbead8; }
+.rdv.s-mains { border-left-color: #a8567e; background: #f8e4ee; }
+.rdv.s-regard { border-left-color: #5b7a2e; background: #e9f1d9; }
+.rdv.rempli { border-left-color: var(--corail); background: var(--corail2); }
+.rdv.paye { border-left-color: var(--gris2); background: var(--fond); color: var(--gris); }
+.rdv b { display: block; font-size: 14px; font-weight: 500; line-height: 19px; }
+.rdv small { display: block; font-size: 13px; line-height: 18px; color: #3e5458; }
+.rdv.paye small { color: var(--gris); }
+.rdv button { flex: none; height: 28px; padding: 0 10px; border: 0; border-radius: 7px; background: #fff; box-shadow: 0 0 0 1px rgba(15, 79, 90, .16); color: var(--lagon); font-size: 12.5px; font-weight: 500; }
+.rdv em { flex: none; color: var(--vert); font-size: 12.5px; font-style: normal; font-weight: 500; }
+.libre { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0 12px; border: 1px dashed #d7dfdf; border-radius: 8px; background: none; color: var(--gris); font-size: 13px; }
+.libre u { color: var(--corail); font-weight: 500; text-decoration: none; }
+button.libre:hover, .libre[aria-pressed="true"] { border: 1px solid var(--corail); background: var(--corail2); }
+.libre.attend { justify-content: center; }
+.cote-i { padding: 14px 16px; border-left: 1px solid var(--trait); background: var(--fond); }
+.cote-i h2 { font-family: "Jost", system-ui, sans-serif; font-size: 14px; font-weight: 500; line-height: 20px; }
+.aide { color: var(--gris); font-size: 13px; line-height: 18px; }
+#remplir { padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--trait); }
+.revoir li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 9px; align-items: center; padding: 7px 0; }
+.rond { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--ecume); color: var(--lagon); font-size: 12px; font-weight: 500; }
+.rond.v1 { background: var(--corail2); color: #a83f26; }
+.rond.v2 { background: #efecdf; color: #5f5526; }
+.revoir b { display: block; font-size: 13.5px; font-weight: 500; line-height: 18px; }
+.revoir small { display: block; color: var(--gris); font-size: 12.5px; line-height: 17px; }
+.revoir button { height: 28px; padding: 0 10px; border: 0; border-radius: 7px; background: var(--lagon); color: #fff; font-size: 12.5px; font-weight: 500; }
+.revoir button:disabled { background: #e4eaea; color: #5f7175; cursor: default; }
+.tout-b { color: var(--vert); font-size: 13px; font-weight: 500; }
+.cliente { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; align-items: center; padding: 6px 0; font-size: 13.5px; line-height: 18px; }
+.cliente b { font-weight: 400; }
+.compte { color: var(--gris); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.barre-f { grid-column: 1 / -1; display: flex; gap: 2px; }
+.barre-f i { flex: 1; height: 4px; border-radius: 2px; background: #e1e7e7; }
+.barre-f i.on { background: var(--lagon); }
+.offert { grid-column: 1 / -1; height: 30px; margin-top: 4px; border: 0; border-radius: 7px; background: var(--corail); color: #fff; font-size: 13px; font-weight: 500; }
+@media (max-width: 1020px) { .bureau { grid-template-columns: minmax(0, 1fr); } .cote-i { border-left: 0; border-top: 1px solid var(--trait); } .kpi-i dl { flex-wrap: wrap; gap: 8px 28px; } }
+@media (max-width: 620px) { .en-tete { padding: 0 12px; } .en-tete h1 { font-size: 16px; } .jours-i button { padding: 0 8px; font-size: 12.5px; } .kpi-i, .agenda-z { padding-left: 12px; padding-right: 12px; } .grille-a { grid-template-columns: 44px minmax(0, 1fr) minmax(0, 1fr); gap: 4px; } .rdv { flex-direction: column; } .rdv button { width: 100%; } .libre { justify-content: center; } .libre span { display: none; } }
+
+/* ---------- Agenda de l'institut : finition du 14/11/2026 (tuiles, rendez-vous en relief, colonne de droite en carte) ---------- */
+.institut .en-tete { box-shadow: 0 1px 0 rgba(0, 0, 0, .18); }
+.jours-i button { cursor: pointer; transition: background .15s, color .15s; }
+.kpi-i dl > div { padding: 10px 16px 12px; border-radius: 12px; background: #f1f6f6; min-width: 124px; }
+.kpi-i dl { gap: 10px; }
+.kpi-i dd { margin-top: 2px; font-size: 23px; line-height: 28px; letter-spacing: -.01em; }
+.kpi-i .alerte { background: #fff0ea; box-shadow: inset 0 0 0 1px #f6cfc0; }
+.colonne i { box-shadow: 0 0 0 2px #fff, 0 0 0 3px rgba(11, 63, 72, .18); }
+.rdv { border-radius: 12px; box-shadow: 0 10px 18px -14px rgba(11, 63, 72, .55); transition: transform .2s cubic-bezier(.22, 1, .36, 1), box-shadow .2s; }
+.rdv:hover { transform: translateY(-2px); box-shadow: 0 16px 24px -14px rgba(11, 63, 72, .6); }
+.rdv b { font-size: 14.5px; }
+.rdv button { height: 34px; padding: 0 14px; border-radius: 9px; cursor: pointer; box-shadow: 0 1px 2px rgba(11, 63, 72, .18); transition: transform .15s; }
+.rdv button:hover { transform: translateY(-1px); }
+.libre { border-radius: 12px; cursor: pointer; transition: background .15s, border-color .15s; }
+.libre u { font-weight: 600; }
+@media (min-width: 1000px) {
+  .cote-i { margin: 16px 16px 16px 0; padding: 18px; border-radius: 18px; background: #fff; box-shadow: 0 0 0 1px rgba(11, 63, 72, .08), 0 26px 44px -34px rgba(11, 63, 72, .6); align-self: start; }
+}
+.cote-i h2 { font-size: 15.5px; }
+.revoir li { padding: 10px 0; }
+.revoir button { height: 34px; padding: 0 14px; border-radius: 9px; cursor: pointer; transition: transform .15s; }
+.revoir button:hover:not(:disabled) { transform: translateY(-1px); }
+.barre-f i { height: 5px; border-radius: 3px; }

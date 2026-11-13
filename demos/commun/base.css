@@ -1,0 +1,52 @@
+/* Socle des démos : structure seule. Polices, couleurs et formes appartiennent à chaque entreprise (theme.css). */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+h1, h2, h3, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+.en-cadre, .en-cadre * { scrollbar-width: none; }
+.en-cadre ::-webkit-scrollbar { display: none; }
+:focus-visible { outline: 3px solid var(--accent, #333); outline-offset: 2px; }
+
+/* Bandeau Onklaud : volontairement neutre, il n'appartient pas à l'entreprise fictive. */
+.bandeau-demo { position: relative; z-index: 60; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 16px; padding: 8px 14px; background: #fff; border-bottom: 1px solid #d9d9d9; color: #222; font: 400 13.5px/1.35 system-ui, -apple-system, "Segoe UI", sans-serif; letter-spacing: 0; text-transform: none; }
+.bandeau-demo .qui { font-weight: 600; white-space: nowrap; }
+.bandeau-demo em { font-style: normal; font-weight: 400; }
+.bandeau-demo p { order: 3; flex: 1 1 100%; color: #444; }
+.bandeau-demo p b { font-weight: 600; color: #222; }
+.bandeau-demo a, .bandeau-demo button { padding: 0; border: 0; background: none; color: #222; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.bandeau-demo .qui ~ button { margin-left: auto; }
+@media (min-width: 900px) { .bandeau-demo p { order: 0; flex: 1 1 0; } .bandeau-demo .qui ~ button { margin-left: 0; } }
+@media (max-width: 460px) { .bandeau-demo em { display: none; } }
+
+/* Applications sur téléphone */
+.appli { display: flex; flex-direction: column; min-height: 100dvh; max-width: 480px; margin: 0 auto; }
+.statut-ios { display: none; }
+.en-cadre .statut-ios { display: flex; align-items: center; justify-content: space-between; height: 54px; flex: none; padding: 14px 30px 0; font: 600 16px/1 system-ui, -apple-system, sans-serif; }
+.en-cadre .statut-ios svg { height: 13px; fill: currentColor; }
+.en-cadre .appli { height: 100dvh; min-height: 0; }
+.appli-corps { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.nav-ios { display: flex; align-items: center; justify-content: space-between; min-height: 44px; }
+.cellule { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: none; text-align: left; color: inherit; }
+.cellule .texte { flex: 1; min-width: 0; }
+.cellule .texte b, .cellule .texte small { display: block; }
+.cellule .droite { white-space: nowrap; }
+.bouton-ios { display: block; border: 0; text-align: center; }
+.bouton-ios:disabled { opacity: .45; cursor: default; }
+.onglets-ios { flex: none; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; }
+.onglets-ios button { display: flex; flex-direction: column; align-items: center; border: 0; background: none; }
+.onglets-ios svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Notification reçue dans l'application : position seule */
+.alerte-ios { position: fixed; top: 10px; left: 50%; z-index: 70; display: flex; align-items: center; gap: 10px; width: min(358px, calc(100vw - 24px)); padding: 11px 12px; visibility: hidden; transform: translate(-50%, -140%); transition: transform .3s ease-in, visibility 0s .3s; }
+.en-cadre .alerte-ios { top: 52px; }
+.alerte-ios.visible { visibility: visible; transform: translate(-50%, 0); transition: transform .38s cubic-bezier(.2, .9, .3, 1.05), visibility 0s; }
+.alerte-ios i { flex: none; display: grid; place-items: center; width: 34px; height: 34px; font-style: normal; }
+.alerte-ios b { display: block; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
