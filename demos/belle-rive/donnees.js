@@ -5,10 +5,10 @@
   const O = window.Outils;
   const OBJECTIF = 9;
   const PRESTATIONS = [
-    { id: "visage", nom: "Soin du visage", duree: "1 h", prix: 62, img: "../commun/photos/soin-visage.jpg" },
-    { id: "corps", nom: "Modelage du dos", duree: "45 min", prix: 55, img: "../commun/photos/soin-dos.jpg" },
-    { id: "mains", nom: "Beauté des mains", duree: "40 min", prix: 34, img: "../commun/photos/soin-mains.jpg" },
-    { id: "regard", nom: "Rehaussement de cils", duree: "1 h", prix: 58, img: "../commun/photos/soin-huile.jpg" }
+    { id: "visage", nom: "Soin du visage", duree: "1 h", prix: 62, img: "photos/visage.webp" },
+    { id: "corps", nom: "Modelage du dos", duree: "45 min", prix: 55, img: "photos/dos.webp" },
+    { id: "mains", nom: "Beauté des mains", duree: "40 min", prix: 34, img: "photos/mains.webp" },
+    { id: "regard", nom: "Rehaussement de cils", duree: "1 h", prix: 58, img: "photos/regard.webp" }
   ];
   const HEURES = ["9 h 30", "10 h 30", "11 h 30", "14 h 00", "15 h 00", "16 h 00", "17 h 00"];
   const PRATICIENNES = ["Léa", "Nora"];

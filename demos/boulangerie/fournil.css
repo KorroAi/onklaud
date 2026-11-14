@@ -1,0 +1,104 @@
+/* Boulangerie des Halles, l'écran du boulanger : refonte du 14/11/2026.
+   La phrase du haut dit combien fabriquer demain ; chaque produit montre en barre ce qui est commandé,
+   ce qui se vendra en boutique, et ce que l'habitude aurait fait fabriquer en trop. */
+@font-face { font-family: "Fraunces"; src: url("../../assets/polices/fraunces-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Figtree"; src: url("../../assets/polices/figtree-var.woff2") format("woff2"); font-weight: 300 900; font-display: swap; }
+:root { --accent: #1d1410; --safran: #ffb81c; --encre: #1d1410; --creme: #fff8ea; --mie: #f3e4c6; --doux: #6c5f54; --filet: #ecdfc6; --vert: #1c7a43;
+  --titre: "Fraunces", Georgia, serif; --texte: "Figtree", system-ui, sans-serif; --marge: clamp(16px, 2.6vw, 40px); --doucement: cubic-bezier(.22, 1, .36, 1); }
+body { background: var(--creme); color: var(--encre); font: 400 15px/21px var(--texte); -webkit-font-smoothing: antialiased; }
+button { font-family: var(--texte); }
+
+.en-tete { display: flex; align-items: center; gap: 16px; padding: 14px var(--marge); background: var(--safran); }
+.en-cadre .en-tete { padding-top: 20px; }
+.en-tete .id { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.en-tete h1 { font: 700 23px/28px var(--titre); letter-spacing: -.02em; }
+#date { font-size: 14.5px; font-weight: 500; }
+.vues { display: flex; gap: 4px; margin-left: auto; }
+.vues button { height: 40px; padding: 0 18px; border: 0; border-radius: 20px; background: none; color: var(--encre); font-size: 15px; font-weight: 650; transition: background .2s, color .2s; }
+.vues button:hover { background: rgba(29, 20, 16, .1); }
+.vues [aria-current="true"], .vues [aria-current="true"]:hover { background: var(--encre); color: #fff; }
+
+main { padding: clamp(22px, 3vw, 44px) var(--marge) 56px; }
+.titre-v { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; }
+.titre-v h2 { max-width: 15em; font: 800 clamp(31px, 4vw, 58px) / 1 var(--titre); letter-spacing: -.035em; font-variant-numeric: lining-nums; text-wrap: balance; }
+.titre-v p { margin-top: 12px; color: var(--doux); font-size: 16.5px; line-height: 23px; font-variant-numeric: lining-nums; }
+.vendu { flex: none; padding: 14px 22px 16px; border-radius: 20px; background: var(--encre); color: #fff; text-align: right; }
+.vendu small { display: block; color: #e2d3bf; font-size: 13.5px; }
+.vendu b { font: 800 34px/1.1 var(--titre); letter-spacing: -.02em; font-variant-numeric: lining-nums tabular-nums; }
+.grille { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 370px); gap: clamp(18px, 2.2vw, 32px); align-items: start; margin-top: clamp(22px, 2.6vw, 36px); }
+.bloc { border-radius: 26px; background: #fff; box-shadow: 0 1px 0 var(--filet), 0 30px 50px -40px rgba(60, 36, 10, .5); }
+.bloc.etroit { max-width: 640px; margin-top: 28px; padding: 8px 22px 22px; }
+
+/* Les barres de production */
+.barres li { display: grid; grid-template-columns: minmax(190px, 230px) minmax(0, 1fr) 60px auto; gap: 8px 22px; align-items: center; padding: 18px 24px; }
+.barres li + li { border-top: 1px solid var(--filet); }
+.nom-p { display: flex; align-items: center; gap: 14px; }
+.nom-p b { display: block; font: 650 17.5px/1.15 var(--titre); letter-spacing: -.01em; }
+.nom-p small { color: var(--doux); font-size: 13.5px; }
+.img { position: relative; flex: none; width: 58px; height: 58px; border-radius: 16px; overflow: hidden; background: var(--mie); }
+.img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.barre { position: relative; height: 30px; border-radius: 8px; background: repeating-linear-gradient(135deg, rgba(29, 20, 16, .13) 0 2px, transparent 2px 8px), var(--mie); overflow: hidden; }
+.barre i { position: absolute; top: 0; bottom: 0; display: block; transition: width .7s var(--doucement), left .7s var(--doucement); }
+.b-c { left: 0; width: var(--c); background: var(--encre); border-radius: 8px 0 0 8px; }
+.b-v { left: var(--c); width: var(--v); background: var(--safran); }
+.b-r { display: none; }
+.det-b { display: flex; flex-wrap: wrap; gap: 2px 18px; margin-top: 7px; color: var(--doux); font-size: 13px; line-height: 17px; font-variant-numeric: tabular-nums; }
+.det-b span::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 3px; background: var(--encre); }
+.det-b span:nth-child(2)::before { background: var(--safran); }
+.det-b span:nth-child(3)::before { background: repeating-linear-gradient(135deg, rgba(29, 20, 16, .4) 0 1.5px, transparent 1.5px 4px), var(--mie); }
+.ecart { justify-self: end; padding: 4px 10px; border-radius: 12px; background: #e3f3e8; color: var(--vert); font-size: 14.5px; font-weight: 750; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ecart.plus { background: #fde9d2; color: #a3530a; }
+.ecart.nul { background: none; color: var(--doux); font-weight: 500; }
+.pas { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border-radius: 22px; background: var(--creme); box-shadow: inset 0 0 0 1px var(--filet); }
+.pas button { width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%; background: none; font-size: 20px; line-height: 1; transition: background .2s; }
+.pas button:hover { background: var(--safran); }
+.pas b { min-width: 46px; font: 800 22px/1 var(--titre); text-align: center; font-variant-numeric: lining-nums tabular-nums; }
+.pied-t { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px 20px; border-top: 1px solid var(--filet); }
+.pied-t p { max-width: 46em; color: var(--doux); font-size: 13.5px; line-height: 19px; }
+.calme { flex: none; height: 40px; padding: 0 16px; border: 1.5px solid var(--encre); border-radius: 20px; background: none; font-size: 14.5px; font-weight: 650; transition: background .2s, color .2s; }
+.calme:hover { background: var(--encre); color: #fff; }
+
+/* Les retraits : des tickets numérotés */
+.retraits { padding: 22px 18px 18px; }
+.retraits h3 { display: flex; align-items: baseline; gap: 10px; padding: 0 6px; font: 750 24px/1.1 var(--titre); letter-spacing: -.02em; }
+.retraits h3 span { color: var(--doux); font: 600 15px var(--texte); }
+#commandes { display: grid; gap: 10px; margin-top: 14px; }
+.commande { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 4px 14px; padding: 14px 16px 14px 12px; border-radius: 18px; background: var(--creme); }
+.commande .h { grid-row: span 2; align-self: start; padding: 8px 0; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 1px var(--filet); font: 800 17px/1.15 var(--titre); text-align: center; font-variant-numeric: lining-nums; }
+.commande b { font-size: 15.5px; font-weight: 700; }
+.commande b i { margin-left: 4px; color: var(--doux); font-style: normal; font-weight: 500; font-size: 13.5px; }
+.commande small { display: block; color: var(--doux); font-size: 13.5px; line-height: 18px; }
+.commande button { grid-column: 2; justify-self: start; height: 38px; margin-top: 8px; padding: 0 16px; border: 0; border-radius: 19px; background: var(--encre); color: #fff; font-size: 14px; font-weight: 650; transition: background .2s; }
+.commande button:hover { background: #33251c; }
+.commande.prepa { background: #fff3d1; }
+.commande.prepa button { background: var(--safran); color: var(--encre); }
+.commande.prete { background: #e3f3e8; }
+.commande.prete button { height: 38px; border: 1.5px solid var(--vert); background: none; color: var(--vert); }
+.commande.retiree { opacity: .6; }
+.remise { grid-column: 2; margin-top: 6px; color: var(--vert); font-size: 13.5px; font-weight: 650; }
+.commande.neuve { animation: arrive 1s var(--doucement) both; }
+@keyframes arrive { from { opacity: 0; translate: 0 -14px; scale: .96; } 40% { box-shadow: 0 0 0 3px var(--safran); } }
+
+/* Les invendus du soir */
+.invendus li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 0; }
+.invendus li + li { border-top: 1px solid var(--filet); }
+.invendus span:not(.img):not(.pas) { font: 650 17px/1.2 var(--titre); }
+.invendus small { display: block; color: var(--doux); font: 400 13.5px/18px var(--texte); }
+.invendus li > b { font: 800 26px/1 var(--titre); font-variant-numeric: lining-nums; }
+.publier { width: 100%; height: 56px; margin-top: 14px; border: 0; border-radius: 28px; background: var(--safran); font-size: 16.5px; font-weight: 750; box-shadow: 0 16px 28px -16px rgba(200, 130, 0, .9); transition: translate .2s var(--doucement); }
+.publier:hover:not(:disabled) { translate: 0 -2px; }
+.publier:disabled { background: var(--mie); color: #9a8a78; box-shadow: none; cursor: default; }
+.tout-parti { padding: 26px 0 8px; font: 700 22px/1.2 var(--titre); }
+
+@media (max-width: 1080px) {
+  .grille { grid-template-columns: minmax(0, 1fr); }
+  .barres li { grid-template-columns: minmax(0, 1fr) auto; padding: 16px; }
+  .barres .zone-b { grid-column: 1 / -1; grid-row: 2; }
+  .ecart { grid-column: 1; grid-row: 3; justify-self: start; }
+  .barres .pas { grid-column: 2; grid-row: 1; }
+  .titre-v { flex-direction: column; align-items: stretch; gap: 18px; }
+  .vendu { text-align: left; }
+  .pied-t { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 560px) { .en-tete { flex-wrap: wrap; } .vues { margin-left: 0; } }
+@media print { .en-tete, .retraits, .pied-t button, .bandeau-demo { display: none; } .grille { display: block; } }

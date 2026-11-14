@@ -3,16 +3,16 @@
 (function () {
   "use strict";
   const O = window.Outils;
-  const P = "../commun/photos/";
+  const P = "photos/";
   /* ventes : ventes en vitrine, le même jour, sur les quatre dernières semaines.
      habitude : quantité fabriquée jusqu'ici, sans prévision.
      farine : grammes par pièce. en_ligne : pièces réservables pour demain. */
   const PRODUITS = [
-    { id: "tradition", nom: "Baguette tradition", pl: "baguettes tradition", d: "Fermentation lente", prix: 1.3, img: P + "baguettes.jpg", pos: "50% 20%", zoom: 1.5, ventes: [118, 124, 121, 113], habitude: 150, farine: 180, en_ligne: 80, four: "6 h 00" },
-    { id: "campagne", nom: "Pain de campagne", pl: "pains de campagne", d: "Levain naturel, graines", prix: 4.6, img: P + "pains.jpg", pos: "12% 40%", zoom: 1.5, ventes: [26, 31, 28, 27], habitude: 36, farine: 420, en_ligne: 12, four: "7 h 00" },
-    { id: "cereales", nom: "Pain aux céréales", pl: "pains aux céréales", d: "Farine bio", prix: 4.9, img: P + "pains.jpg", pos: "92% 86%", zoom: 2.2, ventes: [17, 19, 16, 20], habitude: 24, farine: 380, en_ligne: 10, four: "7 h 00" },
-    { id: "croissant", nom: "Croissant au beurre", pl: "croissants au beurre", d: "Beurre AOP", prix: 1.35, img: P + "croissants.jpg", pos: "70% 72%", zoom: 1.5, ventes: [64, 58, 61, 57], habitude: 90, farine: 48, en_ligne: 40, four: "6 h 30" },
-    { id: "chocolat", nom: "Pain au chocolat", pl: "pains au chocolat", d: "Deux barres de chocolat noir", prix: 1.5, img: P + "pain-chocolat.jpg", pos: "48% 58%", zoom: 1.9, ventes: [46, 49, 44, 41], habitude: 70, farine: 50, en_ligne: 30, four: "6 h 30" }
+    { id: "tradition", nom: "Baguette tradition", pl: "baguettes tradition", d: "Fermentation lente", prix: 1.3, img: P + "tradition.webp", pos: "50% 50%", zoom: 1, ventes: [118, 124, 121, 113], habitude: 150, farine: 180, en_ligne: 80, four: "6 h 00" },
+    { id: "campagne", nom: "Pain de campagne", pl: "pains de campagne", d: "Levain naturel, graines", prix: 4.6, img: P + "campagne.webp", pos: "50% 50%", zoom: 1, ventes: [26, 31, 28, 27], habitude: 36, farine: 420, en_ligne: 12, four: "7 h 00" },
+    { id: "cereales", nom: "Pain aux céréales", pl: "pains aux céréales", d: "Farine bio", prix: 4.9, img: P + "cereales.webp", pos: "50% 60%", zoom: 1, ventes: [17, 19, 16, 20], habitude: 24, farine: 380, en_ligne: 10, four: "7 h 00" },
+    { id: "croissant", nom: "Croissant au beurre", pl: "croissants au beurre", d: "Beurre AOP", prix: 1.35, img: P + "croissant.webp", pos: "50% 50%", zoom: 1, ventes: [64, 58, 61, 57], habitude: 90, farine: 48, en_ligne: 40, four: "6 h 30" },
+    { id: "chocolat", nom: "Pain au chocolat", pl: "pains au chocolat", d: "Deux barres de chocolat noir", prix: 1.5, img: P + "chocolat.webp", pos: "40% 60%", zoom: 1, ventes: [46, 49, 44, 41], habitude: 70, farine: 50, en_ligne: 30, four: "6 h 30" }
   ];
   const CRENEAUX = ["7 h 30", "8 h 00", "8 h 30", "12 h 00", "17 h 30"];
   const HABITUDE = { tradition: 2, croissant: 4 };

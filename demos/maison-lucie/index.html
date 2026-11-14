@@ -4,41 +4,91 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#3a0a14">
+<meta name="theme-color" content="#2a0810">
 <title>Maison Lucie · Bistrot de saison, démo Onklaud</title>
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../commun/base.css?v=1115">
-<link rel="stylesheet" href="theme.css?v=1115">
+<link rel="stylesheet" href="vitrine.css?v=1116">
+<script>(function(){var h=document.documentElement,p=new URLSearchParams(location.search);h.classList.add("js");if(p.has("cadre")||p.has("film"))h.classList.add("pose");})();</script>
 </head>
 <body>
-<nav class="nav" aria-label="Navigation"><span class="marque" data-marque>Maison Lucie</span><span class="liens-n"><a class="lien-s" href="#carte">La carte</a><a class="lien-s" href="#lieu">Le lieu</a><a class="lien-s" href="#privatiser">Privatiser</a></span><a class="reserver" href="#resa">Réserver</a></nav>
-<header class="accueil">
-  <img class="plein" src="../commun/photos/resto-salle.jpg" alt="La salle de Maison Lucie, le soir">
-  <div class="titre-l"><p class="sur">Bistrot de saison, Lyon 5<sup>e</sup></p><h1>Maison Lucie</h1><p class="chapo">Une cuisine du marché, face à la Saône.</p><p class="infos"><span class="ouvert" id="ouvert"></span><span>Quai Saint-Antoine</span></p></div>
+<nav class="nav" aria-label="Navigation"><a class="marque" href="#haut" data-marque>Maison Lucie</a><span class="liens-n"><a class="lien-s" href="#carte">La carte</a><a class="lien-s" href="#lieu">Le lieu</a><a class="lien-s" href="#privatiser">Privatiser</a></span><a class="reserver" href="#resa">Réserver</a></nav>
+<header class="accueil" id="haut">
+  <div class="rideau"><img class="plein" src="photos/salle.webp" alt="La salle de Maison Lucie, le soir" fetchpriority="high"></div>
+  <div class="titre-l"><p class="sur"><span>Bistrot de saison, Lyon 2<sup>e</sup></span></p><h1 id="nom" data-marque>Maison Lucie</h1><p class="chapo">Une cuisine du marché, face à la Saône.</p><p class="infos"><span class="ouvert" id="ouvert"></span><span>Quai Saint-Antoine</span></p></div>
   <div class="carton"><h2>Réserver une table</h2><div class="resa" id="resa"></div></div>
 </header>
 <main>
-  <section class="s" id="carte">
-    <h2>La carte</h2>
-    <div class="carte">
-      <div><h3>Pour commencer</h3><div class="plat"><b>Œuf parfait, champignons</b><span>12 €</span><small>Crème de noisette, pain grillé</small></div><div class="plat"><b>Truite fumée maison</b><span>14 €</span><small>Betterave, raifort doux</small></div><div class="plat"><b>Velouté de courge</b><span>9 €</span><small>Châtaignes, huile de sauge</small></div></div>
-      <div><h3>Pour suivre</h3><div class="plat"><b>Saumon mi-cuit</b><span>24 €</span><small>Herbes du marché, jus citronné</small></div><div class="plat"><b>Paleron confit</b><span>26 €</span><small>Purée fumée, carottes rôties</small></div><div class="plat"><b>Risotto de saison</b><span>21 €</span><small>Parmesan, légumes du jour</small></div></div>
-      <div><h3>Pour finir</h3><div class="plat"><b>Tarte fine aux pommes</b><span>9 €</span><small>Glace vanille</small></div><div class="plat"><b>Mousse au chocolat</b><span>8 €</span><small>Fleur de sel</small></div><div class="plat"><b>Fromages affinés</b><span>11 €</span><small>Selon l’arrivage</small></div></div>
+  <section class="esprit">
+    <div class="esprit-g">
+      <div class="esprit-c">
+        <p class="esprit-t" id="esprit-t">Chaque matin, la carte s’écrit au retour du marché. Peu de plats, tous cuisinés ici, et servis face à la Saône.</p>
+        <a class="lien-f" href="#carte">Découvrir la carte</a>
+      </div>
+      <div class="esprit-ph">
+        <figure class="ph-a"><img src="photos/chef.webp" alt="Le chef dresse une assiette au passe" loading="lazy" data-para="-34"></figure>
+        <figure class="ph-b" data-para="46"><img src="photos/verres.webp" alt="Verres de vin rouge levés à table" loading="lazy"></figure>
+      </div>
     </div>
   </section>
-  <section class="s" id="lieu">
-    <h2>Le lieu</h2>
-    <div class="lieu"><img src="../commun/photos/resto-salle.jpg" alt="La salle du restaurant" loading="lazy"><img src="../commun/photos/resto-cafe.jpg" alt="Le comptoir" loading="lazy"><img src="../commun/photos/resto-plats.jpg" alt="Assiettes du jour" loading="lazy"></div>
+  <section class="carte-s" id="carte">
+    <div class="carte-tete"><h2>La carte</h2><p>Elle change chaque semaine, selon le marché. Tous les plats sont cuisinés sur place.</p></div>
+    <div class="carte-g">
+      <figure class="assiette" aria-hidden="true"><div class="cadre">
+        <img class="actif" data-p="oeuf" src="photos/plat-oeuf.webp" alt="">
+        <img data-p="salade" src="photos/plat-salade.webp" alt="">
+        <img data-p="saumon" src="photos/plat-saumon.webp" alt="">
+        <img data-p="risotto" src="photos/plat-risotto.webp" alt="">
+        <img data-p="cochon" src="photos/plat-cochon.webp" alt="">
+        <img data-p="fromage" src="photos/plat-fromage.webp" alt="">
+        <img data-p="biscuit" src="photos/plat-biscuit.webp" alt="">
+        <img data-p="glace" src="photos/plat-glace.webp" alt="">
+      </div></figure>
+      <div class="carte-l">
+        <div class="service"><h3>Pour commencer</h3>
+          <div class="plat" data-photo="oeuf"><b>Œuf mollet, épinards et avocat</b><span>12 €</span><small>Sur pain de campagne grillé</small></div>
+          <div class="plat" data-photo="salade"><b>Salade croquante</b><span>11 €</span><small>Carotte, oignon rouge, olives, brebis frais</small></div>
+        </div>
+        <div class="service"><h3>Pour suivre</h3>
+          <div class="plat" data-photo="saumon"><b>Saumon rôti sur peau</b><span>24 €</span><small>Épinards, julienne de légumes, citron vert</small></div>
+          <div class="plat" data-photo="risotto"><b>Risotto aux champignons</b><span>21 €</span><small>Parmesan, herbes fraîches</small></div>
+          <div class="plat" data-photo="cochon"><b>Côte de cochon fermier</b><span>26 €</span><small>Pommes rôties, brocoli, jus court</small></div>
+        </div>
+        <div class="service"><h3>Pour finir</h3>
+          <div class="plat" data-photo="fromage"><b>Bleu d’Auvergne et figue</b><span>11 €</span><small>Noix, pain aux fruits</small></div>
+          <div class="plat" data-photo="biscuit"><b>Biscuit pistache, framboises</b><span>9 €</span><small>Crème légère à la vanille</small></div>
+          <div class="plat" data-photo="glace"><b>Glace vanille, caramel au beurre salé</b><span>8 €</span><small>Brownie tiède, tuile croustillante</small></div>
+        </div>
+      </div>
+    </div>
   </section>
-  <section class="s" id="privatiser"><div class="bas">
-    <h2>Privatiser la maison</h2><p>Déjeuner d’équipe, anniversaire ou repas de famille : nous composons le menu avec vous.</p>
-    <form class="priv" id="priv"><label>Votre nom<input name="nom" required autocomplete="name"></label><label>Téléphone<input name="tel" type="tel" required autocomplete="tel"></label><label>Nombre de personnes<input name="pers" type="number" min="8" max="60" value="20" required></label><label>Date souhaitée<input name="jour" type="date" required></label><button type="submit" class="valider">Envoyer ma demande</button><p class="merci" id="merci" role="status" hidden>Merci, votre demande est transmise. Nous vous rappelons pour composer le menu.</p></form>
-  </div></section>
-  <section class="s horaires"><div class="bas">
-    <p><b>Horaires</b>Du mardi au samedi, de 12:00 à 14:00 et de 19:00 à 23:00</p><p><b>Adresse</b>Quai Saint-Antoine, Lyon</p>
-  </div></section>
+  <section class="lieu-s" id="lieu">
+    <div class="lieu-tete"><h2>Le lieu</h2><p>Une salle de <span id="places">38</span> couverts, un comptoir et une cuisine ouverte, sur le quai Saint-Antoine. Les grandes fenêtres donnent sur la Saône.</p></div>
+    <div class="bande" id="bande"><div class="bande-i">
+      <figure class="g haut"><img src="photos/salle-bleue.webp" alt="La salle et son escalier, le soir" loading="lazy"><figcaption>La salle</figcaption></figure>
+      <figure class="g bas-g"><img src="photos/comptoir.webp" alt="Le rez-de-chaussée et la mezzanine" loading="lazy"><figcaption>La mezzanine</figcaption></figure>
+      <figure class="g"><img src="photos/cuisine.webp" alt="La brigade en cuisine" loading="lazy"><figcaption>La cuisine ouverte</figcaption></figure>
+      <figure class="g bas-g"><img src="photos/bar.webp" alt="Le bar et ses ardoises" loading="lazy"><figcaption>Le bar</figcaption></figure>
+      <figure class="g"><img src="photos/digestif.webp" alt="Un verre servi au comptoir" loading="lazy"><figcaption>Le comptoir, en fin de repas</figcaption></figure>
+    </div></div>
+  </section>
+  <section class="priv-s" id="privatiser">
+    <div class="priv-photo"><img src="photos/table.webp" alt="Une table dressée pour un repas de groupe" loading="lazy"></div>
+    <div class="priv-texte">
+      <h2>Privatiser la maison</h2><p>Déjeuner d’équipe, anniversaire ou repas de famille : nous composons le menu avec vous, pour <span id="places-p">38</span> convives au plus.</p>
+      <form class="priv" id="priv"><label>Votre nom<input name="nom" required autocomplete="name"></label><label>Téléphone<input name="tel" type="tel" required autocomplete="tel"></label><label>Nombre de personnes<input name="pers" type="number" min="8" max="38" value="20" required></label><label>Date souhaitée<input name="jour" type="date" required></label><button type="submit" class="valider">Envoyer ma demande</button><p class="merci" id="merci" role="status" hidden>Merci, votre demande est transmise. Nous vous rappelons pour composer le menu.</p></form>
+    </div>
+  </section>
 </main>
-<footer id="pied-l">Maison Lucie est un restaurant fictif : ce site est une démonstration créée par Onklaud. Les réservations restent sur votre appareil.</footer>
+<footer class="pied">
+  <div class="pied-g">
+    <div><h3>Horaires</h3><ul class="semaine" id="semaine"></ul></div>
+    <div><h3>Adresse</h3><p>Quai Saint-Antoine<br>69002 Lyon</p></div>
+    <div><h3>Réservation</h3><p>En ligne à toute heure. La veille, un message vous demande de confirmer votre venue.</p><a class="reserver-p" href="#resa">Réserver une table</a></div>
+  </div>
+  <p class="note-p" id="pied-l">Maison Lucie est un restaurant fictif : ce site est une démonstration créée par Onklaud. Les réservations restent sur votre appareil.</p>
+  <p class="grand" aria-hidden="true" data-marque>Maison Lucie</p>
+</footer>
 <script src="../commun/magasin.js?v=1115"></script>
 <script src="donnees.js?v=1115"></script>
 <script>
@@ -48,21 +98,25 @@
   const m = window.Magasin("maison-lucie", L.depart);
   const $ = (s, r = document) => r.querySelector(s);
   const jours = () => L.joursOuverts(6);
-  const ui = { jour: jours()[0], pers: 2, heure: null, attente: false, fait: null };
+  const ui = { jour: jours()[0], pers: 2, heure: null, attente: false, fait: null, vu: false };
   const h = new Date().getHours();
   $("#ouvert").textContent = !L.ouvert(O.jour()) ? "Fermé aujourd’hui" : h < 23 ? "Ouvert jusqu’à 23:00" : "Fermé ce soir";
   const passe = (j, x) => j === O.jour() && L.minutes(x) <= new Date().getHours() * 60 + new Date().getMinutes();
   // Le soir, tous les créneaux du jour sont passés : on ouvre sur le prochain jour, pour ne pas montrer une grille entièrement barrée.
   if (L.SERVICES.midi.concat(L.SERVICES.soir).every((x) => passe(ui.jour, x)) && jours()[1]) ui.jour = jours()[1];
-  const nomJour = (j) => j === O.jour() ? "Aujourd’hui" : j === O.jour(1) ? "Demain" : new Date(j + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" }).replace(".", "");
+  const date = (j) => new Date(j + "T12:00:00");
+  const court = (j) => date(j).toLocaleDateString("fr-FR", { weekday: "short" }).replace(".", "");
+  const enClair = (j) => (j === O.jour() ? "Aujourd’hui, " : j === O.jour(1) ? "Demain, " : "") + O.dateLongue(j);
   const creneaux = (l) => l.map((x) => {
     const fini = passe(ui.jour, x), libre = !fini && L.tableLibre(m.d, ui.jour, x, ui.pers);
     return '<button type="button" class="creneau ' + (libre ? "" : "complet") + '" data-h="' + x + '" data-complet="' + (libre ? "" : "1") + '" aria-pressed="' + (ui.heure === x) + '"' + (fini ? " disabled" : "") + ">" + x + (libre || fini ? "" : "<small>Complet</small>") + "</button>";
   }).join("");
   const lue = (q) => (q > 1 ? q + " personnes" : "1 personne");
+  const coche = (neuf) => '<svg class="coche' + (neuf ? " neuf" : "") + '" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" pathLength="1"/><path d="M14.5 24.5l6.5 6.5 13-14" pathLength="1"/></svg>';
   const rendre = () => {
     const z = $("#resa");
     if (ui.fait) {
+      const neuf = !ui.vu; ui.vu = true;
       const r = m.d.resas.find((x) => x.id === ui.fait.id), at = m.d.attente.find((x) => x.id === ui.fait.id);
       if (at) {
         const dispo = at.etat === "proposee";
@@ -70,12 +124,13 @@
         return;
       }
       if (r && r.etat === "annulee") { z.innerHTML = '<div class="ok-resa"><b>Votre réservation est annulée.</b><p>Merci de nous avoir prévenus : votre table est aussitôt proposée à d’autres clients.</p><button type="button" class="lien-r" data-action="encore">Faire une autre réservation</button></div>'; return; }
-      z.innerHTML = '<div class="ok-resa"><b>Votre table est réservée, ' + esc(ui.fait.nom) + ".</b><p>" + O.dateLongue(ui.fait.jour) + " à " + ui.fait.heure + ", " + lue(ui.fait.pers) + '.</p><div class="sms"><small>Message reçu la veille</small><p>' + esc(O.marque("Maison Lucie")) + " : nous vous attendons demain à " + ui.fait.heure + ". Merci de confirmer votre venue.</p><div>" + (r && r.conf ? '<span class="confirme">Venue confirmée</span>' : '<button type="button" data-action="confirmer">Je confirme</button>') + '<button type="button" class="second" data-action="desister">Je ne viens plus</button></div></div><button type="button" class="lien-r" data-action="encore">Faire une autre réservation</button></div>';
+      z.innerHTML = '<div class="ok-resa">' + coche(neuf) + "<b>Votre table est réservée, " + esc(ui.fait.nom) + ".</b><p>" + O.dateLongue(ui.fait.jour) + " à " + ui.fait.heure + ", " + lue(ui.fait.pers) + '.</p><div class="sms"><small>Message reçu la veille</small><p>' + esc(O.marque("Maison Lucie")) + " : nous vous attendons demain à " + ui.fait.heure + ". Merci de confirmer votre venue.</p><div>" + (r && r.conf ? '<span class="confirme">Venue confirmée</span>' : '<button type="button" data-action="confirmer">Je confirme</button>') + '<button type="button" class="second" data-action="desister">Je ne viens plus</button></div></div><button type="button" class="lien-r" data-action="encore">Faire une autre réservation</button></div>';
       return;
     }
     const nom = $("#r-nom", z), tel = $("#r-tel", z), note = $("#r-note", z), vNom = nom ? nom.value : "", vTel = tel ? tel.value : "", vNote = note ? note.value : "";
-    z.innerHTML = '<div class="ligne-r"><span class="etiq">Convives</span><div class="pas-r"><button type="button" data-pers="-1" aria-label="Une personne de moins">−</button><b id="r-pers">' + lue(ui.pers) + '</b><button type="button" data-pers="1" aria-label="Une personne de plus">+</button></div></div><div class="jours-r" role="group" aria-label="Date">' + jours().map((j) => '<button type="button" data-j="' + j + '" aria-pressed="' + (j === ui.jour) + '">' + nomJour(j) + "</button>").join("") + '</div><p class="etiq">Déjeuner</p><div class="creneaux">' + creneaux(L.SERVICES.midi) + '</div><p class="etiq">Dîner</p><div class="creneaux">' + creneaux(L.SERVICES.soir) + "</div>" +
-      (ui.heure ? (ui.attente ? '<p class="info-c">Ce service est complet. Inscrivez-vous sur la liste d’attente : si une table se libère, elle vous est proposée.</p>' : "") + '<div class="ligne" style="margin-top:12px"><label>Nom<input id="r-nom" autocomplete="name" value="' + esc(vNom) + '"></label><label>Téléphone<input id="r-tel" type="tel" autocomplete="tel" value="' + esc(vTel) + '"></label></div>' + (ui.attente ? "" : '<label class="note-r">Allergie, anniversaire, précision<input id="r-note" value="' + esc(vNote) + '"></label>') + '<button type="button" class="valider" id="r-valider">' + (ui.attente ? "Rejoindre la liste d’attente de " : "Réserver la table de ") + ui.heure + "</button>" : "");
+    z.innerHTML = '<div class="ligne-r"><span class="etiq">Convives</span><div class="pas-r"><button type="button" data-pers="-1" aria-label="Une personne de moins">−</button><b id="r-pers">' + lue(ui.pers) + '</b><button type="button" data-pers="1" aria-label="Une personne de plus">+</button></div></div>' +
+      '<p class="date-r">' + enClair(ui.jour) + '</p><div class="jours-r" role="group" aria-label="Date">' + jours().map((j) => '<button type="button" data-j="' + j + '" aria-pressed="' + (j === ui.jour) + '" aria-label="' + O.dateLongue(j) + '"><small>' + court(j) + "</small><b>" + date(j).getDate() + "</b></button>").join("") + '</div><p class="etiq">Déjeuner</p><div class="creneaux">' + creneaux(L.SERVICES.midi) + '</div><p class="etiq">Dîner</p><div class="creneaux">' + creneaux(L.SERVICES.soir) + "</div>" +
+      (ui.heure ? '<div class="suite-r">' + (ui.attente ? '<p class="info-c">Ce service est complet. Inscrivez-vous sur la liste d’attente : si une table se libère, elle vous est proposée.</p>' : "") + '<div class="ligne"><label>Nom<input id="r-nom" autocomplete="name" value="' + esc(vNom) + '"></label><label>Téléphone<input id="r-tel" type="tel" autocomplete="tel" value="' + esc(vTel) + '"></label></div>' + (ui.attente ? "" : '<label class="note-r">Allergie, anniversaire, précision<input id="r-note" value="' + esc(vNote) + '"></label>') + '<button type="button" class="valider" id="r-valider">' + (ui.attente ? "Rejoindre la liste d’attente de " : "Réserver la table de ") + ui.heure + "</button></div>" : "");
   };
   document.addEventListener("click", (e) => {
     const c = e.target.closest(".creneau:not([disabled])");
@@ -84,7 +139,7 @@
     if (b.dataset.pers) { ui.pers = Math.max(1, Math.min(8, ui.pers + Number(b.dataset.pers))); ui.heure = null; rendre(); return; }
     if (b.dataset.j) { ui.jour = b.dataset.j; ui.heure = null; rendre(); return; }
     const a = b.dataset.action;
-    if (a === "encore") { ui.fait = null; ui.heure = null; rendre(); return; }
+    if (a === "encore") { ui.fait = null; ui.heure = null; ui.vu = false; rendre(); return; }
     if (a === "confirmer") { m.maj((d) => { d.resas.find((r) => r.id === ui.fait.id).conf = true; }); return; }
     if (a === "desister") { m.maj((d) => { d.resas.find((r) => r.id === ui.fait.id).etat = "annulee"; }); return; }
     if (a === "accepter") { const id = ui.fait.id; m.maj((d) => { L.accepter(d, id); }); const r = m.d.resas.find((x) => x.id === id); ui.fait = r; rendre(); return; }
@@ -109,10 +164,61 @@
     m.maj((d) => { d.privatisations.push({ id: O.id(), ...v }); });
     e.target.reset(); $("#merci").hidden = false;
   });
+
+  /* Chiffres tirés des données : couverts de la salle, semaine d'ouverture. */
+  const places = L.TABLES.reduce((t, x) => t + x.cap, 0);
+  $("#places").textContent = places; $("#places-p").textContent = places; $('#priv [name="pers"]').max = places;
+  const lundi = O.lundi(), plage = (l) => l[0] + " – " + (Number(l[l.length - 1].slice(0, 2)) + 2) + ":00";
+  $("#semaine").innerHTML = [0, 1, 2, 3, 4, 5, 6].map((i) => {
+    const j = O.jour(i, lundi), nomJ = date(j).toLocaleDateString("fr-FR", { weekday: "long" }).replace(/^./, (c) => c.toUpperCase());
+    return '<li class="' + (j === O.jour() ? "auj" : "") + '"><b>' + nomJ + "</b>" + (L.ouvert(j) ? "<span>12:00 – 14:00</span><span>19:00 – 23:00</span>" : "<span>Fermé</span>") + "</li>";
+  }).join("");
+
   m.surChange(rendre);
   window.bandeauDemo(m, "../", "réservez une table, puis ouvrez <a href=\"carnet.html\" target=\"_blank\" rel=\"noopener\">le plan de salle du restaurant</a> : votre table y apparaît.");
   rendre();
   window.demoLucie = { m, ui, rendre };
+
+  /* ---------- Mise en scène : titre, défilement, carte en images ---------- */
+  const H = document.documentElement, reduit = matchMedia("(prefers-reduced-motion: reduce)").matches, fige = reduit || H.classList.contains("pose");
+  const borne = (x) => Math.max(0, Math.min(1, x));
+  const bd = $(".bandeau-demo"); if (bd) H.style.setProperty("--bandeau", bd.offsetHeight + "px");
+  /* Titre : un masque par mot ; un nom long (démo à votre nom) est réduit pour tenir. */
+  const t1 = $("#nom"), mots = t1.textContent.trim().split(/\s+/);
+  t1.setAttribute("aria-label", t1.textContent.trim());
+  t1.style.setProperty("--ech", Math.max(.42, Math.min(1, 12 / t1.textContent.trim().length, 7 / Math.max(...mots.map((x) => x.length)))).toFixed(3));
+  t1.innerHTML = mots.map((x, i) => '<span class="mot" aria-hidden="true" style="--i:' + i + '"><span>' + esc(x) + "</span></span>").join(" ");
+  /* Phrase d'ouverture : les mots s'éclairent au fil de la lecture. */
+  const et = $("#esprit-t"), em = et.textContent.trim().split(/\s+/);
+  et.style.setProperty("--n", em.length);
+  et.innerHTML = em.map((x, i) => '<span style="--i:' + i + '">' + esc(x) + "</span>").join(" ");
+  if (fige) et.style.setProperty("--p", 1);
+  /* Carte : la photo suit le plat survolé, sinon celui qui passe au milieu de l'écran. */
+  const plats = [...document.querySelectorAll(".plat")], vues = [...document.querySelectorAll(".assiette img")];
+  let survol = false, actif = null;
+  const montrer = (p) => { if (p === actif) return; actif = p; plats.forEach((x) => x.classList.toggle("actif", x === p)); vues.forEach((i) => i.classList.toggle("actif", i.dataset.p === p.dataset.photo)); };
+  plats.forEach((p) => p.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") { survol = true; montrer(p); } }));
+  $(".carte-l").addEventListener("pointerleave", () => { survol = false; });
+  const acc = $(".accueil"), bande = $("#bande"), bi = bande.firstElementChild, paras = [...document.querySelectorAll("[data-para]")];
+  const maj = () => {
+    const vh = innerHeight, y = scrollY;
+    H.classList.toggle("defile", y > 24);
+    if (!survol) {
+      const cible = vh * (innerWidth <= 960 ? .72 : .5); let pr = null, dm = 1e9;
+      plats.forEach((p) => { const q = p.getBoundingClientRect(), d = Math.abs(q.top + q.height / 2 - cible); if (d < dm) { dm = d; pr = p; } });
+      if (pr) montrer(pr);
+    }
+    if (fige) return;
+    acc.style.setProperty("--d", borne(y / acc.offsetHeight).toFixed(3));
+    const r = et.getBoundingClientRect(); et.style.setProperty("--p", borne((vh * .9 - r.top) / (r.height + vh * .4)).toFixed(3));
+    const b = bande.getBoundingClientRect(), max = bi.scrollWidth - bande.clientWidth;
+    if (max > 0) bi.style.translate = (-max * borne((vh - b.top) / (vh + b.height) * 1.25 - .12)).toFixed(1) + "px 0";
+    paras.forEach((el) => { const q = el.getBoundingClientRect(); el.style.translate = "0 " + (((q.top + q.height / 2) / vh - .5) * Number(el.dataset.para)).toFixed(1) + "px"; });
+  };
+  let att = false;
+  addEventListener("scroll", () => { if (!att) { att = true; requestAnimationFrame(() => { att = false; maj(); }); } }, { passive: true });
+  addEventListener("resize", maj);
+  maj();
 })();
 </script>
 </body>

@@ -4,21 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#2a0810">
 <title>Plan de salle · Maison Lucie, démo Onklaud</title>
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../commun/base.css?v=1115">
-<link rel="stylesheet" href="theme.css?v=1115">
-<link rel="stylesheet" href="carnet.css?v=1115">
+<link rel="stylesheet" href="carnet.css?v=1116">
 </head>
 <body class="carnet-page">
-<header class="en-tete"><h1 data-marque>Maison Lucie</h1><div class="jours" id="jours"></div><div class="service" id="service"></div></header>
-<section class="kpi" id="kpi" aria-label="Résumé du service"></section>
+<div class="haut">
+  <header class="en-tete"><h1 data-marque>Maison Lucie</h1><span class="role">Carnet de salle</span><div class="jours" id="jours"></div><div class="service" id="service"></div></header>
+  <section class="kpi" id="kpi" aria-label="Résumé du service"></section>
+</div>
 <div id="alerte-table"></div>
 <div id="demandes"></div>
 <main class="salle">
-  <section class="plan-z"><div class="barre-p"><div class="temps" id="temps" role="group" aria-label="Voir la salle à une heure précise"></div><ul class="legende"><li class="l-conf">Confirmée</li><li class="l-risque">À confirmer</li><li class="l-la">Installée</li></ul></div><div class="plan" id="plan"></div></section>
+  <section class="plan-z"><div class="barre-p"><div class="temps" id="temps" role="group" aria-label="Voir la salle à une heure précise"></div><ul class="legende"><li class="l-conf">Confirmée</li><li class="l-risque">À confirmer</li><li class="l-la">Installée</li></ul></div><div class="plan-d"><div class="plan" id="plan"></div></div></section>
   <aside class="liste-z"><div id="attente"></div><h2>Réservations</h2><div id="carnet"></div>
-    <form class="ajout" id="ajout" aria-label="Ajouter une réservation prise par téléphone"><input name="nom" required placeholder="Nom du client" aria-label="Nom"><input name="pers" type="number" min="1" max="8" value="2" aria-label="Couverts"><select name="heure" id="ajout-h" aria-label="Heure"></select><input name="tel" type="tel" placeholder="Téléphone" aria-label="Téléphone"><button>Ajouter</button></form>
+    <form class="ajout" id="ajout" aria-label="Ajouter une réservation prise par téléphone"><p>Réservation prise par téléphone</p><input name="nom" required placeholder="Nom du client" aria-label="Nom"><input name="pers" type="number" min="1" max="8" value="2" aria-label="Couverts"><select name="heure" id="ajout-h" aria-label="Heure"></select><input name="tel" type="tel" placeholder="Téléphone" aria-label="Téléphone"><button>Ajouter</button></form>
   </aside>
 </main>
 <script src="../commun/magasin.js?v=1115"></script>
@@ -34,30 +36,39 @@
   /* Les chaises autour de la table : celles qui sont occupées sont pleines. */
   const chaises = (t, pris) => Array.from({ length: t.cap }, (_, i) => {
     let x, y;
-    if (t.rond) { const a = (i / t.cap) * 6.283 - 1.57; x = 50 + Math.cos(a) * 62; y = 50 + Math.sin(a) * 62; }
-    else { const parCote = Math.ceil(t.cap / 2), rang = Math.floor(i / 2); x = (rang + .5) / parCote * 100; y = i % 2 ? 118 : -18; if (t.cap > 6) { const c = t.cap / 2; x = i % 2 ? 122 : -22; y = (rang + .5) / c * 100; } }
+    if (t.rond) { const a = (i / t.cap) * 6.283 - 1.57; x = 50 + Math.cos(a) * 64; y = 50 + Math.sin(a) * 64; }
+    else { const parCote = Math.ceil(t.cap / 2), rang = Math.floor(i / 2); x = (rang + .5) / parCote * 100; y = i % 2 ? 119 : -19; if (t.cap > 6) { const c = t.cap / 2; x = i % 2 ? 121 : -21; y = (rang + .5) / c * 100; } }
     return '<u class="' + (i < pris ? "pris" : "") + '" style="left:' + x.toFixed(1) + "%;top:" + y.toFixed(1) + '%"></u>';
   }).join("");
   const pl = (n, s) => n + " " + s + (n > 1 ? "s" : "");
+  /* Le décor du plan : fenêtres sur le quai, entrée, comptoir et ses tabourets, cuisine ouverte. */
+  const DECOR = '<i class="fen" style="left:6%;width:17%"></i><i class="fen" style="left:27%;width:17%"></i><i class="fen" style="left:48%;width:17%"></i><span class="rep rep-q">Fenêtres sur la Saône</span>' +
+    '<i class="porte"></i><span class="rep rep-e">Entrée</span>' +
+    '<i class="comptoir"></i>' + [16, 28, 40, 52, 64].map((y) => '<i class="tabouret" style="top:' + y + '%"></i>').join("") + '<span class="rep rep-c">Comptoir</span>' +
+    '<i class="cuisine"></i><span class="rep rep-k">Cuisine</span>';
 
   const statut = (r) => r.etat === "arrivee" ? "la" : r.conf ? "conf" : "risque";
   const rendre = () => {
-    const js = L.joursOuverts(4), heures = L.SERVICES[ui.service], d = m.d, b = L.bilan(d, ui.jour, ui.service);
+    const js = L.joursOuverts(4), heures = L.SERVICES[ui.service], d = m.d, b = L.bilan(d, ui.jour, ui.service), soir = ui.service === "soir";
     const nomJ = (j) => (j === O.jour() ? "Aujourd’hui" : j === O.jour(1) ? "Demain" : O.dateCourte(j));
     $("#jours").innerHTML = js.map((j) => '<button data-jour="' + j + '" aria-pressed="' + (j === ui.jour) + '">' + nomJ(j) + "</button>").join("");
     $("#service").innerHTML = [["midi", "Midi"], ["soir", "Soir"]].map(([k, t]) => '<button data-service="' + k + '" aria-pressed="' + (ui.service === k) + '">' + t + "</button>").join("");
     const l = L.actives(d, ui.jour).filter((r) => L.service(r.heure) === ui.service).sort((x, y) => x.heure.localeCompare(y.heure));
     const attente = d.attente.filter((a) => a.jour === ui.jour && L.service(a.heure) === ui.service);
 
-    $("#kpi").innerHTML = '<dl><div><dt>Couverts</dt><dd id="couverts">' + b.couverts + "<small> / " + b.places + '</small></dd></div><div><dt>À confirmer</dt><dd>' + pl(b.aConfirmer, "table") + '</dd></div><div class="' + (b.risque ? "risque-k" : "") + '"><dt>Chiffre à risque</dt><dd>' + O.eur(b.risque, 0) + "</dd></div><div><dt>Récupérés</dt><dd>" + pl(d.sauves, "couvert") + "</dd></div></dl>" +
-      (b.aConfirmer ? '<button class="action-k" data-action="demander"' + (ui.attend ? " disabled" : "") + ">" + (ui.attend ? "Messages envoyés" : "Demander confirmation") + "</button>" : '<span class="ok-k">Salle confirmée</span>');
+    /* La phrase d'ouverture dit ce qui est en jeu pour ce service. Tous les chiffres viennent des réservations. */
+    const quand = ui.jour === O.jour() ? (soir ? "Ce soir" : "Ce midi") : ui.jour === O.jour(1) ? (soir ? "Demain soir" : "Demain midi") : O.dateLongue(ui.jour).replace(/^./, (c) => c.toUpperCase()) + (soir ? ", au dîner" : ", au déjeuner");
+    const phrase = !l.length ? quand + ", aucune table n’est encore réservée." : b.aConfirmer ? quand + ", " + O.eur(b.risque, 0) + " dépendent " + (b.aConfirmer > 1 ? "de " + b.aConfirmer + " tables" : "d’une table") + " sans confirmation." : quand + ", toute la salle est confirmée.";
+    $("#kpi").innerHTML = '<div class="enjeu"><p class="phrase">' + phrase + "</p>" +
+      (b.aConfirmer ? '<button class="action-k" data-action="demander"' + (ui.attend ? " disabled" : "") + ">" + (ui.attend ? "Messages envoyés" : "Demander confirmation") + "</button>" : l.length ? '<span class="ok-k"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.6 3.6 7.4-8"/></svg>Salle confirmée</span>' : "") + "</div>" +
+      '<dl><div><dt>Couverts</dt><dd id="couverts">' + b.couverts + "<small> / " + b.places + '</small></dd><i class="jauge"><i style="width:' + Math.min(100, Math.round(b.couverts / b.places * 100)) + '%"></i></i></div><div><dt>À confirmer</dt><dd>' + pl(b.aConfirmer, "table") + '</dd></div><div class="' + (b.risque ? "risque-k" : "") + '"><dt>Chiffre à risque</dt><dd>' + O.eur(b.risque, 0) + "</dd></div><div><dt>Récupérés par la liste d’attente</dt><dd>" + pl(d.sauves, "couvert") + "</dd></div></dl>";
 
     const libre = attente.find((a) => a.etat === "attend" && L.tableLibre(d, a.jour, a.heure, a.pers));
     $("#alerte-table").innerHTML = libre ? '<div class="libere"><p><b>Une table s’est libérée à ' + libre.heure + ".</b> " + esc(libre.nom) + ", " + pl(libre.pers, "personne") + ', attend sur la liste.</p><button data-proposer="' + libre.id + '">Proposer la table</button></div>' : "";
     $("#demandes").innerHTML = d.privatisations.map((p) => '<p class="priv-l"><b>Demande de privatisation</b> : ' + esc(p.nom) + ", " + esc(p.pers) + " personnes, le " + O.dateCourte(p.jour) + ", " + esc(p.tel) + ", soit environ " + O.eur(Number(p.pers) * L.TICKET, 0) + "</p>").join("");
 
     const presente = (r) => !ui.heure || (L.minutes(r.heure) <= L.minutes(ui.heure) && L.minutes(ui.heure) - L.minutes(r.heure) < L.DUREE);
-    $("#plan").innerHTML = '<span class="zone-t">Terrasse</span>' + L.TABLES.map((t) => {
+    $("#plan").innerHTML = DECOR + L.TABLES.map((t) => {
       const r = l.filter((x) => x.table === t.n && presente(x)), u = r[0], st = u ? statut(u) : "libre";
       return '<button class="table ' + st + (t.rond ? " rond" : "") + " cap" + t.cap + (u && !ui.vus.has(u.id) ? " neuve" : "") + '" style="left:' + t.x + "%;top:" + t.y + '%" data-table="' + t.n + '" aria-label="Table ' + t.n + (u ? ", " + esc(u.nom) + " à " + u.heure : ", libre") + '">' + chaises(t, u ? u.pers : 0) + (u ? "<b>" + esc(u.nom) + "</b><small>" + u.heure + "</small>" : "<small>Table " + t.n + "</small>") + "</button>";
     }).join("");
@@ -65,9 +76,10 @@
 
     $("#attente").innerHTML = attente.length ? '<h2>Liste d’attente</h2><ul class="attente">' + attente.map((a) => "<li><span><b>" + esc(a.nom) + "</b><small>" + a.heure + ", " + pl(a.pers, "personne") + "</small></span><em>" + (a.etat === "proposee" ? "Table proposée, en attente de réponse" : "Aucune table libre") + "</em></li>").join("") + "</ul>" : "";
 
+    let avant = "";
     $("#carnet").innerHTML = l.map((r) => {
-      const n = !ui.vus.has(r.id);
-      return '<div class="resa-l ' + statut(r) + (n ? " neuve" : "") + '" data-r="' + r.table + '"><b class="h">' + r.heure + '</b><span class="qui"><b>' + esc(r.nom) + "</b> <small>" + pl(r.pers, "personne") + ", table " + r.table + (r.source !== "téléphone" ? ", " + (r.source === "site" ? "en ligne" : r.source) : "") + (r.visites > 1 ? ", " + r.visites + "<sup>e</sup> visite" : "") + "</small>" + (r.note ? '<small class="note">' + esc(r.note) + "</small>" : "") + "</span>" + (r.etat === "arrivee" ? '<span class="fin">Installée</span>' : '<span class="act"><button data-arrivee="' + r.id + '">Installer</button><button data-annuler="' + r.id + '" aria-label="Annuler la réservation de ' + esc(r.nom) + '">Annuler</button></span>') + "</div>";
+      const n = !ui.vus.has(r.id), tete = r.heure !== avant; avant = r.heure;
+      return '<div class="resa-l ' + statut(r) + (n ? " neuve" : "") + (tete ? " tete" : "") + '" data-r="' + r.table + '"><b class="h">' + (tete ? r.heure : "") + '</b><span class="qui"><b>' + esc(r.nom) + "</b> <small>" + pl(r.pers, "personne") + ", table " + r.table + (r.source !== "téléphone" ? ", " + (r.source === "site" ? "en ligne" : r.source) : "") + (r.visites > 1 ? ", " + r.visites + "<sup>e</sup> visite" : "") + "</small>" + (r.note ? '<small class="note">' + esc(r.note) + "</small>" : "") + "</span>" + (r.etat === "arrivee" ? '<span class="fin">Installée</span>' : '<span class="act"><button data-arrivee="' + r.id + '">Installer</button><button data-annuler="' + r.id + '" aria-label="Annuler la réservation de ' + esc(r.nom) + '">Annuler</button></span>') + "</div>";
     }).join("") || '<p class="vide">Aucune réservation pour ce service.</p>';
 
     const he = $("#ajout-h"), garde = he.value;
@@ -94,6 +106,12 @@
       /* Réponses simulées : dans la réalité, elles arrivent par SMS. */
       setTimeout(() => { ui.attend = false; m.maj((d) => { L.actives(d, ui.jour).filter((r) => !r.conf && L.service(r.heure) === ui.service).forEach((r) => { if (r.repond === "non") r.etat = "annulee"; else r.conf = true; }); }); }, 1800);
     }
+  });
+  /* Survol d'une réservation : sa table s'éclaire sur le plan. */
+  document.addEventListener("pointerover", (e) => {
+    const li = e.target.closest(".resa-l");
+    document.querySelectorAll(".table.vise").forEach((t) => t.classList.remove("vise"));
+    if (li) { const t = document.querySelector('.table[data-table="' + li.dataset.r + '"]'); if (t) t.classList.add("vise"); }
   });
   $("#ajout").addEventListener("submit", (e) => {
     e.preventDefault();

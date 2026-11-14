@@ -15,7 +15,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../commun/base.css?v=1115">
-<link rel="stylesheet" href="theme.css?v=1115">
+<link rel="stylesheet" href="appli.css?v=1116">
+<script>(function(){var h=document.documentElement,p=new URLSearchParams(location.search);if(p.has("cadre")||p.has("film"))h.classList.add("pose");})();</script>
 </head>
 <body class="client">
 <div class="appli">
@@ -25,7 +26,7 @@
 </div>
 <div class="alerte-ios" id="alerte" role="status"></div>
 <script src="../commun/magasin.js?v=1115"></script>
-<script src="donnees.js?v=1115"></script>
+<script src="donnees.js?v=1116"></script>
 <script>
 (function () {
   "use strict";
@@ -37,7 +38,7 @@
   const CADEAU = '<svg viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M12 9v11M4 13h16M12 9c-2-5-6-4-6-2s3 2 6 2zM12 9c2-5 6-4 6-2s-3 2-6 2z"/></svg>';
   const ONGLETS = [["fidelite", "Accueil", '<path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/>'], ["rdv", "Réserver", '<rect x="4" y="5" width="16" height="15" rx="2.500"/><path d="M8 3v4M16 3v4M4 10h16"/>']];
   const joursDispo = () => { const l = []; for (let i = 1; l.length < 5; i += 1) { const j = O.jour(i); if (new Date(j + "T12:00:00").getDay() !== 0) l.push(j); } return l; };
-  const ui = { vue: "fidelite", presta: null, heure: null, jour: joursDispo()[0], tamponsVus: null };
+  const ui = { vue: "fidelite", presta: null, heure: null, jour: joursDispo()[0], tamponsVus: null, entree: !document.documentElement.classList.contains("pose") };
   const moi = () => m.d.clientes.find((c) => c.id === MOI);
   const alerte = (t, x) => { const a = $("#alerte"); a.innerHTML = "<i>" + esc(O.initiales("BR")) + "</i><div><b>" + esc(t) + "</b>" + esc(x) + "</div>"; a.classList.add("visible"); clearTimeout(alerte.t); alerte.t = setTimeout(() => a.classList.remove("visible"), 4200); };
   const quand = (j) => (j === O.jour() ? "Aujourd’hui" : j === O.jour(1) ? "Demain" : O.dateLongue(j).replace(/^./, (x) => x.toUpperCase()));
@@ -47,22 +48,25 @@
     const rdv = m.d.rdv.filter((r) => r.cliente === MOI && r.statut === "prevu").sort((a, b) => a.jour.localeCompare(b.jour));
     const offre = m.d.offres.find((o) => o.cliente === MOI);
     const p = B.prestation(c.soin), semaines = Math.round(B.age(c.dernier) / 7);
-    const cases = Array.from({ length: B.OBJECTIF }, (_, i) => '<i class="tampon ' + (i < c.tampons ? "plein " : "") + (i === c.tampons - 1 && ui.neuf ? "neuf" : "") + '" style="--a:' + (i + 1) * 36 + 'deg">' + (i < c.tampons ? COCHE : "") + "</i>").join("") + '<i class="tampon cadeau ' + (gagne ? "gagne" : "") + '" style="--a:0deg">' + CADEAU + "</i>";
-    return '<header class="bonjour"><img src="' + p.img + '" alt=""><div><p>' + esc(O.marque("Institut Belle Rive")) + "</p><h1>Bonjour<br>" + esc(c.nom.split(" ")[0]) + "</h1></div></header>" +
+    const ARCS = ["M133.7 18.7A88 88 0 0 1 166.9 42.8", "M175.0 54.0A88 88 0 0 1 187.7 93.1", "M187.7 106.9A88 88 0 0 1 175.0 146.0", "M166.9 157.2A88 88 0 0 1 133.7 181.3", "M120.5 185.6A88 88 0 0 1 79.5 185.6", "M66.3 181.3A88 88 0 0 1 33.1 157.2", "M25.0 146.0A88 88 0 0 1 12.3 106.9", "M12.3 93.1A88 88 0 0 1 25.0 54.0", "M33.1 42.8A88 88 0 0 1 66.3 18.7"];
+    const cases = '<svg viewBox="0 0 200 200" aria-hidden="true">' + ARCS.map((a, i) => '<path class="tampon ' + (i < c.tampons ? "plein " : "") + (i === c.tampons - 1 && ui.neuf ? "neuf" : "") + '" style="--i:' + i + '" pathLength="1" d="' + a + '"/>').join("") + '<g class="tampon cadeau ' + (gagne ? "gagne" : "") + '"><circle cx="100" cy="12" r="17"/><rect x="92.500" y="9" width="15" height="10.500" rx="1.500"/><path d="M100 9v10.500M91 12.500h18M100 9c-1.800-4.500-5.500-3.600-5.500-1.800S97.300 9 100 9zM100 9c1.800-4.500 5.500-3.600 5.500-1.800S102.700 9 100 9z"/></g></svg>';
+    const entre = ui.entree; ui.entree = false;
+    return '<header class="bonjour"><img src="photos/accueil.webp" alt=""><div><p>' + esc(O.marque("Institut Belle Rive")) + "</p><h1>Bonjour<br>" + esc(c.nom.split(" ")[0]) + "</h1></div></header>" +
       (offre ? '<section class="offre"><p>Une place vient de se libérer</p><b>' + quand(offre.jour) + " à " + offre.heure + "</b><small>" + esc(B.prestation(offre.prestation).nom) + " avec " + offre.pratic + '</small><div class="choix"><button data-accepter="' + offre.id + '">Accepter</button><button class="non" data-refuser="' + offre.id + '">Non merci</button></div></section>' : "") +
-      '<section class="anneau"><div class="carte-fid">' + cases + '<div class="centre"><b>' + c.tampons + "<small> / " + B.OBJECTIF + "</small></b><p>" + (gagne ? "Soin offert" : (reste === 1 ? "Encore une visite" : "Encore " + reste + " visites")) + "</p></div></div></section>" +
+      '<section class="anneau"><div class="carte-fid' + (entre ? " entre" : "") + '" id="carte"><div class="cf-tete"><span>Carte de fidélité</span><b>' + esc(c.nom) + '</b></div><div class="cf-rond">' + cases + '<div class="centre"><b>' + c.tampons + "<small> / " + B.OBJECTIF + "</small></b><p>" + (gagne ? "Soin offert" : (reste === 1 ? "Encore une visite" : "Encore " + reste + " visites")) + '</p></div></div><p class="cf-pied">Après ' + B.OBJECTIF + " visites, un soin vous est offert.</p></div></section>" +
       (rdv.length ? '<section class="prochain"><h2>Prochain rendez-vous</h2>' + rdv.map((r) => { const x = B.prestation(r.prestation); return '<div class="carte-r"><img src="' + x.img + '" alt=""><div class="texte"><b>' + quand(r.jour) + " à " + r.heure + "</b><small>" + esc(x.nom) + " avec " + r.pratic + '</small></div><button class="annuler" data-annuler="' + r.id + '">Annuler</button></div>'; }).join("") + "</section>" :
-      '<section class="conseil"><div><small>Conseillé pour vous</small><h2>' + esc(p.nom) + "</h2><p>Dernier soin il y a " + semaines + " semaines</p></div><button data-vue=\"rdv\" data-pre=\"" + c.soin + '">Réserver</button></section>');
+      '<section class="conseil" style="background-image:url(' + p.img + ')"><div><small>Conseillé pour vous</small><h2>' + esc(p.nom) + "</h2><p>Dernier soin il y a " + semaines + " semaines</p></div><button data-vue=\"rdv\" data-pre=\"" + c.soin + '">Réserver</button></section>');
   };
   const rdv = () => {
     const pris = (h) => B.PRATICIENNES.every((p) => B.occupe(m.d, ui.jour, h, p));
-    const courte = (j) => new Date(j + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" }).replace(".", "");
+    const courte = (j) => { const x = new Date(j + "T12:00:00"); return "<small>" + x.toLocaleDateString("fr-FR", { weekday: "short" }).replace(".", "") + "</small><b>" + x.getDate() + "</b>"; };
     return '<h1 class="grand-titre">Réserver</h1><p class="titre-z">Votre soin</p><div class="groupe">' + B.PRESTATIONS.map((p) => '<button class="cellule prestation" data-p="' + p.id + '" aria-pressed="' + (ui.presta === p.id) + '"><img src="' + p.img + '" alt=""><div class="texte"><b>' + esc(p.nom) + "</b><small>" + p.duree + '</small></div><span class="droite">' + O.eur(p.prix, 0) + "</span></button>").join("") + "</div>" +
       (ui.presta ? '<p class="titre-z">Votre date</p><div class="jours-c">' + joursDispo().map((j) => '<button class="jour-c" data-j="' + j + '" aria-pressed="' + (j === ui.jour) + '">' + courte(j) + "</button>").join("") + '</div><p class="titre-z">Votre heure</p><div class="creneaux">' + B.HEURES.map((h) => '<button class="creneau" data-h="' + h + '" aria-pressed="' + (ui.heure === h) + '"' + (pris(h) ? " disabled" : "") + ">" + h + "</button>").join("") + "</div>" : "") +
       (ui.heure ? '<button class="bouton-ios" id="r-valider">Confirmer à ' + ui.heure + "</button>" : "");
   };
   const rendre = () => {
     const h = $("#corps").scrollTop;
+    document.body.dataset.vue = ui.vue;
     $("#corps").innerHTML = { fidelite, rdv }[ui.vue]();
     $("#onglets").innerHTML = ONGLETS.map(([k, t, i]) => '<button data-vue="' + k + '" data-onglet="' + k + '" aria-current="' + (ui.vue === k) + '"><svg viewBox="0 0 24 24">' + i + "</svg>" + t + "</button>").join("");
     $("#corps").scrollTop = h;
@@ -98,6 +102,13 @@
   });
   window.bandeauDemo(m, "../", "ouvrez <a href=\"caisse.html\" target=\"_blank\" rel=\"noopener\">l’agenda de l’institut</a> et proposez un créneau libre à Camille : elle le reçoit ici.");
   rendre();
+  /* La carte de fidélité s'incline légèrement sous le doigt ou le pointeur. */
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.addEventListener("pointermove", (e) => {
+    const c = $("#carte"); if (!c) return;
+    const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+    if (Math.abs(x) > 1 || Math.abs(y) > 1) { c.style.removeProperty("--rx"); c.style.removeProperty("--ry"); return; }
+    c.style.setProperty("--ry", (x * 7).toFixed(2) + "deg"); c.style.setProperty("--rx", (-y * 7).toFixed(2) + "deg");
+  });
   window.demoBelleRive = { m, ui, rendre };
 })();
 </script>

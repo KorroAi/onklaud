@@ -7,13 +7,13 @@
 <title>Comptoir · Boulangerie des Halles, démo Onklaud</title>
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../commun/base.css?v=1115">
-<link rel="stylesheet" href="theme.css?v=1115">
+<link rel="stylesheet" href="fournil.css?v=1116">
 </head>
 <body>
 <header class="en-tete"><div class="id"><h1 data-marque>Boulangerie des Halles</h1><span id="date"></span></div><nav class="vues" id="vues" aria-label="Sections"></nav></header>
 <main id="vue"></main>
 <script src="../commun/magasin.js?v=1115"></script>
-<script src="donnees.js?v=1115"></script>
+<script src="donnees.js?v=1116"></script>
 <script>
 (function () {
   "use strict";
@@ -29,15 +29,20 @@
   const vues = new Set(m.d.commandes.map((c) => c.id));
 
   const pas = (attr, id, q, nom) => '<span class="pas"><button data-' + attr + '="' + id + ':-1" aria-label="Une pièce de moins, ' + esc(nom) + '">−</button><b>' + q + '</b><button data-' + attr + '="' + id + ':1" aria-label="Une pièce de plus, ' + esc(nom) + '">+</button></span>';
-  const vignette = (p) => '<span class="img"><img src="' + p.img + '" alt="" style="object-position:' + p.pos + ";transform:scale(" + p.zoom + ");transform-origin:" + p.pos + '"></span>';
+  const vignette = (p) => '<span class="img"><img src="' + p.img + '" alt="" style="object-position:' + p.pos + '"></span>';
   const vProduction = () => {
     const l = B.production(m.d), b = B.bilan(m.d), cmd = m.d.commandes.slice().sort(ORDRE);
     const kg = b.farine.toLocaleString("fr-FR", { maximumFractionDigits: 1 }).replace(/\u202f/g, "\u00a0");
     const carte = (c) => '<article class="commande ' + c.etat + " " + (vues.has(c.id) ? "" : "neuve") + '" data-id="' + c.id + '"><span class="h">' + c.heure + "</span><div><b>" + esc(c.nom) + " <i>N° " + c.num + "</i></b><small>" + esc(texte(c.lignes)) + "</small></div>" + (BOUTON[c.etat] ? '<button class="' + (c.etat === "prete" ? "calme" : "") + '" data-etat="' + c.id + '">' + BOUTON[c.etat] + "</button>" : '<span class="remise">Remise</span>') + "</article>";
-    return '<div class="titre-v chiffres"><div><h2>Production de demain</h2><p>' + b.pieces + " pièces, " + kg + ' kg de farine. ' + b.evite + ' pièces de moins que votre habitude.</p></div><div class="vendu"><small>Déjà vendu</small><b id="total">' + O.eur(b.vendu) + "</b></div></div>" +
-      '<div class="grille"><section class="bloc"><table id="production"><thead><tr><th>Produit</th><th class="n">Commandé</th><th class="n">Vitrine prévue</th><th class="n">Habitude</th><th class="n">À fabriquer</th><th class="n">Au four</th></tr></thead><tbody>' +
-      l.map((x) => '<tr><th scope="row"><span class="nom-p">' + vignette(x.p) + esc(x.p.nom) + '</span></th><td class="n">' + x.commande + '</td><td class="n">' + x.vitrine + '</td><td class="n gris">' + x.p.habitude + '</td><td class="n">' + pas("ajust", x.p.id, x.a_faire, x.p.nom) + '</td><td class="n gris">' + x.p.four + "</td></tr>").join("") +
-      '</tbody></table><div class="pied-t"><p>Vitrine prévue : moyenne des ventes des quatre derniers jours identiques.</p><button class="calme" onclick="window.print()">Imprimer la feuille</button></div></section>' +
+    /* La phrase du haut dit ce que le calcul change par rapport à l'habitude. */
+    const phrase = "Demain, " + b.pieces + " pièces à fabriquer" + (b.evite ? " : " + b.evite + " de moins que votre habitude." : ".");
+    const ligne = (x) => {
+      const max = Math.max(x.p.habitude, x.a_faire, 1), c = x.commande / max * 100, v = (x.a_faire - x.commande) / max * 100;
+      return '<li><span class="nom-p">' + vignette(x.p) + "<span><b>" + esc(x.p.nom) + "</b><small>Au four à " + x.p.four + '</small></span></span><div class="zone-b"><div class="barre" style="--c:' + c.toFixed(1) + "%;--v:" + v.toFixed(1) + '%"><i class="b-r"></i><i class="b-c"></i><i class="b-v"></i></div><p class="det-b"><span>' + x.commande + " en commande</span><span>" + x.vitrine + " prévues en boutique</span><span>Habitude : " + x.p.habitude + '</span></p></div><span class="ecart ' + (x.ecart < 0 ? "moins" : x.ecart > 0 ? "plus" : "nul") + '">' + (x.ecart < 0 ? "−" + (-x.ecart) : x.ecart > 0 ? "+" + x.ecart : "=") + "</span>" + pas("ajust", x.p.id, x.a_faire, x.p.nom) + "</li>";
+    };
+    return '<div class="titre-v chiffres"><div><h2>' + phrase + "</h2><p>" + kg + " kg de farine à prévoir." + (b.evite ? " Les " + b.evite + " pièces évitées représentent " + O.eur(b.eviteValeur) + " de marchandise." : "") + '</p></div><div class="vendu"><small>Déjà vendu en ligne</small><b id="total">' + O.eur(b.vendu) + "</b></div></div>" +
+      '<div class="grille"><section class="bloc"><ul class="barres" id="production">' + l.map(ligne).join("") +
+      '</ul><div class="pied-t"><p>Ventes prévues en boutique : moyenne des quatre derniers jours identiques. La zone hachurée est ce que l’habitude aurait fait fabriquer en plus.</p><button class="calme" onclick="window.print()">Imprimer la feuille</button></div></section>' +
       '<section class="bloc retraits"><h3>Retraits <span>' + cmd.length + '</span></h3><div id="commandes">' + cmd.map(carte).join("") + "</div></section></div>";
   };
   const vInvendus = () => {

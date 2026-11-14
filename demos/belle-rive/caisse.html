@@ -7,17 +7,17 @@
 <title>Agenda · Institut Belle Rive, démo Onklaud</title>
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../commun/base.css?v=1115">
-<link rel="stylesheet" href="theme.css?v=1115">
+<link rel="stylesheet" href="agenda.css?v=1116">
 </head>
 <body class="institut">
-<header class="en-tete"><h1 data-marque>Institut Belle Rive</h1><div class="jours-i" id="jours"></div></header>
-<section class="kpi-i" id="kpi" aria-label="Résumé de la journée"></section>
+<div class="haut-i"><header class="en-tete"><h1 data-marque>Institut Belle Rive</h1><div class="jours-i" id="jours"></div></header>
+<section class="kpi-i" id="kpi" aria-label="Résumé de la journée"></section></div>
 <main class="bureau">
   <section class="agenda-z" aria-label="Agenda de la journée"><div id="agenda"></div></section>
   <aside class="cote-i"><section id="remplir"></section><section class="fidele"><h2>Bientôt un soin offert</h2><div id="clientes"></div></section></aside>
 </main>
 <script src="../commun/magasin.js?v=1115"></script>
-<script src="donnees.js?v=1115"></script>
+<script src="donnees.js?v=1116"></script>
 <script>
 (function () {
   "use strict";
@@ -30,13 +30,16 @@
   const rendre = () => {
     const d = m.d, b = B.bilan(d, ui.jour), jours = [B.reference(), B.suivant()];
     $("#jours").innerHTML = jours.map((j) => '<button data-jour="' + j + '" aria-pressed="' + (j === ui.jour) + '">' + (j === O.jour() ? "Aujourd’hui" : O.dateCourte(j)) + "</button>").join("");
-    $("#kpi").innerHTML = '<dl><div><dt>Prévu aujourd’hui</dt><dd id="prevu">' + O.eur(b.prevu, 0) + "</dd></div><div><dt>Encaissé</dt><dd>" + O.eur(b.encaisse, 0) + "</dd></div><div><dt>Agenda rempli</dt><dd>" + b.taux + ' %</dd></div><div class="' + (b.vides ? "alerte" : "") + '"><dt>' + (b.vides > 1 ? b.vides + " places vides" : b.vides + " place vide") + "</dt><dd>" + O.eur(b.manque, 0) + '</dd></div><div><dt>Récupéré grâce aux offres</dt><dd id="remplis">' + O.eur(b.remplis, 0) + "</dd></div></dl>";
+    /* La phrase du haut dit ce que les places vides représentent. Tous les chiffres viennent de l'agenda. */
+    const ce = ui.jour === O.jour() ? "aujourd’hui" : "le " + O.dateCourte(ui.jour);
+    const phrase = b.vides ? (b.vides > 1 ? b.vides + " places vides " : "Une place vide ") + ce + " : " + O.eur(b.manque, 0) + " à récupérer en les proposant à vos clientes." : "Agenda complet " + ce + ".";
+    $("#kpi").innerHTML = '<p class="phrase-i">' + phrase + '</p><dl><div><dt>Prévu</dt><dd id="prevu">' + O.eur(b.prevu, 0) + "</dd></div><div><dt>Encaissé</dt><dd>" + O.eur(b.encaisse, 0) + "</dd></div><div><dt>Agenda rempli</dt><dd>" + b.taux + ' %</dd></div><div class="' + (b.vides ? "alerte" : "") + '"><dt>' + (b.vides > 1 ? b.vides + " places vides" : b.vides + " place vide") + "</dt><dd>" + O.eur(b.manque, 0) + '</dd></div><div><dt>Récupéré grâce aux offres</dt><dd id="remplis">' + O.eur(b.remplis, 0) + "</dd></div></dl>";
 
     $("#agenda").innerHTML = '<div class="grille-a"><span class="coin-a"></span>' + B.PRATICIENNES.map((p) => '<b class="colonne"><i>' + p[0] + "</i>" + p + "</b>").join("") + B.HEURES.map((h) => "<time>" + h + "</time>" + B.PRATICIENNES.map((p) => {
       const r = B.occupe(d, ui.jour, h, p);
       if (r) {
         const c = B.client(d, r.cliente), x = B.prestation(r.prestation);
-        return '<div class="rdv s-' + r.prestation + " " + (r.statut === "paye" ? "paye " : "") + (r.rempli ? "rempli" : "") + '"><span><b>' + esc(c.nom) + "</b><small>" + esc(x.nom) + ", " + O.eur(x.prix, 0) + "</small></span>" + (r.statut === "paye" ? "<em>Encaissé</em>" : '<button data-encaisser="' + r.id + '">Encaisser</button>') + "</div>";
+        return '<div class="rdv s-' + r.prestation + " " + (r.statut === "paye" ? "paye " : "") + (r.rempli ? "rempli" : "") + '"><img class="ph" src="' + x.img + '" alt=""><span><b>' + esc(c.nom) + "</b><small>" + esc(x.nom) + ", " + O.eur(x.prix, 0) + "</small></span>" + (r.statut === "paye" ? "<em>Encaissé</em>" : '<button data-encaisser="' + r.id + '">Encaisser</button>') + "</div>";
       }
       const offre = d.offres.find((o) => o.jour === ui.jour && o.heure === h && o.pratic === p);
       const sel = ui.creneau && ui.creneau.heure === h && ui.creneau.pratic === p;
