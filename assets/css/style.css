@@ -708,3 +708,16 @@ form.demande { background: var(--blanc); border-radius: 22px; padding: clamp(22p
 
 /* Plus de bouton d'appel (règle du 14/11/2026 : contact par e-mail uniquement) */
 @media (max-width: 760px) { .cta-mobile { right: 16px; } }
+
+/* Packs enrichis (14/11/2026) : économie affichée, selon que l'offre de lancement est active ou non */
+.eco { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: #eaf6ef; color: #1e3a2b; font-size: 14.5px; line-height: 1.45; }
+.eco b { color: #14532d; font-weight: 750; white-space: nowrap; }
+.pack.conseil .eco { background: rgba(127, 224, 168, .14); color: #d6f5e3; }
+.pack.conseil .eco b { color: #7fe0a8; }
+.eco-l { display: none; }
+.lancement .eco-n { display: none; }
+.lancement .eco-l { display: inline; }
+.offres .briques span { white-space: nowrap; }
+.offres .eco + .bouton { margin-top: 16px; }
+#packs .briques { min-height: 74px; align-content: flex-start; }
+@media (max-width: 859px) { #packs .briques { min-height: 0; } }
