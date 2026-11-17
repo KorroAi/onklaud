@@ -721,3 +721,30 @@ form.demande { background: var(--blanc); border-radius: 22px; padding: clamp(22p
 .offres .eco + .bouton { margin-top: 16px; }
 #packs .briques { min-height: 74px; align-content: flex-start; }
 @media (max-width: 859px) { #packs .briques { min-height: 0; } }
+
+/* 17/11/2026 : sur téléphone et tablette, la barre du haut ne suit plus le défilement (demande de l'utilisateur). */
+@media (max-width: 940px) {
+  .barre { position: relative; }
+  html { scroll-padding-top: 12px; }
+  #exemples.bande-nom { scroll-margin-top: 12px; }
+}
+
+/* 17/11/2026 : menu déroulant sur téléphone et tablette (bouton créé par site.js). */
+.bouton-menu { display: none; }
+@media (max-width: 940px) {
+  .barre .actions-barre { align-items: center; }
+  .bouton-menu { display: inline-flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 46px; height: 46px; flex: none; padding: 0; border: 0; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 1px var(--filet); cursor: pointer; }
+  .bouton-menu span { display: block; width: 20px; height: 2px; border-radius: 2px; background: var(--encre); transition: transform .25s var(--quint, ease), opacity .2s; }
+  .bouton-menu[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .bouton-menu[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .bouton-menu[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .barre nav { position: absolute; left: 0; right: 0; top: 100%; z-index: 41; display: flex; flex-direction: column; gap: 0; padding: 4px clamp(20px, 4vw, 48px) 22px; background: #fff; border-top: 1px solid var(--filet); box-shadow: 0 24px 40px -24px rgba(16, 28, 56, .45); white-space: normal; visibility: hidden; opacity: 0; transform: translateY(-8px); transition: opacity .2s, transform .25s var(--quint, ease), visibility 0s .25s; }
+  .barre nav.ouverte { visibility: visible; opacity: 1; transform: none; transition: opacity .2s, transform .25s var(--quint, ease); }
+  .barre nav a { padding: 15px 2px; font-size: 17px; font-weight: 650; color: var(--encre); border-bottom: 1px solid var(--filet); }
+  .barre nav a::after { display: none; }
+  .barre nav a[aria-current="true"] { color: var(--orange-texte); }
+  .barre nav .bouton-nav { margin-top: 18px; padding: 0 20px; border-bottom: 0; color: #fff; font-size: 16px; }
+}
+@media (min-width: 941px) { .barre nav .bouton-nav { display: none; } }
+@media (prefers-reduced-motion: reduce) { .barre nav, .bouton-menu span { transition: none; } }
+@media (max-width: 520px) { .barre:has(#bouton-menu) .actions-barre > .bouton { display: none; } }

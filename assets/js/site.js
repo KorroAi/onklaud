@@ -106,7 +106,24 @@
   }
 
   /* ---------- Barre du haut ---------- */
-  const barre = $("#barre"), nav = $("#nav"), boutonMenu = $("#bouton-menu");
+  const barre = $("#barre") || $(".barre"), nav = $("#nav") || $(".barre nav");
+  // Menu déroulant du téléphone (17/11/2026) : bouton créé ici pour toutes les pages qui ont une barre.
+  let boutonMenu = $("#bouton-menu");
+  if (barre && nav && !boutonMenu) {
+    if (!nav.id) nav.id = "nav";
+    const appel = $(".actions-barre .bouton", barre);
+    if (appel && !$(".bouton-nav", nav)) {
+      const copie = document.createElement("a");
+      copie.className = "bouton bouton-nav"; copie.href = appel.getAttribute("href"); copie.textContent = appel.textContent;
+      nav.appendChild(copie);
+    }
+    boutonMenu = document.createElement("button");
+    boutonMenu.type = "button"; boutonMenu.id = "bouton-menu"; boutonMenu.className = "bouton-menu";
+    boutonMenu.setAttribute("aria-controls", nav.id); boutonMenu.setAttribute("aria-expanded", "false"); boutonMenu.setAttribute("aria-label", "Menu");
+    boutonMenu.innerHTML = '<span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>';
+    const actions = $(".actions-barre", barre);
+    if (actions) actions.appendChild(boutonMenu); else $(".cadre", barre).appendChild(boutonMenu);
+  }
   if (barre) {
     const maj = () => barre.classList.toggle("defile", window.scrollY > 8);
     window.addEventListener("scroll", maj, { passive: true });
@@ -119,6 +136,8 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && nav.classList.contains("ouverte")) { ouvrir(false); boutonMenu.focus(); }
     });
+    document.addEventListener("click", (e) => { if (nav.classList.contains("ouverte") && !e.target.closest(".barre")) ouvrir(false); });
+    window.addEventListener("scroll", () => { if (nav.classList.contains("ouverte") && window.scrollY > barre.offsetHeight + 300) ouvrir(false); }, { passive: true });
   }
   // Lien actif dans la navigation
   if (nav && observe) {
