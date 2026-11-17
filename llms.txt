@@ -30,17 +30,48 @@ Onklaud est une micro-entreprise française (entrepreneur individuel) créée en
 
 - [Accueil](https://onklaud.com/)
 - [Tarifs](https://onklaud.com/tarifs/)
-- [Démonstrations à essayer (entreprises fictives)](https://onklaud.com/demos/)
+- [Démonstrations](https://onklaud.com/demos/)
+- [Simulateur de prix](https://onklaud.com/simulateur-prix/)
 - [Création de site internet professionnel sur mesure](https://onklaud.com/creation-site-internet/)
 - [Création d’application mobile sur mesure pour votre entreprise](https://onklaud.com/creation-application-mobile/)
 - [Logiciel de gestion sur mesure : devis, factures, planning, stocks](https://onklaud.com/logiciel-de-gestion-sur-mesure/)
 - [Création de boutique en ligne pour commerçants](https://onklaud.com/creation-boutique-en-ligne/)
 - [Prix d’un site internet, d’une application ou d’un logiciel sur mesure](https://onklaud.com/prix-site-internet-application-logiciel/)
-- [Artisans du bâtiment](https://onklaud.com/artisans-batiment/)
-- [Restaurants](https://onklaud.com/restaurants/)
-- [Boulangeries et commerces de bouche](https://onklaud.com/boulangeries-commerces/)
-- [Instituts de beauté](https://onklaud.com/instituts-beaute/)
-- [Coiffeurs et barbiers](https://onklaud.com/coiffeurs-barbiers/)
-- [Garages automobiles](https://onklaud.com/garages-automobiles/)
-- [Automatisation des tâches](https://onklaud.com/automatisation/)
+- [Conseils](https://onklaud.com/conseils/)
+- [Site internet, application ou logiciel : que choisir pour votre entreprise ?](https://onklaud.com/conseils/site-application-ou-logiciel/)
+- [Site internet pour artisan : ce qu’il doit contenir pour apporter des clients](https://onklaud.com/conseils/site-internet-artisan/)
+- [Logiciel de gestion : sur mesure ou abonnement ?](https://onklaud.com/conseils/logiciel-sur-mesure-ou-abonnement/)
+- [Réservation en ligne sans commission : restaurants, instituts, salons](https://onklaud.com/conseils/reservation-en-ligne-sans-commission/)
+- [Refonte de site internet : quand refaire son site, et comment](https://onklaud.com/conseils/refonte-site-internet/)
+- [Carte de fidélité sur téléphone : comment faire revenir vos clients](https://onklaud.com/conseils/carte-de-fidelite-sur-telephone/)
+- [Lexique](https://onklaud.com/lexique/)
+- [Logiciel de gestion et site internet pour artisans du bâtiment](https://onklaud.com/artisans-batiment/)
+- [Site internet et réservation en ligne pour restaurants](https://onklaud.com/restaurants/)
+- [Boutique en ligne pour boulangeries et commerces de bouche](https://onklaud.com/boulangeries-commerces/)
+- [Application et agenda en ligne pour instituts de beauté](https://onklaud.com/instituts-beaute/)
+- [Site et prise de rendez-vous en ligne pour coiffeurs et barbiers](https://onklaud.com/coiffeurs-barbiers/)
+- [Logiciel de gestion et site internet pour garages automobiles](https://onklaud.com/garages-automobiles/)
+- [Site et commande en ligne pour fleuristes](https://onklaud.com/fleuristes/)
+- [Site et réservation directe pour hôtels, gîtes et chambres d’hôtes](https://onklaud.com/hotels-chambres-hotes/)
+- [Application et réservation de séances pour coachs et salles de sport](https://onklaud.com/coachs-salles-de-sport/)
+- [Site et logiciel de suivi pour agences immobilières](https://onklaud.com/agences-immobilieres/)
+- [Site et prise de rendez-vous pour indépendants et professions libérales](https://onklaud.com/independants-professions-liberales/)
+- [Automatisation des tâches pour petites entreprises](https://onklaud.com/automatisation/)
+- [À propos](https://onklaud.com/a-propos/)
 - [Outil gratuit de relance des devis](https://onklaud.com/outils/)
+- [Mentions légales](https://onklaud.com/mentions-legales.html)
+- [Plan du site](https://onklaud.com/plan-du-site/)
+
+## Questions fréquentes
+
+- Combien cela coûte-t-il ? Le prix est fixe et payé une fois. Un site internet coûte à partir de 390 €, une automatisation à partir de 250 €, une application à partir de 1 690 € et un logiciel de gestion à partir de 1 990 €. Réunis dans un pack, ils coûtent bien moins cher : le site et l’application dès 1 790 €, le site et le logiciel dès 2 090 €, ou tout ensemble dès 3 290 €. Voir les tarifs
+- Y a-t-il un abonnement ? Aucun abonnement n’est imposé. Si votre projet a besoin d’un service extérieur (nom de domaine, envoi de SMS), son coût figure à part sur le devis. Une maintenance est proposée en option, sans engagement.
+- Comment se passe le paiement ? Vous versez 50 % à la commande, par virement. Vous validez ensuite le résultat, puis vous réglez le solde avant la mise en ligne.
+- Et si je change d’avis ? Vous disposez de 14 jours après la signature du devis pour annuler sans motif, tant que la mise en ligne n’est pas validée. Les sommes versées sont remboursées, déduction faite du travail déjà réalisé.
+- Combien de temps cela prend-il ? Un site est livré en 7 jours ouvrés après réception de vos textes, de vos photos et de votre logo. Pour une application ou un logiciel, le délai figure sur votre proposition.
+- Je ne suis pas à l’aise avec l’informatique. Est-ce un obstacle ? Non. Nous installons tout, puis nous vous montrons comment vous en servir, simplement.
+- J’ai déjà un site ou un logiciel. Est-ce un problème ? Non. Nous pouvons partir de l’existant, y relier un nouvel outil ou tout recréer. Nous vous le disons dès le premier échange.
+- Comment se passe la mise en ligne ? Nous nous occupons de tout : nom de domaine à votre nom, hébergement, mise en ligne. Vous recevez ensuite vos accès et, sur demande, tous les fichiers.
+- À qui appartient ce qui est créé ? À vous, après paiement complet, et votre nom de domaine est à votre nom. Nos méthodes et nos briques génériques restent les nôtres, avec le droit de les utiliser dans votre création.
+- Mon site sera-t-il bien placé sur Google ? Votre site est conçu pour être trouvé sur Google. Nous ne garantissons aucune position, car le classement dépend de Google et de votre concurrence.
+- Puis-je voir des réalisations ? Onklaud est une jeune entreprise, et nos réalisations clients seront publiées ici avec leur accord. Vous pouvez dès maintenant essayer nos démos, sur des entreprises fictives, ou en préparer une à votre nom.
