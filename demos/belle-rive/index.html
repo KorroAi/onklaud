@@ -2,11 +2,11 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<script>
-/* Sur ordinateur, cette application de téléphone s'ouvre dans la présentation à deux écrans (duo.html), et non en colonne étroite au milieu de la page. Ajouter ?seul=1 pour l'ouvrir telle quelle. */
-(function () { var q = location.search; if (window.top === window && !/[?&](cadre|seul|film)(=|&|$)/.test(q) && window.matchMedia("(min-width: 900px)").matches) { var n = new URLSearchParams(q).get("nom"); location.replace("../duo.html?d=fidelite" + (n ? "&nom=" + encodeURIComponent(n) : "")); } })();
-</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+/* Sur ordinateur, cette application de téléphone s'ouvre dans la présentation à deux écrans (duo.html), et non en colonne étroite au milieu de la page. Ajouter ?seul=1 pour l'ouvrir telle quelle. Placé après la balise viewport : avant elle, un téléphone annonce 980 px et était renvoyé à tort vers duo.html (corrigé le 17/11/2026). */
+(function () { var q = location.search; if (window.top === window && !/[?&](cadre|seul|film)(=|&|$)/.test(q) && Math.min(screen.width, window.innerWidth) >= 900 && window.matchMedia("(pointer: fine)").matches) { var n = new URLSearchParams(q).get("nom"); location.replace("../duo.html?d=fidelite" + (n ? "&nom=" + encodeURIComponent(n) : "")); } })();
+</script>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0b3f48">
 <title>Institut Belle Rive · Application, démo Onklaud</title>
@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" href="icone-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../commun/base.css?v=1117">
-<link rel="stylesheet" href="appli.css?v=1116">
+<link rel="stylesheet" href="../commun/base.css?v=1118">
+<link rel="stylesheet" href="appli.css?v=1118">
 <script>(function(){var h=document.documentElement,p=new URLSearchParams(location.search);if(p.has("cadre")||p.has("film"))h.classList.add("pose");})();</script>
 </head>
 <body class="client">
@@ -25,8 +25,8 @@
   <nav class="onglets-ios" id="onglets" aria-label="Sections"></nav>
 </div>
 <div class="alerte-ios" id="alerte" role="status"></div>
-<script src="../commun/magasin.js?v=1117"></script>
-<script src="donnees.js?v=1116"></script>
+<script src="../commun/magasin.js?v=1118"></script>
+<script src="donnees.js?v=1118"></script>
 <script>
 (function () {
   "use strict";

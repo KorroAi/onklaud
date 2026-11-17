@@ -1,0 +1,46 @@
+# Onklaud
+
+> Onklaud crée sur mesure des sites internet, des boutiques en ligne, des applications mobiles, des logiciels de gestion et des automatisations pour les petites entreprises (artisans, commerçants, restaurants, instituts de beauté, indépendants), partout en France, à distance. Prix fixes, payés une fois, sans abonnement imposé. Contact : contact@onklaud.com.
+
+Onklaud est une micro-entreprise française (entrepreneur individuel) créée en 2025. Chaque création est faite sur mesure, sans modèle tout fait. Le premier échange est offert ; le client reçoit ensuite un prix fixe par écrit sous 48 heures. Après paiement complet, le site ou l'outil appartient au client, avec le nom de domaine à son nom.
+
+## Tarifs (au 2026-11-17, prix nets, TVA non applicable)
+
+- Site Essentiel (une page) : 390 €
+- Site Pro (jusqu'à 5 pages) : 690 €
+- Site Pro avec réservation ou demande de devis : 890 €
+- Boutique en ligne : à partir de 1290 €
+- Automatisation (relances, rappels, saisies) : à partir de 250 €
+- Application mobile sur mesure : à partir de 1690 €
+- Logiciel de gestion sur mesure : à partir de 1990 €
+- Pack Site + Application (logo offert) : à partir de 1790 €
+- Pack Site + Logiciel (logo offert) : à partir de 2090 €
+- Pack Tout ensemble (site, application, logiciel, automatisation, logo, 6 mois de maintenance) : à partir de 3290 €
+- Maintenance facultative, sans engagement : 29 € par mois (site), 59 € par mois (application ou logiciel)
+- Offre de lancement jusqu'au 31 décembre 2026, pour les premiers clients : prix réduits affichés sur https://onklaud.com/tarifs/
+
+## Conditions
+
+- Acompte de 50 % à la commande, solde avant la mise en ligne
+- Site livré en 7 jours ouvrés après réception des éléments ; délai des applications et logiciels fixé dans la proposition
+- 30 jours de corrections après la livraison ; 14 jours pour changer d'avis après la signature du devis
+- Aucune commission sur les ventes ou les réservations
+
+## Pages principales
+
+- [Accueil](https://onklaud.com/)
+- [Tarifs](https://onklaud.com/tarifs/)
+- [Démonstrations à essayer (entreprises fictives)](https://onklaud.com/demos/)
+- [Création de site internet professionnel sur mesure](https://onklaud.com/creation-site-internet/)
+- [Création d’application mobile sur mesure pour votre entreprise](https://onklaud.com/creation-application-mobile/)
+- [Logiciel de gestion sur mesure : devis, factures, planning, stocks](https://onklaud.com/logiciel-de-gestion-sur-mesure/)
+- [Création de boutique en ligne pour commerçants](https://onklaud.com/creation-boutique-en-ligne/)
+- [Prix d’un site internet, d’une application ou d’un logiciel sur mesure](https://onklaud.com/prix-site-internet-application-logiciel/)
+- [Artisans du bâtiment](https://onklaud.com/artisans-batiment/)
+- [Restaurants](https://onklaud.com/restaurants/)
+- [Boulangeries et commerces de bouche](https://onklaud.com/boulangeries-commerces/)
+- [Instituts de beauté](https://onklaud.com/instituts-beaute/)
+- [Coiffeurs et barbiers](https://onklaud.com/coiffeurs-barbiers/)
+- [Garages automobiles](https://onklaud.com/garages-automobiles/)
+- [Automatisation des tâches](https://onklaud.com/automatisation/)
+- [Outil gratuit de relance des devis](https://onklaud.com/outils/)

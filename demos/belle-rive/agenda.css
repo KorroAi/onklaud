@@ -89,3 +89,7 @@ button.libre:hover, .libre[aria-pressed="true"] { border-style: solid; border-co
   .rdv .ph { display: none; }
   .libre { flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px; padding: 10px 12px; }
 }
+
+/* 17/11/2026 : sur téléphone, le nom et « 18 nov. » passaient sur deux lignes dans l'en-tête. */
+.jours-i button { white-space: nowrap; }
+@media (max-width: 480px) { .en-tete { gap: 10px; } .en-tete h1 { font-size: 20px; line-height: 24px; } .jours-i button { padding: 0 11px; font-size: 13.5px; } }

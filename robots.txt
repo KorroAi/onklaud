@@ -1,4 +1,23 @@
+# Onklaud : tout le site est ouvert aux moteurs de recherche et aux assistants d'IA.
 User-agent: *
 Allow: /
+Disallow: /maquettes/
+
+# Assistants d'IA (recherche et citation) : explicitement autorisés.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Bingbot
+User-agent: CCBot
+User-agent: MistralAI-User
+Allow: /
+Disallow: /maquettes/
 
 Sitemap: https://onklaud.com/sitemap.xml

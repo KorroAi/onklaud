@@ -231,3 +231,15 @@ html.js .plat.actif::before { width: 30px; }
   .creneau { font-size: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { html.js .esprit-t span { opacity: 1; } }
+
+/* 17/11/2026 : sur téléphone, la bande de photos du lieu ne glisse plus toute seule (la première photo
+   sortait de l'écran) : elle se fait défiler du doigt, photo par photo. */
+@media (max-width: 960px) {
+  .bande { overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--marge); scrollbar-width: none; overscroll-behavior-x: contain; }
+  .bande::-webkit-scrollbar { display: none; }
+  .bande-i { translate: none !important; }
+  .g { height: 300px; scroll-snap-align: start; }
+  .g.haut { height: 340px; }
+  .g.bas-g { margin-top: 40px; }
+  .esprit { padding-bottom: 96px; }
+}

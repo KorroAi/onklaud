@@ -748,3 +748,9 @@ form.demande { background: var(--blanc); border-radius: 22px; padding: clamp(22p
 @media (min-width: 941px) { .barre nav .bouton-nav { display: none; } }
 @media (prefers-reduced-motion: reduce) { .barre nav, .bouton-menu span { transition: none; } }
 @media (max-width: 520px) { .barre:has(#bouton-menu) .actions-barre > .bouton { display: none; } }
+
+/* 17/11/2026 : liens vers les pages de services (référencement) et pied de page. */
+.liens-c { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.liens-c .lien-plus { color: var(--gris); font-weight: 600; }
+.liens-services { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 14px; }
+.liens-services a { color: inherit; }

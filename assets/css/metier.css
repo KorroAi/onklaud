@@ -28,3 +28,5 @@
 .m-fin h2 { font-family: var(--police-titres); font-size: clamp(1.9rem, 2vw + 1rem, 2.8rem); line-height: 1.1; font-weight: 770; letter-spacing: -.03em; color: #fff; }
 .m-fin p { margin-top: 10px; }
 .m-fin .bouton { margin-top: 22px; }
+.liens-services { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.liens-services a { color: inherit; }

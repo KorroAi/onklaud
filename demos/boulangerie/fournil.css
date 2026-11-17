@@ -102,3 +102,7 @@ main { padding: clamp(22px, 3vw, 44px) var(--marge) 56px; }
 }
 @media (max-width: 560px) { .en-tete { flex-wrap: wrap; } .vues { margin-left: 0; } }
 @media print { .en-tete, .retraits, .pied-t button, .bandeau-demo { display: none; } .grille { display: block; } }
+
+/* 17/11/2026 : « 12 h 00 » passait sur deux lignes dans la case de l'heure. */
+.commande .h { white-space: nowrap; padding-left: 4px; padding-right: 4px; }
+.commande { grid-template-columns: 74px minmax(0, 1fr); }

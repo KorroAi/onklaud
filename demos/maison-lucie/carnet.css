@@ -156,3 +156,13 @@ button { font-family: var(--outil); }
   .jours { margin-left: 0; }
   .legende { gap: 12px; }
 }
+
+/* 17/11/2026 : sur téléphone, le plan tient dans l'écran (il dépassait à droite et se coupait).
+   Les noms ne tiennent plus dans les tables à cette taille : la couleur dit l'état, la liste dessous donne le détail. */
+@media (max-width: 560px) {
+  .plan-d { overflow: visible; margin: 0; padding: 0 0 10px; }
+  .plan { min-width: 0; }
+  .table b, .table small { display: none; }
+  .rep { font-size: 9.5px; }
+}
+@media (max-width: 560px) { .rep-c { display: none; } }

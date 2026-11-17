@@ -110,3 +110,10 @@ textarea:focus { outline: 0; border-color: var(--bleu); box-shadow: 0 0 0 4px #e
   .noeud:nth-child(n) { padding: 12px 14px; border-radius: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { .noeud.actif { animation: none; } }
+
+/* 17/11/2026 : sur téléphone, numéro et titre de chaque étape sur la même ligne, texte aligné à gauche. */
+@media (max-width: 800px) {
+  .noeud:nth-child(n) { align-items: center; text-align: left; }
+  .noeud div { flex: 1; text-align: left; }
+  .noeud small:empty { display: none; }
+}
